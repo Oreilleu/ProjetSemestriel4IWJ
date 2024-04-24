@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: DevisRepository::class)]
 class Devis
 {
@@ -28,7 +29,7 @@ class Devis
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 255)]
-    private ?text $description = null;
+    private ?string $description = null;
 
     #[ORM\Column]
     private ?int $statut = null;
@@ -36,7 +37,7 @@ class Devis
     #[ORM\Column]
     private ?float $taxe = null;
 
-    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Factures::class, orphanRemoval: true)]
@@ -48,9 +49,6 @@ class Devis
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Interractions::class, orphanRemoval: true)]
     private Collection $interractions;
 
-    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Services::class, orphanRemoval: true)]
-    private Collection $services;
-
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: DetailsServices::class, orphanRemoval: true)]
     private Collection $detailsServices;
 
@@ -59,7 +57,6 @@ class Devis
         $this->factures = new ArrayCollection();
         $this->relances = new ArrayCollection();
         $this->interractions = new ArrayCollection();
-        $this->services = new ArrayCollection();
         $this->detailsServices = new ArrayCollection();
     }
 
@@ -236,36 +233,6 @@ class Devis
             // set the owning side to null (unless already changed)
             if ($interraction->getIdDevis() === $this) {
                 $interraction->setIdDevis(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Services>
-     */
-    public function getServices(): Collection
-    {
-        return $this->services;
-    }
-
-    public function addService(Services $service): static
-    {
-        if (!$this->services->contains($service)) {
-            $this->services->add($service);
-            $service->setIdDevis($this);
-        }
-
-        return $this;
-    }
-
-    public function removeService(Services $service): static
-    {
-        if ($this->services->removeElement($service)) {
-            // set the owning side to null (unless already changed)
-            if ($service->getIdDevis() === $this) {
-                $service->setIdDevis(null);
             }
         }
 

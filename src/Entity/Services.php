@@ -25,10 +25,6 @@ class Services
     #[ORM\JoinColumn(nullable: false)]
     private ?CatServices $id_cat_services = null;
 
-    #[ORM\ManyToOne(inversedBy: 'services')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Devis $id_devis = null;
-
     #[ORM\OneToMany(mappedBy: 'id_service', targetEntity: DetailsServices::class, orphanRemoval: true)]
     private Collection $detailsServices;
 
@@ -74,18 +70,6 @@ class Services
     public function setIdCatServices(?CatServices $id_cat_services): static
     {
         $this->id_cat_services = $id_cat_services;
-
-        return $this;
-    }
-
-    public function getIdDevis(): ?Devis
-    {
-        return $this->id_devis;
-    }
-
-    public function setIdDevis(?Devis $id_devis): static
-    {
-        $this->id_devis = $id_devis;
 
         return $this;
     }

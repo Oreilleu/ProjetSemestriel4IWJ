@@ -42,9 +42,13 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class, orphanRemoval: true)]
     private Collection $devis;
 
+    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Lots::class, orphanRemoval: true)]
+    private Collection $lots;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
+        $this->lots = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -172,6 +176,36 @@ class Clients
             // set the owning side to null (unless already changed)
             if ($devi->getIdClient() === $this) {
                 $devi->setIdClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Lots>
+     */
+    public function getLots(): Collection
+    {
+        return $this->lots;
+    }
+
+    public function addLot(Lots $lot): static
+    {
+        if (!$this->lots->contains($lot)) {
+            $this->lots->add($lot);
+            $lot->setIdClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLot(Lots $lot): static
+    {
+        if ($this->lots->removeElement($lot)) {
+            // set the owning side to null (unless already changed)
+            if ($lot->getIdClient() === $this) {
+                $lot->setIdClient(null);
             }
         }
 
