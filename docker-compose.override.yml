@@ -27,11 +27,6 @@ services:
 ###< symfony/mercure-bundle ###
 
 ###> doctrine/doctrine-bundle ###
-  database:
-    ports:
-      - target: 5432
-        published: 5432
-        protocol: tcp
 ###< doctrine/doctrine-bundle ###
 
 ###> symfony/mailer ###
