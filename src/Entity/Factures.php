@@ -38,6 +38,9 @@ class Factures
     #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: ModePaiements::class, orphanRemoval: true)]
     private Collection $modePaiements;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $total_ht = null;
+
     public function __construct()
     {
         $this->paiements = new ArrayCollection();
@@ -165,6 +168,18 @@ class Factures
                 $modePaiement->setIdFacture(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotalHt(): ?float
+    {
+        return $this->total_ht;
+    }
+
+    public function setTotalHt(?float $total_ht): static
+    {
+        $this->total_ht = $total_ht;
 
         return $this;
     }

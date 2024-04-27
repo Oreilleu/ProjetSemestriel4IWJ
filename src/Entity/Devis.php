@@ -37,9 +37,6 @@ class Devis
     #[ORM\Column]
     private ?float $taxe = null;
 
-    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTimeImmutable $created_at = null;
-
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Factures::class, orphanRemoval: true)]
     private Collection $factures;
 
@@ -51,6 +48,9 @@ class Devis
 
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: DetailsServices::class, orphanRemoval: true)]
     private Collection $detailsServices;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $total_ht = null;
 
     public function __construct()
     {
@@ -133,18 +133,6 @@ class Devis
     public function setTaxe(float $taxe): static
     {
         $this->taxe = $taxe;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
 
         return $this;
     }
@@ -265,6 +253,18 @@ class Devis
                 $detailsService->setIdDevis(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotalHt(): ?float
+    {
+        return $this->total_ht;
+    }
+
+    public function setTotalHt(?float $total_ht): static
+    {
+        $this->total_ht = $total_ht;
 
         return $this;
     }
