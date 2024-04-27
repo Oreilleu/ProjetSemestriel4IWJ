@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LotsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LotsRepository::class)]
@@ -25,6 +27,14 @@ class Lots
     #[ORM\ManyToOne(inversedBy: 'lots')]
     #[ORM\JoinColumn(nullable: false)]
     private ?clients $id_client = null;
+
+    #[ORM\OneToMany(mappedBy: 'id_lots', targetEntity: Devis::class, orphanRemoval: true)]
+    private Collection $devis;
+
+    public function __construct()
+    {
+        $this->devis = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +85,36 @@ class Lots
     public function setIdClient(?clients $id_client): static
     {
         $this->id_client = $id_client;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Devis>
+     */
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevi(Devis $devi): static
+    {
+        if (!$this->devis->contains($devi)) {
+            $this->devis->add($devi);
+            $devi->setIdLots($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevi(Devis $devi): static
+    {
+        if ($this->devis->removeElement($devi)) {
+            // set the owning side to null (unless already changed)
+            if ($devi->getIdLots() === $this) {
+                $devi->setIdLots(null);
+            }
+        }
 
         return $this;
     }

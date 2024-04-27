@@ -52,6 +52,10 @@ class Devis
     #[ORM\Column(nullable: true)]
     private ?float $total_ht = null;
 
+    #[ORM\ManyToOne(inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?lots $id_lots = null;
+
     public function __construct()
     {
         $this->factures = new ArrayCollection();
@@ -265,6 +269,18 @@ class Devis
     public function setTotalHt(?float $total_ht): static
     {
         $this->total_ht = $total_ht;
+
+        return $this;
+    }
+
+    public function getIdLots(): ?lots
+    {
+        return $this->id_lots;
+    }
+
+    public function setIdLots(?lots $id_lots): static
+    {
+        $this->id_lots = $id_lots;
 
         return $this;
     }
