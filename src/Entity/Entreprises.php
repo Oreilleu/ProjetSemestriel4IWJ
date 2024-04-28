@@ -42,9 +42,6 @@ class Entreprises
     #[ORM\Column(nullable: true)]
     private ?int $id_rapports_financiers = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Users::class, orphanRemoval: true)]
-    private Collection $users;
-
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Devis::class, orphanRemoval: true)]
     private Collection $devis;
 
@@ -53,7 +50,6 @@ class Entreprises
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->devis = new ArrayCollection();
         $this->rapportFinanciers = new ArrayCollection();
     }
@@ -167,36 +163,6 @@ class Entreprises
     public function setIdRapportsFinanciers(?int $id_rapports_financiers): static
     {
         $this->id_rapports_financiers = $id_rapports_financiers;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Users>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(Users $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setIdEntreprise($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(Users $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getIdEntreprise() === $this) {
-                $user->setIdEntreprise(null);
-            }
-        }
 
         return $this;
     }
