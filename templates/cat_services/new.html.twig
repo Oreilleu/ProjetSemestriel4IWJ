@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CatServices{% endblock %}
+
+{% block body %}
+    <h1>Create new CatServices</h1>
+
+    {{ include('cat_services/_form.html.twig') }}
+
+    <a href="{{ path('app_cat_services_index') }}">back to list</a>
+{% endblock %}

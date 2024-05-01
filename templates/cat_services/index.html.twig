@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CatServices index{% endblock %}
+
+{% block body %}
+    <h1>Liste des catégories</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cat_service in cat_services %}
+            <tr>
+                <td>{{ cat_service.id }}</td>
+                <td>{{ cat_service.nom }}</td>
+                <td>
+                    <a href="{{ path('app_cat_services_show', {'id': cat_service.id}) }}">show</a>
+                    <a href="{{ path('app_cat_services_edit', {'id': cat_service.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_cat_services_new') }}">Create new</a>
+{% endblock %}
