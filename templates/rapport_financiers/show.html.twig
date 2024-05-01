@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RapportFinanciers{% endblock %}
+
+{% block body %}
+    <h1>RapportFinanciers</h1>
+
+    <table class="table">
+        <tbody>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_rapport_financiers_index') }}">back to list</a>
+
+    <a href="{{ path('app_rapport_financiers_edit', {'id': rapport_financier.id}) }}">edit</a>
+
+    {{ include('rapport_financiers/_delete_form.html.twig') }}
+{% endblock %}

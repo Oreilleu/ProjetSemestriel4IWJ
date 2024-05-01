@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lots{% endblock %}
+
+{% block body %}
+    <h1>Lots</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ lot.id }}</td>
+            </tr>
+            <tr>
+                <th>Superficie</th>
+                <td>{{ lot.superficie }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ lot.type }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ lot.adresse }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_lots_index') }}">back to list</a>
+
+    <a href="{{ path('app_lots_edit', {'id': lot.id}) }}">edit</a>
+
+    {{ include('lots/_delete_form.html.twig') }}
+{% endblock %}
