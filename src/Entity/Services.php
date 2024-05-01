@@ -55,12 +55,6 @@ class Services
         return $this->prix;
     }
 
-    public function prixToString(): ?string
-    {
-        $prix1 = $this->prix + "€";
-        return $prix1;
-    }
-
     public function setPrix(int $prix): static
     {
         $this->prix = $prix;
