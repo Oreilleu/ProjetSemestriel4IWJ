@@ -54,7 +54,7 @@ class Devis
 
     #[ORM\ManyToOne(inversedBy: 'devis')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Lots $id_lots = null;
+    private ?lots $id_lots = null;
 
     public function __construct()
     {
