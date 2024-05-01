@@ -19,7 +19,7 @@ class ServicesController extends AbstractController
     {
         return $this->render('services/index.html.twig', [
             'services' => $servicesRepository->findAll(),
-        ]);  
+        ]);
 
         
     }
@@ -81,5 +81,19 @@ class ServicesController extends AbstractController
         }
 
         return $this->redirectToRoute('app_services_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    // Fonction pour obtenir le nom de la catégorie associée à un service
+    private function getNomCatServices(Services $service)
+    {
+        $catService = $service->getIdCatServices(); // Récupérez l'objet CatServices associé au service
+
+        // Vérifiez si la catégorie est définie
+        if ($catService !== null) {
+            // Récupérez le nom de la catégorie
+            return $catService->getNom();
+        } else {
+            return "Aucune catégorie associée";
+        }
     }
 }
