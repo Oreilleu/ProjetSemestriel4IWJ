@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ModePaiements{% endblock %}
+
+{% block body %}
+    <h1>Create new ModePaiements</h1>
+
+    {{ include('mode_paiements/_form.html.twig') }}
+
+    <a href="{{ path('app_mode_paiements_index') }}">back to list</a>
+{% endblock %}
