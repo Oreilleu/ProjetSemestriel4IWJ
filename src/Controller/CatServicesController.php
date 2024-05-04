@@ -7,6 +7,7 @@ use App\Form\CatServicesType;
 use App\Repository\CatServicesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,11 +72,16 @@ class CatServicesController extends AbstractController
     #[Route('/{id}', name: 'app_cat_services_delete', methods: ['POST'])]
     public function delete(Request $request, CatServices $catService, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $catService->getId(), $request->request->get('_token'))) {
+        $isValidCsrfToken = $this->isCsrfTokenValid("delete_category", $request->headers->get('X-Csrf-Token'));
+
+        if ($isValidCsrfToken) {
             $entityManager->remove($catService);
             $entityManager->flush();
+
+            return $this->redirectToRoute('app_cat_services_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->redirectToRoute('app_cat_services_index', [], Response::HTTP_SEE_OTHER);
+
+        return new JsonResponse('Erreur lors de la suppression de la catégorie', Response::HTTP_BAD_REQUEST);
     }
 }

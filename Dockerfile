@@ -137,9 +137,10 @@ RUN set -eux; \
 	docker-php-ext-enable xdebug; \
 	apk del .build-deps
 
-RUN apk add --no-cache nodejs npm
 
 RUN rm -f .env.local.php
+RUN apk add --no-cache nodejs npm && \
+	npm install 
 
 # Build Caddy with the Mercure and Vulcain modules
 FROM caddy:${CADDY_VERSION}-builder-alpine AS app_caddy_builder
