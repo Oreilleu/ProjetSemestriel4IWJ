@@ -18,6 +18,9 @@ class CatServices
     #[ORM\Column(length: 100)]
     private ?string $nom = null;
 
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private $filePath = null;
+
     #[ORM\OneToMany(mappedBy: 'id_cat_services', targetEntity: Services::class, orphanRemoval: true)]
     private Collection $services;
 
@@ -69,6 +72,18 @@ class CatServices
                 $service->setIdCatServices(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function setFilePath(?string $filePath): self
+    {
+        $this->filePath = $filePath;
 
         return $this;
     }

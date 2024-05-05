@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CatServices{% endblock %}
+
+{% block body %}
+    <h1>CatServices</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cat_service.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ cat_service.nom }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_cat_services_index') }}">back to list</a>
+
+    <a href="{{ path('app_cat_services_edit', {'id': cat_service.id}) }}">edit</a>
+
+    {{ include('cat_services/_delete_form.html.twig') }}
+{% endblock %}

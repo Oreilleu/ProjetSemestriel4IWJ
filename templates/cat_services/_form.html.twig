@@ -1,0 +1,13 @@
+{{ form_start(form) }}
+    {{ form_label(form.nom, 'Nom de la catégorie * :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    {{ form_widget(form.nom, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+
+    {{ form_label(form.filePath, 'Image : ', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    {{ form_widget(form.filePath) }}
+    
+    <div class="my-3">
+        <button class="text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3">{{ button_label|default('Save') }}</button>
+        <button class="text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg">Supprimer</button>
+    </div>
+
+{{ form_end(form) }}
