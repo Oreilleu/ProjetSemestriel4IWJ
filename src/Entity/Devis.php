@@ -54,10 +54,11 @@ class Devis
 
     #[ORM\ManyToOne(inversedBy: 'devis')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?lots $id_lots = null;
+    private ?Lots $id_lots = null;
 
     public function __construct()
     {
+        
         $this->factures = new ArrayCollection();
         $this->relances = new ArrayCollection();
         $this->interractions = new ArrayCollection();
