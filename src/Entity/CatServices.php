@@ -29,6 +29,14 @@ class CatServices
         $this->services = new ArrayCollection();
     }
 
+    //On devrait pouvoir récuperer le nom de la catégorie de service avec le get nom ? 
+    public function __toString(): string
+    {
+        return $this->nom ?? '';
+    }
+
+
+
     public function getId(): ?int
     {
         return $this->id;
