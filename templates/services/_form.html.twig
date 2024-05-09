@@ -1,4 +1,9 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {# {{ form_widget(form) }}  #}
+    {{ form_row(form.nom, {'label': 'Nom du produit ', 'attr': {'class': ''}}) }}
+    {{ form_row(form.prix, {'label': 'Prix ','attr': {'class': ''}})}}
+    {{ form_row(form.id_cat_services, {'label': 'Catégorie ', 'attr': {'class': ''}}) }}
+    <a href="{{ path('app_cat_services_new') }}">Créer une catégorie</a>
+    <br>
+    <button>{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}
