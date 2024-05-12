@@ -72,16 +72,13 @@ class CatServicesController extends AbstractController
     #[Route('/{id}', name: 'app_cat_services_delete', methods: ['POST'])]
     public function delete(Request $request, CatServices $catService, EntityManagerInterface $entityManager): Response
     {
-        $isValidCsrfToken = $this->isCsrfTokenValid("delete_category", $request->headers->get('X-Csrf-Token'));
 
-        if ($isValidCsrfToken) {
+        if ($this->isCsrfTokenValid('delete' . $catService->getId(), $request->request->get('_token'))) {
             $entityManager->remove($catService);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_cat_services_index', [], Response::HTTP_SEE_OTHER);
         }
+        
+        return $this->redirectToRoute('app_cat_services_index', [], Response::HTTP_SEE_OTHER);
 
-
-        return new JsonResponse('Erreur lors de la suppression de la catégorie', Response::HTTP_BAD_REQUEST);
     }
 }
