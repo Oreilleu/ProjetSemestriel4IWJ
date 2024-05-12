@@ -31,6 +31,17 @@ class CatServicesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['filePath']->getData();
+
+            if ($file) {
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $fileName
+                );
+                $catService->setFilePath('/uploads/'.$fileName);
+            }
+
             $entityManager->persist($catService);
             $entityManager->flush();
 
@@ -58,6 +69,18 @@ class CatServicesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $form['filePath']->getData();
+
+            if ($file) {
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $fileName
+                );
+                $catService->setFilePath('/uploads/'.$fileName);
+            }
+            
             $entityManager->flush();
 
             return $this->redirectToRoute('app_cat_services_index', [], Response::HTTP_SEE_OTHER);
@@ -74,6 +97,17 @@ class CatServicesController extends AbstractController
     {
 
         if ($this->isCsrfTokenValid('delete' . $catService->getId(), $request->request->get('_token'))) {
+            $filePath = $catService->getFilePath();
+
+            if ($filePath) {
+                // Construire le chemin absolu du fichier
+                $absoluteFilePath = $this->getParameter('kernel.project_dir') . '/public' . $filePath;
+
+                // Vérifier si le fichier existe et le supprimer s'il existe
+                if (file_exists($absoluteFilePath)) {
+                    unlink($absoluteFilePath);
+                }
+            }
             $entityManager->remove($catService);
             $entityManager->flush();
         }
