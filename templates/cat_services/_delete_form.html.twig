@@ -1,9 +1,9 @@
-<form id="confirmationForm" method="post" class="{{ classForm }}" action="{{ path('app_cat_services_delete', {'id': cat_service_id}) }}">
+<form id="confirmationForm-{{ cat_service_id }}" method="post" class="{{ classForm }}" action="{{ path('app_cat_services_delete', {'id': cat_service_id}) }}">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cat_service_id) }}">
     <button class="{{ classButton }}">{{ labelButton | raw }}</button>
 </form>
 
-<div id="confirmationModal" tabindex="-1" aria-hidden="true" class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="confirmationModal-{{ cat_service_id }}" tabindex="-1" aria-hidden="true" class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -22,7 +22,7 @@
             </div>
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button type="button" class="mr-3 py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none bg-white rounded-lg border border-color3-200 hover:bg-color3-100 hover:text-color3-700 focus:z-10 focus:ring-4 focus:ring-color3-100 dark:focus:ring-color3-700 dark:bg-color3-800 dark:text-color3-400 dark:border-color3-600 dark:hover:text-white dark:hover:bg-gray-700" id="cancelButton">Annuler</button>
-                <button type="submit" class="text-white bg-color3 hover:bg-color3-800 focus:ring-4 focus:outline-none focus:ring-color3-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-color3-600 dark:hover:bg-color3-700 dark:focus:ring-color3-800" id="confirmButton">Accepter</button>
+                <button type="submit" class="text-white bg-color3-700 hover:bg-color3-800 focus:ring-4 focus:outline-none focus:ring-color3-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-color3-600 dark:hover:bg-color3-700 dark:focus:ring-color3-800" id="confirmButton">Accepter</button>
             </div>
         </div>
     </div>
@@ -30,20 +30,29 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('confirmationForm').addEventListener('submit', function(event) {
+        const form = document.getElementById(`confirmationForm-{{ cat_service_id }}`);
+        const modal = document.getElementById('confirmationModal-{{ cat_service_id }}');
+
+        const cancelButton = modal.querySelector('#cancelButton');
+        const confirmButton = modal.querySelector('#confirmButton');
+        const crossModal = modal.querySelector('#closeModalButton');
+        
+
+        form.addEventListener('submit', (event) => {
             event.preventDefault(); 
-            document.getElementById('confirmationModal').classList.remove('hidden'); 
+            modal.classList.remove('hidden');
         });
 
-        document.getElementById('cancelButton').addEventListener('click', function() {
-            document.getElementById('confirmationModal').classList.add('hidden');         });
+        cancelButton.addEventListener('click', () => {
+            modal.classList.add('hidden');         
+            });
 
-        document.getElementById('confirmButton').addEventListener('click', function() {
-            document.getElementById('confirmationForm').submit();
+        confirmButton.addEventListener('click', () => {
+            form.submit();
         });
 
-        document.getElementById('closeModalButton').addEventListener('click', function() {
-            document.getElementById('confirmationModal').classList.add('hidden'); 
+        crossModal.addEventListener('click', () => {
+            modal.classList.add('hidden'); 
         });
     });
 </script>

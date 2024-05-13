@@ -5,7 +5,7 @@
 {% block body %}
     <h1 class="font-bold uppercase text-2xl my-5 border-b-black border-b-2">Création d'une catégorie</h1>
 
-    {{ include('cat_services/_form.html.twig') }}
+    {{ include('cat_services/_form.html.twig', { button_label: "Créer" }) }}
 
     <a href="{{ path('app_cat_services_index') }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Liste des catégories</a>
 {% endblock %}
