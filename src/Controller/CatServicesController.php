@@ -11,15 +11,33 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/cat-services')]
 class CatServicesController extends AbstractController
 {
     #[Route('/', name: 'app_cat_services_index', methods: ['GET'])]
-    public function index(CatServicesRepository $catServicesRepository): Response
+    public function index(CatServicesRepository $catServicesRepository, PaginatorInterface $paginator, Request $request): Response
     {
+
+        $ITEM_BY_PAGE = 6;
+        $LENGTH_CAT_SERVICES = count($catServicesRepository->findAll());
+
+        $query = $catServicesRepository->createQueryBuilder('catService')->getQuery();
+
+        $catServices = $paginator->paginate(
+            $query,     
+            $request->query->getInt('page', 1), 
+            $ITEM_BY_PAGE
+        );
+
+        $currentPage = $catServices->getCurrentPageNumber();
+
+
         return $this->render('cat_services/index.html.twig', [
-            'cat_services' => $catServicesRepository->findAll(),
+            'paginate_cat_services' => $catServices,
+            'number_page' => ceil($LENGTH_CAT_SERVICES / $ITEM_BY_PAGE),
+            'current_page' => $currentPage
         ]);
     }
 
@@ -31,6 +49,17 @@ class CatServicesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['filePath']->getData();
+
+            if ($file) {
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $fileName
+                );
+                $catService->setFilePath('/uploads/'.$fileName);
+            }
+
             $entityManager->persist($catService);
             $entityManager->flush();
 
@@ -58,6 +87,18 @@ class CatServicesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $form['filePath']->getData();
+
+            if ($file) {
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $fileName
+                );
+                $catService->setFilePath('/uploads/'.$fileName);
+            }
+            
             $entityManager->flush();
 
             return $this->redirectToRoute('app_cat_services_index', [], Response::HTTP_SEE_OTHER);
@@ -72,16 +113,24 @@ class CatServicesController extends AbstractController
     #[Route('/{id}', name: 'app_cat_services_delete', methods: ['POST'])]
     public function delete(Request $request, CatServices $catService, EntityManagerInterface $entityManager): Response
     {
-        $isValidCsrfToken = $this->isCsrfTokenValid("delete_category", $request->headers->get('X-Csrf-Token'));
 
-        if ($isValidCsrfToken) {
+        if ($this->isCsrfTokenValid('delete' . $catService->getId(), $request->request->get('_token'))) {
+            $filePath = $catService->getFilePath();
+
+            if ($filePath) {
+                // Construire le chemin absolu du fichier
+                $absoluteFilePath = $this->getParameter('kernel.project_dir') . '/public' . $filePath;
+
+                // Vérifier si le fichier existe et le supprimer s'il existe
+                if (file_exists($absoluteFilePath)) {
+                    unlink($absoluteFilePath);
+                }
+            }
             $entityManager->remove($catService);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_cat_services_index', [], Response::HTTP_SEE_OTHER);
         }
+        
+        return $this->redirectToRoute('app_cat_services_index', [], Response::HTTP_SEE_OTHER);
 
-
-        return new JsonResponse('Erreur lors de la suppression de la catégorie', Response::HTTP_BAD_REQUEST);
     }
 }
