@@ -37,9 +37,6 @@ class Entreprises
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $id_devis = null;
-
-    #[ORM\Column(nullable: true)]
     private ?int $id_rapports_financiers = null;
 
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Devis::class, orphanRemoval: true)]
@@ -48,10 +45,14 @@ class Entreprises
     #[ORM\OneToMany(mappedBy: 'id', targetEntity: RapportFinanciers::class, orphanRemoval: true)]
     private Collection $rapportFinanciers;
 
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: User::class, orphanRemoval: true)]
+    private Collection $users;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
         $this->rapportFinanciers = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,18 +144,6 @@ class Entreprises
         return $this;
     }
 
-    public function getIdDevis(): ?int
-    {
-        return $this->id_devis;
-    }
-
-    public function setIdDevis(?int $id_devis): static
-    {
-        $this->id_devis = $id_devis;
-
-        return $this;
-    }
-
     public function getIdRapportsFinanciers(): ?int
     {
         return $this->id_rapports_financiers;
@@ -221,6 +210,36 @@ class Entreprises
             // set the owning side to null (unless already changed)
             if ($rapportFinancier->getId() === $this) {
                 $rapportFinancier->setId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getIdEntreprise() === $this) {
+                $user->setIdEntreprise(null);
             }
         }
 
