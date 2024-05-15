@@ -7,13 +7,13 @@
 {% block body %}
   <h1 class="font-bold uppercase text-2xl my-5 border-b-black border-b-2">Liste des catégories</h1>
 
-  {% if cat_services|length < 1 %}
+  {% if paginate_cat_services|length < 1 %}
     <p>Il n'y a pas de catégorie pour le moment.</p>
   {% endif %}
 
   <ul class="md:flex md:flex-wrap md:justify-between md:gap-3">
-    {% for cat_service in cat_services %}
-      <li class="p-4 md:w-80 h-full bg-primary-500 border-2 border-opacity-60 rounded-lg overflow-hidden">
+    {% for cat_service in paginate_cat_services %}
+      <li class="p-4 md:w-80 xl:w-96 h-full bg-primary-500 border-2 border-opacity-60 rounded-lg overflow-hidden">
         <a href="#{{ cat_service.nom }}">
           <article>
             <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="{{ cat_service.filePath is defined and cat_service.filePath ? asset(cat_service.filePath) : asset('images/default_category.jpg') }}" alt="Image par défaut catégorie" />
@@ -46,6 +46,12 @@
       </li>
     {% endfor %}
   </ul>
+
+  {{ include("components/_pagination.html.twig", {
+    current_page: current_page,
+    number_page: number_page,
+    name_controller: 'app_cat_services_index'
+  }) }}
 
   <a href="{{ path('app_cat_services_new') }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Créer une catégorie</a>
 

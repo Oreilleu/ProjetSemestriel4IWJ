@@ -11,15 +11,33 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/cat-services')]
 class CatServicesController extends AbstractController
 {
     #[Route('/', name: 'app_cat_services_index', methods: ['GET'])]
-    public function index(CatServicesRepository $catServicesRepository): Response
+    public function index(CatServicesRepository $catServicesRepository, PaginatorInterface $paginator, Request $request, LoggerInterface $logger): Response
     {
+
+        $ITEM_BY_PAGE = 6;
+        $LENGTH_CAT_SERVICES = count($catServicesRepository->findAll());
+
+        $query = $catServicesRepository->createQueryBuilder('catService')->getQuery();
+
+        $catServices = $paginator->paginate(
+            $query,     
+            $request->query->getInt('page', 1), 
+            $ITEM_BY_PAGE
+        );
+
+        $currentPage = $catServices->getCurrentPageNumber();
+
+
         return $this->render('cat_services/index.html.twig', [
-            'cat_services' => $catServicesRepository->findAll(),
+            'paginate_cat_services' => $catServices,
+            'number_page' => ceil($LENGTH_CAT_SERVICES / $ITEM_BY_PAGE),
+            'current_page' => $currentPage
         ]);
     }
 
