@@ -7,8 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 #[ORM\Entity(repositoryClass: ClientsRepository::class)]
 class Clients
 {
@@ -17,60 +15,24 @@ class Clients
     #[ORM\Column]
     private ?int $id = null;
 
-
-    #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'
-    )]
-    #[Assert\Length(min:2, max:255,
-        minMessage: 'Le nom doit contenir au moins {{limit}} caractères.'
-    )]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-
-    #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'
-    )]
-    #[Assert\Length(min:2, max:255,
-        minMessage: 'Le prenom doit contenir au moins {{limit}} caractères.'
-    )]
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
-
-    #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'
-    )]
-    #[Assert\Length(min:2, max:255,
-        minMessage: 'L\'adresse doit contenir au moins {{limit}} caractères.'
-    )]
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
-   
-    #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'
-    )]
-    #[Assert\Length(min:8, max:255,
-        minMessage: 'Le numéro doit contenir au moins {{limit}} chiffres.'
-    )]
+
     #[ORM\Column(length: 255)]
     private ?string $tel = null;
 
-    
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-
-    #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'
-    )]
-    #[Assert\Length(min:14, max:14,
-        minMessage: 'Le Numéro de siret doit contenir au moins {{limit}} caractères.'
-    )]
     #[ORM\Column(length: 255)]
     private ?string $numero_siret = null;
 
-    
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
@@ -81,7 +43,6 @@ class Clients
     public function __construct()
     {
         $this->lots = new ArrayCollection();
-        $this->created_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

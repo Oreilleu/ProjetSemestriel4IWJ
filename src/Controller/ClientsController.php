@@ -30,6 +30,19 @@ class ClientsController extends AbstractController
         ]);
     }
 
+    #[Route('/search', name: 'app_clients_search', methods: ['GET', 'POST'])]
+    public function search(Request $request, ClientsRepository $clientsRepository): JsonResponse
+    {
+        $LesCriteres = [
+            'id' => $request->query->get('id'),
+            'nom' => $request->query->get('nom'),
+            'prenom' => $request->query->get('prenom'),
+        ];
+
+        $clients = $clientsRepository->search($LesCriteres);
+
+        return new JsonResponse($clients);
+    }
 
     #[Route('/new', name: 'app_clients_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
