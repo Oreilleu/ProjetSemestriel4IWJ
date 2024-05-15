@@ -22,8 +22,11 @@ class Services
     #[Assert\NotBlank(
         message: 'Veuillez renseigner ce champ.'    
     )]
-    #[Assert\Length(min: 1, max: 100,
-        minMessage: 'Le nom doit contenir au moins {{limit}} caractères.'
+    #[Assert\Length(
+        min: 1, 
+        max: 100,
+        minMessage: 'Le nom du produit doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le nom du produit ne doit pas dépasser {{ limit }} caractères.'
     )]
     #[ORM\Column(length: 100)]
     private ?string $nom = null;
@@ -73,9 +76,8 @@ class Services
 
     public function setPrix(float $prix): static
     {
-        $this->prix = $prix;
-
-        return $this;
+            $this->prix = $prix;
+            return $this;
     }
 
     public function getIdCatServices(): ?CatServices

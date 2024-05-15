@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 
 class ServicesType extends AbstractType
 {
@@ -18,6 +17,7 @@ class ServicesType extends AbstractType
             ->add('nom')
             ->add('prix', NumberType::class, [
                 'scale' => 2,
+                'invalid_message' => 'Veuillez entrer un prix valide.',
             ])
             ->add('id_cat_services')
         ;
