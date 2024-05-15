@@ -8,7 +8,7 @@
 
 #}
 
-<div id="confirmationModal-{{ entity_id }}" tabindex="-1" aria-hidden="true" class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="confirmationModal-{{ entity_id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -39,23 +39,32 @@
         const cancelButton = modal.querySelector('#cancelButton');
         const confirmButton = modal.querySelector('#confirmButton');
         const crossModal = modal.querySelector('#closeModalButton');
-        
+
+        const closeModal = () => {
+            modal.classList.add('hidden');         
+            modal.classList.remove('flex');     
+        }
+
+        const openModal = () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
 
         form.addEventListener('submit', (event) => {
             event.preventDefault(); 
-            modal.classList.remove('hidden');
+            openModal();
         });
 
         cancelButton.addEventListener('click', () => {
-            modal.classList.add('hidden');         
-            });
-
-        confirmButton.addEventListener('click', () => {
-            form.submit();
+            closeModal();
         });
 
         crossModal.addEventListener('click', () => {
-            modal.classList.add('hidden'); 
+            closeModal();
+        });
+
+        confirmButton.addEventListener('click', () => {
+            form.submit();
         });
     });
 </script>
