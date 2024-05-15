@@ -10,10 +10,11 @@
     {{ include('cat_services/_delete_form.html.twig', { 
         cat_service_id: cat_service.id,
         cat_service_name: cat_service.nom,
-        labelButton: 'Supprimer la catégorie',
-        classButton: "block my-3 text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3",
+        labelButton: 'Supprimer',
+        classButton: "my-3 text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3",
+        classForm: "inline-block"
         }) 
     }}
 
-    <a href="{{ path('app_cat_services_index') }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Liste des catégories</a>
+    <a href="{{ path('app_cat_services_index') }}" class="block font-medium text-blue-600 dark:text-blue-500 hover:underline">Liste des catégories</a>
 {% endblock %}

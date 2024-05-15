@@ -1,10 +1,12 @@
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'class': 'initialDisplay'}}) }}
     {{ form_label(form.nom, 'Nom de la catégorie * :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
     {{ form_widget(form.nom, {'attr': {'class': 'max-w-2xl shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
 
-    {{ form_label(form.filePath, 'Image : ', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-    {{ form_widget(form.filePath) }}
+    <div>
+        {{ form_label(form.filePath, 'Image : ', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+        {{ form_widget(form.filePath) }}
+    </div>
 
-    <button class="block my-3 text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3">{{ button_label|default('Save') }}</button>
+    <button class="my-3 text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3">{{ button_label|default('Save') }}</button>
 
 {{ form_end(form) }}

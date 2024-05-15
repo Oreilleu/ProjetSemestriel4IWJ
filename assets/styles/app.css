@@ -5,3 +5,7 @@
 .container {
     margin: auto;
 }
+
+.initialDisplay {
+    display: initial!important;
+}
