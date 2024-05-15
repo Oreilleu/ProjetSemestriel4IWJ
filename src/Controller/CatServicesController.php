@@ -17,7 +17,7 @@ use Knp\Component\Pager\PaginatorInterface;
 class CatServicesController extends AbstractController
 {
     #[Route('/', name: 'app_cat_services_index', methods: ['GET'])]
-    public function index(CatServicesRepository $catServicesRepository, PaginatorInterface $paginator, Request $request, LoggerInterface $logger): Response
+    public function index(CatServicesRepository $catServicesRepository, PaginatorInterface $paginator, Request $request): Response
     {
 
         $ITEM_BY_PAGE = 6;
