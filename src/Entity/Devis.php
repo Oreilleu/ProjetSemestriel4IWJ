@@ -18,7 +18,7 @@ class Devis
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'devis')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Clients $id_client = null;
 
     #[ORM\ManyToOne(inversedBy: 'devis')]

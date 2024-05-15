@@ -1,49 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Clients index{% endblock %}
+{% block title %}Mes clients{% endblock %}
 
 {% block body %}
-    <h1>Clients index</h1>
+    <h2 class="text-3xl">Listes des clients</h2>
 
-    <table class="table">
+<form id="searchForm">
+    <input type="text" id="searchTerm" name="searchTerm" placeholder="Rechercher...">
+    <button type="submit">Rechercher</button>
+</form>
+
+    <table class="table-auto w-full">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Adresse</th>
-                <th>Tel</th>
-                <th>Email</th>
-                <th>Numero_siret</th>
-                <th>Created_at</th>
-                <th>Id_devis</th>
-                <th>actions</th>
+                <th class="px-4 py-2">Id</th>
+                <th class="px-4 py-2">Nom</th>
+                <th class="px-4 py-2">Prenom</th>
+                <th class="px-4 py-2">Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for client in clients %}
             <tr>
-                <td>{{ client.id }}</td>
-                <td>{{ client.nom }}</td>
-                <td>{{ client.prenom }}</td>
-                <td>{{ client.adresse }}</td>
-                <td>{{ client.tel }}</td>
-                <td>{{ client.email }}</td>
-                <td>{{ client.numeroSiret }}</td>
-                <td>{{ client.createdAt ? client.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ client.idDevis }}</td>
-                <td>
-                    <a href="{{ path('app_clients_show', {'id': client.id}) }}">show</a>
-                    <a href="{{ path('app_clients_edit', {'id': client.id}) }}">edit</a>
+                <td class="border px-4 py-2"><a href="{{ path('app_clients_show', {'id': client.id}) }}" class="text-blue-500 hover:text-blue-700">{{ client.id }}</a></td>
+                <td class="border px-4 py-2"><a href="{{ path('app_clients_show', {'id': client.id}) }}" class="text-blue-500 hover:text-blue-700">{{ client.nom }}</a></td>
+                <td class="border px-4 py-2"><a href="{{ path('app_clients_show', {'id': client.id}) }}" class="text-blue-500 hover:text-blue-700">{{ client.prenom }}</a></td>
+                <td class="border px-4 py-2">
+                    <a href="{{ path('app_clients_edit', {'id': client.id}) }}" class="text-yellow-500 hover:text-yellow-700 mr-4">Modifier</a>
+                    <a href="{{ path('app_clients_delete', {'id': client.id}) }}" class="text-red-500 hover:text-red-700">Supprimer</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="10">no records found</td>
+                <td colspan="4" class="border px-4 py-2">Aucun client trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_clients_new') }}">Create new</a>
+    <a href="{{ path('app_clients_new') }}" class="block focus:outline-none bg-primary-500 text-white font-bold py-2 px-4 rounded mt-4">Créer un nouveau client</a>
 {% endblock %}
+

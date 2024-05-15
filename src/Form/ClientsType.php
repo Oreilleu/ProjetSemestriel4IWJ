@@ -18,8 +18,6 @@ class ClientsType extends AbstractType
             ->add('tel')
             ->add('email')
             ->add('numero_siret')
-            ->add('created_at')
-            ->add('id_devis')
         ;
     }
 

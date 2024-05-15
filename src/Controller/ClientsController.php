@@ -7,6 +7,7 @@ use App\Form\ClientsType;
 use App\Repository\ClientsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,6 +21,20 @@ class ClientsController extends AbstractController
         return $this->render('clients/index.html.twig', [
             'clients' => $clientsRepository->findAll(),
         ]);
+    }
+
+    #[Route('/search', name: 'app_clients_search', methods: ['GET', 'POST'])]
+    public function search(Request $request, ClientsRepository $clientsRepository): JsonResponse
+    {
+        $LesCriteres = [
+            'id' => $request->query->get('id'),
+            'nom' => $request->query->get('nom'),
+            'prenom' => $request->query->get('prenom'),
+        ];
+
+        $clients = $clientsRepository->search($LesCriteres);
+
+        return new JsonResponse($clients);
     }
 
     #[Route('/new', name: 'app_clients_new', methods: ['GET', 'POST'])]

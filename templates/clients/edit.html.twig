@@ -3,11 +3,11 @@
 {% block title %}Edit Clients{% endblock %}
 
 {% block body %}
-    <h1>Edit Clients</h1>
+        <h4 class="text-center text-3xl">Modifier le client</h4>
 
-    {{ include('clients/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_clients_index') }}">back to list</a>
+    {{ include('clients/_form.html.twig', {'button_label': 'Modifier'}) }}
+  
+    <a href="{{ path('app_clients_index') }}">Retour a la liste des clients</a>
 
     {{ include('clients/_delete_form.html.twig') }}
 {% endblock %}
