@@ -76,6 +76,11 @@ module.exports = {
         danger: '#DC3545',
         warning: '#FFC107',
       },
+      fontFamily: {
+        'title': ['"Open Sans"', 'sans-serif'],
+        'subtitle': ['"Montserrat"', 'sans-serif'],
+        'body': ['"Istok Web"', 'sans-serif'],
+      },
     },
     plugins: [],
   }

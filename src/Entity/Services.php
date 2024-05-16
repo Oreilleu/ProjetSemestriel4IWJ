@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+//Validate forms
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: ServicesRepository::class)]
 class Services
 {
@@ -15,11 +19,26 @@ class Services
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\Length(
+        min: 1, 
+        max: 100,
+        minMessage: 'Le nom du produit doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le nom du produit ne doit pas dépasser {{ limit }} caractères.'
+    )]
     #[ORM\Column(length: 100)]
     private ?string $nom = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\PositiveOrZero(
+        message: 'Le prix ne doit pas être inférieur à 0.'
+    )]
     #[ORM\Column]
-    private ?int $prix = null;
+    private ?float $prix = null;
 
     #[ORM\ManyToOne(inversedBy: 'services')]
     #[ORM\JoinColumn(nullable: false)]
@@ -50,16 +69,15 @@ class Services
         return $this;
     }
 
-    public function getPrix(): ?int
+    public function getPrix(): ?float
     {
         return $this->prix;
     }
 
-    public function setPrix(int $prix): static
+    public function setPrix(float $prix): static
     {
-        $this->prix = $prix;
-
-        return $this;
+            $this->prix = $prix;
+            return $this;
     }
 
     public function getIdCatServices(): ?CatServices

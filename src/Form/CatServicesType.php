@@ -16,7 +16,7 @@ class CatServicesType extends AbstractType
             ->add('nom')
             ->add('filePath', FileType::class, [
                 'label' => 'Choisir un fichier',
-                'mapped' => true,
+                'mapped' => false,
                 'required' => false
             ]);
     }
@@ -24,7 +24,7 @@ class CatServicesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CatServices::class,
+            'data_class' => CatServices::class
         ]);
     }
 }

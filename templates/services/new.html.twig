@@ -1,11 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Services{% endblock %}
+{% block title %}Créer un produit{% endblock %}
 
 {% block body %}
-    <h1>Create new Services</h1>
+    <h1 class="font-bold uppercase text-2xl my-5 border-b-black border-b-2">Créer un produit</h1>
 
     {{ include('services/_form.html.twig') }}
 
-    <a href="{{ path('app_services_index') }}">back to list</a>
+    {{ include('components/_link.html.twig', {
+        path: "app_cat_services_new",
+        content: "Créer une catégorie"
+    }) }}
+    
+    {{ include('components/_link.html.twig', {
+        path: "app_services_index",
+        content: "Liste des produits"
+    }) }}
 {% endblock %}
