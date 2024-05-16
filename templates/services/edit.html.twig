@@ -3,11 +3,22 @@
 {% block title %}Edit Services{% endblock %}
 
 {% block body %}
-        <h1 class="font-bold uppercase text-2xl my-5 border-b-black border-b-2">Modifier le produit {{ service.nom }}</h1>
+    {{ include('components/_title.html.twig', { content : 'Modifier le produit' ~  service.nom }) }}
 
     {{ include('services/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('app_services_index') }}">Liste des produits</a>
-
-    {{ include('services/_delete_form.html.twig') }}
+    {{ include('components/_delete_form.html.twig', { 
+        item_id: service.id,
+        path: 'services',
+        labelButton: 'Supprimer',
+        classButton: "my-3 text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3",
+        classForm: "inline-block",
+        title: "Suppression du produit : " ~ service.nom,
+        content: "Êtes-vous sûr de vouloir supprimer ce produit ? "  }) 
+    }}
+    
+    {{ include('components/_link.html.twig', {
+        content: 'Liste des produits',
+        path: 'app_services_index'
+    }) }}
 {% endblock %}

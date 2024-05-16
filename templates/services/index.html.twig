@@ -10,27 +10,39 @@
   {% else %}
     <ul>
       <li class="p-3 mb-4 border-primary-400 border-2 rounded-xl">
-        <article class="grid grid-cols-4 text-center">
-          <span>Identifiant</span>
-          <span>Catégorie</span>
-          <span>Nom</span>
-          <span>Prix</span>
-          <span>update</span>
-          <span>delete</span>
+        <article class="grid grid-cols-[repeat(4,_1fr)_repeat(2,_100px)] text-center">
+          <span class='self-center'>Identifiant</span>
+          <span class='self-center'>Catégorie</span>
+          <span class='self-center'>Nom</span>
+          <span class='self-center'>Prix</span>
         </article>
       </li>
       {% for service in services %}
         <li class="p-5 mb-4 border-primary-400 border-2 rounded-xl">
-          <a>
-            <article class="grid grid-cols-6 text-center">
-                <span>{{ service.id }}</span>
-                <span>{{ service.idCatServices ? service.idCatServices.nom : 'Sans catégorie' }}</span>
-                <span>{{ service.nom }}</span>
-                <span>{{ service.prix }} €</span>
-                <span>update</span>
-                <span>delete</span>
+            <article class="grid grid-cols-[repeat(4,_1fr)_repeat(2,_100px)] text-center">
+                <span class='self-center'>{{ service.id }}</span>
+                <span class='self-center'>{{ service.idCatServices ? service.idCatServices.nom : 'Sans catégorie' }}</span>
+                <span class='self-center'>{{ service.nom }}</span>
+                <span class='self-center'>{{ service.prix }} €</span>
+                <span class='self-center'>
+                  <a href="/services/{{service.id}}/edit">
+                    <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                      {{ include('components/SVG/_update_SVG.html.twig') }}
+                    </button>              
+                  </a>
+                </span>
+                <span class='self-center'>              
+                  {{ include('components/_delete_form.html.twig', { 
+                      item_id: service.id,
+                      path: 'services',
+                      labelButton: include('components/SVG/_delete_SVG.html.twig'),
+                      title: "Suppression du produit : " ~ service.nom,
+                      content: "Êtes-vous sûr de vouloir supprimer ce produit ?",
+                      classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
+                       }) 
+                    }}
+                </span>
             </article>
-          </a>
         </li>
       {% endfor %}
     </ul>
