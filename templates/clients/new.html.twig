@@ -6,7 +6,11 @@
     <h1 class="font-bold uppercase text-2xl my-5 border-b-black border-b-2">Créer un client</h1>
     
     {{ include('clients/_form.html.twig') }}
-    <a href="{{ path('app_clients_index') }}">Retour a la liste des clients</a>
+
+    {{ include('components/_link.html.twig', {
+        path: "app_clients_index",
+        content: "Liste des clients"
+    }) }}
 
     {{ include('components/_link.html.twig', {
         path: "app_clients_index",
