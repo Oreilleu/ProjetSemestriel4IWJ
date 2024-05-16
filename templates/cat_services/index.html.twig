@@ -14,7 +14,6 @@
   <ul class="md:flex md:flex-wrap md:justify-between md:gap-3">
     {% for cat_service in paginate_cat_services %}
       <li class="p-4 md:w-80 xl:w-96 h-full bg-primary-500 border-2 border-opacity-60 rounded-lg overflow-hidden">
-        <a href="#{{ cat_service.nom }}">
           <article>
             <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="{{ cat_service.filePath is defined and cat_service.filePath ? asset(cat_service.filePath) : asset('images/default_category.jpg') }}" alt="Image par défaut catégorie" />
             <div class="p-6">
@@ -37,7 +36,6 @@
               }}
             </div>
           </article>
-        </a>
       </li>
     {% endfor %}
   </ul>
