@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}S'enregister{% endblock %}
+
+{% block body %}
+    <section class="text-gray-600 body-font">
+        <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+            <!-- Left column -->
+            <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+                <h1 class="font-title sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
+                    <br class="hidden lg:inline-block">Découvrez dès maintenant :
+                </h1>
+                <p class="mb-8 leading-relaxed font-subtitle">Des devis sur mesure,
+                    Une gestion de facturation dédiée aux PME,
+                    Liberté totale pour votre entreprise.</p>
+            </div>
+            <!-- Right column -->
+            <div class="w-full p-8 lg:w-1/2">
+
+                <h2 class="text-2xl font-title text-gray-700 text-center">Brand</h2>
+                <p class="text-xl text-gray-600 text-center font-subtitle">Bienvenue !</p>
+
+                <div class="mt-4">
+                    {{ form_start(registrationForm) }}
+                    {{ form_errors(registrationForm.email) }}
+                    {{ form_errors(registrationForm.password) }}
+                    {{ form_label(registrationForm.email, 'Email :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                    {{ form_widget(registrationForm.email, {
+                        'attr': {
+                            'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'
+                        }
+                    }) }}
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between">
+                    </div>
+                    {{ form_label(registrationForm.password.first, 'Mot de passe :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                    {{ form_row(registrationForm.password.first, {
+                        'attr': {
+                            'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'
+                        }
+                    }) }}
+                    {{ form_label(registrationForm.password.second, 'Répéter le mot de passe :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                    {{ form_row(registrationForm.password.second, {
+                        'attr': {
+                            'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'
+                        }
+                    }) }}
+
+                </div>
+                <!-- Submit button -->
+                <div class="mt-8">
+                    <button type="submit" class="bg-primary-500 text-white font-bold py-2 px-4 w-full rounded hover:bg-primary-600">S'inscrire</button>
+                    {{ form_end(registrationForm) }}
+                </div>
+                <div class="mt-4 flex items-center justify-between">
+                    <span class="border-b w-1/5 md:w-1/4"></span>
+                    <a href="#" class="text-xs text-gray-500 uppercase">Ou se connecter</a>
+                    <span class="border-b w-1/5 md:w-1/4"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

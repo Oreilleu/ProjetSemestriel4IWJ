@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Relances index{% endblock %}
+
+{% block body %}
+    <h1>Relances index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date_rappel</th>
+                <th>Statut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for relance in relances %}
+            <tr>
+                <td>{{ relance.id }}</td>
+                <td>{{ relance.dateRappel ? relance.dateRappel|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ relance.statut }}</td>
+                <td>
+                    <a href="{{ path('app_relances_show', {'id': relance.id}) }}">show</a>
+                    <a href="{{ path('app_relances_edit', {'id': relance.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_relances_new') }}">Create new</a>
+{% endblock %}

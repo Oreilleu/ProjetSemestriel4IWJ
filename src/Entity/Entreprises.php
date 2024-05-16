@@ -36,26 +36,21 @@ class Entreprises
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $id_devis = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $id_rapports_financiers = null;
-
-    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Users::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: User::class, orphanRemoval: true)]
     private Collection $users;
 
-    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Devis::class, orphanRemoval: true)]
-    private Collection $devis;
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: RapportsFinanciers::class, orphanRemoval: true)]
+    private Collection $rapportsFinanciers;
 
-    #[ORM\OneToMany(mappedBy: 'id', targetEntity: RapportFinanciers::class, orphanRemoval: true)]
-    private Collection $rapportFinanciers;
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Clients::class)]
+    private Collection $clients;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->devis = new ArrayCollection();
-        $this->rapportFinanciers = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->rapportsFinanciers = new ArrayCollection();
+        $this->clients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,61 +135,30 @@ class Entreprises
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getIdDevis(): ?int
-    {
-        return $this->id_devis;
-    }
-
-    public function setIdDevis(?int $id_devis): static
-    {
-        $this->id_devis = $id_devis;
-
-        return $this;
-    }
-
-    public function getIdRapportsFinanciers(): ?int
-    {
-        return $this->id_rapports_financiers;
-    }
-
-    public function setIdRapportsFinanciers(?int $id_rapports_financiers): static
-    {
-        $this->id_rapports_financiers = $id_rapports_financiers;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, Users>
+     * @return Collection<int, RapportsFinanciers>
      */
-    public function getUsers(): Collection
+    public function getRapportsFinanciers(): Collection
     {
-        return $this->users;
+        return $this->rapportsFinanciers;
     }
 
-    public function addUser(Users $user): static
+    public function addRapportsFinancier(RapportsFinanciers $rapportsFinancier): static
     {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setIdEntreprise($this);
+        if (!$this->rapportsFinanciers->contains($rapportsFinancier)) {
+            $this->rapportsFinanciers->add($rapportsFinancier);
+            $rapportsFinancier->setIdEntreprise($this);
         }
 
         return $this;
     }
 
-    public function removeUser(Users $user): static
+    public function removeRapportsFinancier(RapportsFinanciers $rapportsFinancier): static
     {
-        if ($this->users->removeElement($user)) {
+        if ($this->rapportsFinanciers->removeElement($rapportsFinancier)) {
             // set the owning side to null (unless already changed)
-            if ($user->getIdEntreprise() === $this) {
-                $user->setIdEntreprise(null);
+            if ($rapportsFinancier->getIdEntreprise() === $this) {
+                $rapportsFinancier->setIdEntreprise(null);
             }
         }
 
@@ -202,62 +166,33 @@ class Entreprises
     }
 
     /**
-     * @return Collection<int, Devis>
+     * @return Collection<int, Clients>
      */
-    public function getDevis(): Collection
+    public function getClients(): Collection
     {
-        return $this->devis;
+        return $this->clients;
     }
 
-    public function addDevi(Devis $devi): static
+    public function addClient(Clients $client): static
     {
-        if (!$this->devis->contains($devi)) {
-            $this->devis->add($devi);
-            $devi->setIdEntreprise($this);
+        if (!$this->clients->contains($client)) {
+            $this->clients->add($client);
+            $client->setIdEntreprise($this);
         }
 
         return $this;
     }
 
-    public function removeDevi(Devis $devi): static
+    public function removeClient(Clients $client): static
     {
-        if ($this->devis->removeElement($devi)) {
+        if ($this->clients->removeElement($client)) {
             // set the owning side to null (unless already changed)
-            if ($devi->getIdEntreprise() === $this) {
-                $devi->setIdEntreprise(null);
+            if ($client->getIdEntreprise() === $this) {
+                $client->setIdEntreprise(null);
             }
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, RapportFinanciers>
-     */
-    public function getRapportFinanciers(): Collection
-    {
-        return $this->rapportFinanciers;
-    }
-
-    public function addRapportFinancier(RapportFinanciers $rapportFinancier): static
-    {
-        if (!$this->rapportFinanciers->contains($rapportFinancier)) {
-            $this->rapportFinanciers->add($rapportFinancier);
-            $rapportFinancier->setId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRapportFinancier(RapportFinanciers $rapportFinancier): static
-    {
-        if ($this->rapportFinanciers->removeElement($rapportFinancier)) {
-            // set the owning side to null (unless already changed)
-            if ($rapportFinancier->getId() === $this) {
-                $rapportFinancier->setId(null);
-            }
-        }
-
-        return $this;
-    }
 }

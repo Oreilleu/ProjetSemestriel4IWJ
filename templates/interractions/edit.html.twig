@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Interractions{% endblock %}
+
+{% block body %}
+    <h1>Edit Interractions</h1>
+
+    {{ include('interractions/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_interractions_index') }}">back to list</a>
+
+    {{ include('interractions/_delete_form.html.twig') }}
+{% endblock %}
