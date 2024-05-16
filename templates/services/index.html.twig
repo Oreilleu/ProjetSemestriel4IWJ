@@ -3,10 +3,33 @@
 {% block title %}Services index{% endblock %}
 
 {% block body %}
-        <h1 class="font-bold uppercase text-2xl my-5 border-b-black border-b-2">Liste des produits</h1>
+    <h1 class="font-bold uppercase text-2xl my-5 border-b-black border-b-2">Liste des produits</h1>
 
+  <ul>
+    <li class="p-3 mb-4 border-primary-400 border-2 rounded-xl">
+      <article class="grid grid-cols-4 text-center">
+        <span>Identifiant</span>
+        <span>Catégorie</span>
+        <span>Nom</span>
+        <span>Prix</span>
+      </article>
+    </li>
+    {% for service in services %}
+      <li class="p-5 mb-4 border-primary-400 border-2 rounded-xl">
+        <a>
+          <article class="grid grid-cols-4 text-center">
+              <span>{{ service.id }}</span>
+              <span>{{ service.idCatServices ? service.idCatServices.nom : 'Sans catégorie' }}</span>
+              <span>{{ service.nom }}</span>
+              <span>{{ service.prix }} €</span>
+          </article>
+        </a>
+      </li>
+    {% endfor %}
 
-    <table class="table">
+  </ul>
+
+    {# <table class="table">
         <thead>
             <tr>
                 <th>Catégorie</th>
@@ -20,7 +43,7 @@
         <tbody>
         {% for service in services %}
             <tr>
-                <td>{{ service.idCatServices.nom }}</td>
+                <td>{{ c.nom }}</td>
                 <td>{{ service.nom }}</td>
                 <td>{{ service.prix }} €</td>
                 <td>
@@ -38,7 +61,7 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table> #}
 
     <a href="{{ path('app_services_new') }}">Create new</a>
 {% endblock %}
