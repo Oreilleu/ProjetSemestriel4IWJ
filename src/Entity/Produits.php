@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\ServicesRepository;
+use App\Repository\ProduitsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: ServicesRepository::class)]
-class Services
+#[ORM\Entity(repositoryClass: ProduitsRepository::class)]
+class Produits
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -40,16 +40,16 @@ class Services
     #[ORM\Column]
     private ?float $prix = null;
 
-    #[ORM\ManyToOne(inversedBy: 'services')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?CatServices $id_cat_services = null;
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?CategoriesProduits $id_categorie_produits = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_service', targetEntity: DetailsServices::class, orphanRemoval: true)]
-    private Collection $detailsServices;
+    #[ORM\OneToMany(mappedBy: 'id_produit', targetEntity: LignesDevis::class)]
+    private Collection $lignesDevis;
 
     public function __construct()
     {
-        $this->detailsServices = new ArrayCollection();
+        $this->lignesDevis = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -80,42 +80,42 @@ class Services
             return $this;
     }
 
-    public function getIdCatServices(): ?CatServices
+    public function getIdCategorieProduits(): ?CategoriesProduits
     {
-        return $this->id_cat_services;
+        return $this->id_categorie_produits;
     }
 
-    public function setIdCatServices(?CatServices $id_cat_services): static
+    public function setIdCategorieProduits(?CategoriesProduits $id_categorie_produits): static
     {
-        $this->id_cat_services = $id_cat_services;
+        $this->id_categorie_produits = $id_categorie_produits;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, DetailsServices>
+     * @return Collection<int, LignesDevis>
      */
-    public function getDetailsServices(): Collection
+    public function getLignesDevis(): Collection
     {
-        return $this->detailsServices;
+        return $this->lignesDevis;
     }
 
-    public function addDetailsService(DetailsServices $detailsService): static
+    public function addLignesDevi(LignesDevis $lignesDevi): static
     {
-        if (!$this->detailsServices->contains($detailsService)) {
-            $this->detailsServices->add($detailsService);
-            $detailsService->setIdService($this);
+        if (!$this->lignesDevis->contains($lignesDevi)) {
+            $this->lignesDevis->add($lignesDevi);
+            $lignesDevi->setIdProduit($this);
         }
 
         return $this;
     }
 
-    public function removeDetailsService(DetailsServices $detailsService): static
+    public function removeLignesDevi(LignesDevis $lignesDevi): static
     {
-        if ($this->detailsServices->removeElement($detailsService)) {
+        if ($this->lignesDevis->removeElement($lignesDevi)) {
             // set the owning side to null (unless already changed)
-            if ($detailsService->getIdService() === $this) {
-                $detailsService->setIdService(null);
+            if ($lignesDevi->getIdProduit() === $this) {
+                $lignesDevi->setIdProduit(null);
             }
         }
 

@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CatServicesRepository;
+use App\Repository\CategoriesProduitsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CatServicesRepository::class)]
-class CatServices
+#[ORM\Entity(repositoryClass: CategoriesProduitsRepository::class)]
+class CategoriesProduits
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,15 +21,15 @@ class CatServices
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $filePath = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_cat_services', targetEntity: Services::class, orphanRemoval: true)]
-    private Collection $services;
+    #[ORM\OneToMany(mappedBy: 'id_categorie_produits', targetEntity: Produits::class, orphanRemoval: true)]
+    private Collection $produits;
 
     public function __construct()
     {
-        $this->services = new ArrayCollection();
+        $this->produits = new ArrayCollection();
     }
 
-    //On devrait pouvoir récuperer le nom de la catégorie de service avec le get nom ? 
+    //On devrait pouvoir récuperer le nom de la catégorie de produit avec le get nom ? 
     public function __toString(): string
     {
         return $this->nom ?? '';
@@ -55,29 +55,29 @@ class CatServices
     }
 
     /**
-     * @return Collection<int, Services>
+     * @return Collection<int, Produits>
      */
-    public function getServices(): Collection
+    public function getProduits(): Collection
     {
-        return $this->services;
+        return $this->produits;
     }
 
-    public function addService(Services $service): static
+    public function addProduit(Produits $produit): static
     {
-        if (!$this->services->contains($service)) {
-            $this->services->add($service);
-            $service->setIdCatServices($this);
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setIdCategorieProduits($this);
         }
 
         return $this;
     }
 
-    public function removeService(Services $service): static
+    public function removeProduit(Produits $produit): static
     {
-        if ($this->services->removeElement($service)) {
+        if ($this->produits->removeElement($produit)) {
             // set the owning side to null (unless already changed)
-            if ($service->getIdCatServices() === $this) {
-                $service->setIdCatServices(null);
+            if ($produit->getIdCategorieProduits() === $this) {
+                $produit->setIdCategorieProduits(null);
             }
         }
 
