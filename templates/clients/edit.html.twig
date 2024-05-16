@@ -6,8 +6,10 @@
         <h4 class="text-center text-3xl">Modifier le client</h4>
 
     {{ include('clients/_form.html.twig', {'button_label': 'Modifier'}) }}
-  
-    <a href="{{ path('app_clients_index') }}">Retour a la liste des clients</a>
+    
+    {{ include('components/_link.html.twig', {
+        path: "app_clients_index",
+        content: "Liste des clients"
+    }) }}
 
-    {{ include('clients/_delete_form.html.twig') }}
 {% endblock %}
