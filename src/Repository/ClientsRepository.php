@@ -21,36 +21,16 @@ class ClientsRepository extends ServiceEntityRepository
         parent::__construct($registry, Clients::class);
     }
 
-    /**
-     * Recherche les clients en fonction de id, nom, prénom
-     * @param array $criteria Les critères de recherche
-     * @return array La liste des clients correspondant aux critères
-     */
-    public function search(array $criteria): array
-    {
-        $queryBuilder = $this->createQueryBuilder('c');
-
-        // Recherche par numéro ID
-        if (!empty($LesCriteres['id'])) {
-            $queryBuilder->andWhere('c.id = :id')
-                ->setParameter('id', $LesCriteres['id']);
-        }
-
-        // Recherche par nom
-        if (!empty($LesCriteres['nom'])) {
-            $queryBuilder->andWhere('c.nom LIKE :nom')
-                ->setParameter('nom', '%'.$LesCriteres['nom'].'%');
-        }
-
-        // Recherche par prénom
-        if (!empty($LesCriteres['prenom'])) {
-            $queryBuilder->andWhere('c.prenom LIKE :prenom')
-                ->setParameter('prenom', '%'.$LesCriteres['prenom'].'%');
-        }
-
-        return $queryBuilder->getQuery()->getResult();
-    }
-
+    public function findByCritere(string $searchkey): array
+{
+    return $this->createQueryBuilder('a')
+        ->andWhere('UPPER(a.nom) LIKE :val')
+        ->orWhere('UPPER(a.prenom) LIKE :val')
+        ->setParameter('val', '%'.strtoupper($searchkey).'%')
+        ->orderBy('a.nom', 'ASC')
+        ->getQuery()
+        ->execute();
+}
 
 //    /**
 //     * @return Clients[] Returns an array of Clients objects

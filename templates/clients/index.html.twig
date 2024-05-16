@@ -5,10 +5,7 @@
 {% block body %}
     <h2 class="text-3xl">Listes des clients</h2>
 
-<form id="searchForm">
-    <input type="text" id="searchTerm" name="searchTerm" placeholder="Rechercher...">
-    <button type="submit">Rechercher</button>
-</form>
+    {% include 'clients/_search_client_form.html.twig' with {'search_Nom': '' } %}
 
     <table class="table-auto w-full">
         <thead>
