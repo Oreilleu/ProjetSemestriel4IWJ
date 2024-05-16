@@ -6,8 +6,6 @@
 {% block body %}
   {{ include('components/_title.html.twig', { content: 'Liste des Clients'}) }}
 
-  {% include 'clients/_search_client_form.html.twig' with {'search_Nom': '' } %}
-
   {% if clients|length < 1 %}
     <p>Il n'y a pas de client pour le moment.</p>
   {% else %}
