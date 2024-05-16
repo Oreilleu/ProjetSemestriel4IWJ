@@ -40,6 +40,9 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Lots::class, orphanRemoval: true)]
     private Collection $lots;
 
+    #[ORM\ManyToOne(inversedBy: 'clients')]
+    private ?Entreprises $id_entreprise = null;
+
     public function __construct()
     {
         $this->lots = new ArrayCollection();
@@ -160,6 +163,18 @@ class Clients
                 $lot->setIdClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdEntreprise(): ?Entreprises
+    {
+        return $this->id_entreprise;
+    }
+
+    public function setIdEntreprise(?Entreprises $id_entreprise): static
+    {
+        $this->id_entreprise = $id_entreprise;
 
         return $this;
     }
