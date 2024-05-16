@@ -36,18 +36,12 @@ class Clients
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\Column]
-    private ?int $id_devis = null;
-
-    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class, orphanRemoval: true)]
-    private Collection $devis;
 
     #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Lots::class, orphanRemoval: true)]
     private Collection $lots;
 
     public function __construct()
     {
-        $this->devis = new ArrayCollection();
         $this->lots = new ArrayCollection();
     }
 
@@ -136,48 +130,6 @@ class Clients
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getIdDevis(): ?int
-    {
-        return $this->id_devis;
-    }
-
-    public function setIdDevis(int $id_devis): static
-    {
-        $this->id_devis = $id_devis;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Devis>
-     */
-    public function getDevis(): Collection
-    {
-        return $this->devis;
-    }
-
-    public function addDevi(Devis $devi): static
-    {
-        if (!$this->devis->contains($devi)) {
-            $this->devis->add($devi);
-            $devi->setIdClient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDevi(Devis $devi): static
-    {
-        if ($this->devis->removeElement($devi)) {
-            // set the owning side to null (unless already changed)
-            if ($devi->getIdClient() === $this) {
-                $devi->setIdClient(null);
-            }
-        }
 
         return $this;
     }

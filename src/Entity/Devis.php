@@ -17,14 +17,6 @@ class Devis
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'devis')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Clients $id_client = null;
-
-    #[ORM\ManyToOne(inversedBy: 'devis')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Entreprises $id_entreprise = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
@@ -46,8 +38,6 @@ class Devis
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Interractions::class, orphanRemoval: true)]
     private Collection $interractions;
 
-    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: DetailsServices::class, orphanRemoval: true)]
-    private Collection $detailsServices;
 
     #[ORM\Column(nullable: true)]
     private ?float $total_ht = null;
@@ -56,41 +46,20 @@ class Devis
     #[ORM\JoinColumn(nullable: false)]
     private ?Lots $id_lots = null;
 
+    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: LignesDevis::class, orphanRemoval: true)]
+    private Collection $lignesDevis;
+
     public function __construct()
     {
         $this->factures = new ArrayCollection();
         $this->relances = new ArrayCollection();
         $this->interractions = new ArrayCollection();
-        $this->detailsServices = new ArrayCollection();
+        $this->lignesDevis = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdClient(): ?Clients
-    {
-        return $this->id_client;
-    }
-
-    public function setIdClient(?Clients $id_client): static
-    {
-        $this->id_client = $id_client;
-
-        return $this;
-    }
-
-    public function getIdEntreprise(): ?Entreprises
-    {
-        return $this->id_entreprise;
-    }
-
-    public function setIdEntreprise(?Entreprises $id_entreprise): static
-    {
-        $this->id_entreprise = $id_entreprise;
-
-        return $this;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -231,36 +200,6 @@ class Devis
         return $this;
     }
 
-    /**
-     * @return Collection<int, DetailsServices>
-     */
-    public function getDetailsServices(): Collection
-    {
-        return $this->detailsServices;
-    }
-
-    public function addDetailsService(DetailsServices $detailsService): static
-    {
-        if (!$this->detailsServices->contains($detailsService)) {
-            $this->detailsServices->add($detailsService);
-            $detailsService->setIdDevis($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDetailsService(DetailsServices $detailsService): static
-    {
-        if ($this->detailsServices->removeElement($detailsService)) {
-            // set the owning side to null (unless already changed)
-            if ($detailsService->getIdDevis() === $this) {
-                $detailsService->setIdDevis(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getTotalHt(): ?float
     {
         return $this->total_ht;
@@ -281,6 +220,36 @@ class Devis
     public function setIdLots(?lots $id_lots): static
     {
         $this->id_lots = $id_lots;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LignesDevis>
+     */
+    public function getLignesDevis(): Collection
+    {
+        return $this->lignesDevis;
+    }
+
+    public function addLignesDevi(LignesDevis $lignesDevi): static
+    {
+        if (!$this->lignesDevis->contains($lignesDevi)) {
+            $this->lignesDevis->add($lignesDevi);
+            $lignesDevi->setIdDevis($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLignesDevi(LignesDevis $lignesDevi): static
+    {
+        if ($this->lignesDevis->removeElement($lignesDevi)) {
+            // set the owning side to null (unless already changed)
+            if ($lignesDevi->getIdDevis() === $this) {
+                $lignesDevi->setIdDevis(null);
+            }
+        }
 
         return $this;
     }

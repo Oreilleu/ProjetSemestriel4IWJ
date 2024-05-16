@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Services index{% endblock %}
+{% block title %}Produits index{% endblock %}
 
 {% block body %}
         <h1 class="font-bold uppercase text-2xl my-5 border-b-black border-b-2">Liste des produits</h1>
@@ -18,17 +18,17 @@
             </tr>
         </thead>
         <tbody>
-        {% for service in services %}
+        {% for produit in produits %}
             <tr>
-                <td>{{ service.idCatServices.nom }}</td>
-                <td>{{ service.nom }}</td>
-                <td>{{ service.prix }} €</td>
+                <td>{{ produit.idCategorieProduits.nom }}</td>
+                <td>{{ produit.nom }}</td>
+                <td>{{ produit.prix }} €</td>
                 <td>
-                    <a href="{{ path('app_services_show', {'id': service.id}) }}">show</a>
-                    <a href="{{ path('app_services_edit', {'id': service.id}) }}">edit</a>
+                    <a href="{{ path('app_produits_show', {'id': produit.id}) }}">show</a>
+                    <a href="{{ path('app_produits_edit', {'id': produit.id}) }}">edit</a>
                 </td>
                 <td>
-                    {{ include('services/_delete_form.html.twig') }}
+                    {{ include('produits/_delete_form.html.twig') }}
                 </td>
 
             </tr>
@@ -40,5 +40,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_services_new') }}">Create new</a>
+    <a href="{{ path('app_produits_new') }}">Create new</a>
 {% endblock %}

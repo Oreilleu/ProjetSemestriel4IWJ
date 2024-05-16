@@ -16,7 +16,6 @@
                 <th>Email</th>
                 <th>Numero_siret</th>
                 <th>Created_at</th>
-                <th>Id_devis</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -31,7 +30,6 @@
                 <td>{{ client.email }}</td>
                 <td>{{ client.numeroSiret }}</td>
                 <td>{{ client.createdAt ? client.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ client.idDevis }}</td>
                 <td>
                     <a href="{{ path('app_clients_show', {'id': client.id}) }}">show</a>
                     <a href="{{ path('app_clients_edit', {'id': client.id}) }}">edit</a>

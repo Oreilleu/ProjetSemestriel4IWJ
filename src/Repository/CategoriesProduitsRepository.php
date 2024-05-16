@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\CatServices;
+use App\Entity\CategoriesProduits;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<CatServices>
+ * @extends ServiceEntityRepository<CategoriesProduits>
  *
- * @method CatServices|null find($id, $lockMode = null, $lockVersion = null)
- * @method CatServices|null findOneBy(array $criteria, array $orderBy = null)
- * @method CatServices[]    findAll()
- * @method CatServices[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method CategoriesProduits|null find($id, $lockMode = null, $lockVersion = null)
+ * @method CategoriesProduits|null findOneBy(array $criteria, array $orderBy = null)
+ * @method CategoriesProduits[]    findAll()
+ * @method CategoriesProduits[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CatServicesRepository extends ServiceEntityRepository
+class CategoriesProduitsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CatServices::class);
+        parent::__construct($registry, CategoriesProduits::class);
     }
 
 //    /**
-//     * @return CatServices[] Returns an array of CatServices objects
+//     * @return CategoriesProduits[] Returns an array of CategoriesProduits objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class CatServicesRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?CatServices
+//    public function findOneBySomeField($value): ?CategoriesProduits
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')

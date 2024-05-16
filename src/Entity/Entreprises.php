@@ -39,10 +39,14 @@ class Entreprises
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: User::class, orphanRemoval: true)]
     private Collection $users;
 
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: RapportsFinanciers::class, orphanRemoval: true)]
+    private Collection $rapportsFinanciers;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
+        $this->rapportsFinanciers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,6 +129,36 @@ class Entreprises
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
+    }
+
+    /**
+     * @return Collection<int, RapportsFinanciers>
+     */
+    public function getRapportsFinanciers(): Collection
+    {
+        return $this->rapportsFinanciers;
+    }
+
+    public function addRapportsFinancier(RapportsFinanciers $rapportsFinancier): static
+    {
+        if (!$this->rapportsFinanciers->contains($rapportsFinancier)) {
+            $this->rapportsFinanciers->add($rapportsFinancier);
+            $rapportsFinancier->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRapportsFinancier(RapportsFinanciers $rapportsFinancier): static
+    {
+        if ($this->rapportsFinanciers->removeElement($rapportsFinancier)) {
+            // set the owning side to null (unless already changed)
+            if ($rapportsFinancier->getIdEntreprise() === $this) {
+                $rapportsFinancier->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
     }
 
 }
