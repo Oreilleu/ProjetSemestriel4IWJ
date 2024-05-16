@@ -7,7 +7,13 @@
 
     {{ include('produits/_form.html.twig') }}
 
-    <a href="{{ path('app_categories_new') }}">Créer une catégorie</a>
-    <br>
-    <a href="{{ path('app_produits_index') }}">Liste des produits</a>
+    {{ include('components/_link.html.twig', {
+        path: "app_cat_services_new",
+        content: "Créer une catégorie"
+    }) }}
+    
+    {{ include('components/_link.html.twig', {
+        path: "app_services_index",
+        content: "Liste des produits"
+    }) }}
 {% endblock %}
