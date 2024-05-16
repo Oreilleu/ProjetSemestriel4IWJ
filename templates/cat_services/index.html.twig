@@ -53,6 +53,9 @@
     name_controller: 'app_cat_services_index'
   }) }}
 
-  <a href="{{ path('app_cat_services_new') }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Créer une catégorie</a>
+  {{ include('components/_link.html.twig', {
+    path: path('app_cat_services_new'), 
+    content: "Créer une catégorie"
+  }) }}
 
 {% endblock %}
