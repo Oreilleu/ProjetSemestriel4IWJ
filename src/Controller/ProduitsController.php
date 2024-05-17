@@ -19,9 +19,7 @@ class ProduitsController extends AbstractController
     {
         return $this->render('produits/index.html.twig', [
             'produits' => $produitsRepository->findAll(),
-        ]);  
-
-        
+        ]);
     }
 
     #[Route('/new', name: 'app_produits_new', methods: ['GET', 'POST'])]
