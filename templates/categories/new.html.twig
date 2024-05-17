@@ -5,15 +5,15 @@
 {% block body %}
     {{ include('components/_title.html.twig', {content: 'Création d\'une catégorie'}) }}
 
-    {{ include('cat_services/_form.html.twig', { button_label: "Créer" }) }}
+    {{ include('categories/_form.html.twig', { button_label: "Créer" }) }}
 
     {{ include('components/_link.html.twig', {
-        path: "app_cat_services_index",
+        path: "app_categories_index",
         content: "Liste des catégories"
     }) }}
 
     {{ include('components/_link.html.twig', {
-        path: "app_services_new",
+        path: "app_produits_new",
         content: "Créer un produit"
     }) }}
 {% endblock %}

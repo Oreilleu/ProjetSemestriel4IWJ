@@ -9,47 +9,48 @@
 
   {% if paginate_categories|length < 1 %}
     <p>Il n'y a pas de catégorie pour le moment.</p>
+  {% else %}
+    <ul class="md:flex md:flex-wrap md:justify-between md:gap-3">
+      {% for categorie in paginate_categories %}
+        <li class="p-4 md:w-80 xl:w-96 h-full bg-primary-500 border-2 border-opacity-60 rounded-lg overflow-hidden">
+          <a href="#{{ categorie.nom }}">
+            <article>
+              <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="{{ categorie.filePath is defined and categorie.filePath ? asset(categorie.filePath) : asset('images/default_category.jpg') }}" alt="Image par défaut catégorie" />
+              <div class="p-6">
+                <h2 class="tracking-widest text-xs font-medium text-white mb-1">Catégorie</h2>
+                <h1 class="text-lg font-medium mb-3">{{ categorie.nom }}</h1>
+                <a href="/categories/{{categorie.id}}/edit" tabindex="-1" >
+                  <button class="bg-primary-500 border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                    {{ include('components/SVG/_update_SVG.html.twig') }}
+                  </button>              
+                </a>
+
+                {{ include('components/_delete_form.html.twig', { 
+                  item_id: categorie.id,
+                  path: 'categories',
+                  labelButton: include('components/SVG/_delete_SVG.html.twig'),
+                  classButton: "bg-primary-500 border-0 py-2 px-8 hover:bg-primary-600 rounded",
+                  classForm: "inline-block",
+                  title: "Suppression de la catégorie : " ~ categorie.nom,
+                  content: "Êtes-vous sûr de vouloir supprimer cette catégorie ? Tous les produits de cette catégorie n'auront plus de catégorie."  }) 
+                }}
+              </div>
+            </article>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
   {% endif %}
 
-  <ul class="md:flex md:flex-wrap md:justify-between md:gap-3">
-    {% for categorie in paginate_categories %}
-      <li class="p-4 md:w-80 xl:w-96 h-full bg-primary-500 border-2 border-opacity-60 rounded-lg overflow-hidden">
-        <a href="#{{ categorie.nom }}">
-          <article>
-            <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="{{ categorie.filePath is defined and categorie.filePath ? asset(categorie.filePath) : asset('images/default_category.jpg') }}" alt="Image par défaut catégorie" />
-            <div class="p-6">
-              <h2 class="tracking-widest text-xs font-medium text-white mb-1">Catégorie</h2>
-              <h1 class="text-lg font-medium mb-3">{{ categorie.nom }}</h1>
-              <a href="/categories/{{categorie.id}}/edit" tabindex="-1" >
-                <button class="bg-primary-500 border-0 py-2 px-8 hover:bg-primary-600 rounded">
-                  {{ include('components/SVG/_update_SVG.html.twig') }}
-                </button>              
-              </a>
-
-              {{ include('components/_delete_form.html.twig', { 
-                item_id: cat_service.id,
-                path: 'cat_services',
-                labelButton: include('components/SVG/_delete_SVG.html.twig'),
-                classButton: "bg-primary-500 border-0 py-2 px-8 hover:bg-primary-600 rounded",
-                classForm: "inline-block",
-                title: "Suppression de la catégorie : " ~ cat_service.nom,
-                content: "Êtes-vous sûr de vouloir supprimer cette catégorie ? Tous les produits de cette catégorie n'auront plus de catégorie."  }) 
-              }}
-            </div>
-          </article>
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
 
   {{ include("components/_pagination.html.twig", {
     current_page: current_page,
     number_page: number_page,
-    name_controller: 'app_cat_services_index'
+    path: 'app_categories_index'
   }) }}
 
   {{ include('components/_link.html.twig', {
-    path: "app_cat_services_new", 
+    path: "app_categories_new", 
     content: "Créer une catégorie"
   }) }}
 
