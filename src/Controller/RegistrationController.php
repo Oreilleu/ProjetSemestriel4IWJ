@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Entreprises;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,6 +23,15 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
+            $entreprise = $entityManager->getRepository(Entreprises::class)->find(1);
+            if ($entreprise) {
+                $user->setIdEntreprise($entreprise);
+            } else {
+                throw new \LogicException('Entreprise with id 1 not found.');
+            }
+
+            $user->setRoles(['ROLE_ADMIN_ENTREPRISE']);
+
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
