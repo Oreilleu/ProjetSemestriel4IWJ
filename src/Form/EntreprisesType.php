@@ -18,9 +18,9 @@ class EntreprisesType extends AbstractType
             ->add('email')
             ->add('numero_siret')
             ->add('rib')
-            ->add('created_at')
-            ->add('id_devis')
-            ->add('id_rapports_financiers')
+//            ->add('created_at')
+//            ->add('id_devis')
+//            ->add('id_rapports_financiers')
         ;
     }
 

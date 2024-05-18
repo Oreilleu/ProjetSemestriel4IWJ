@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Entreprises;
 use App\Entity\User;
+use App\Form\EntreprisesType;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,23 +15,44 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegistrationController extends AbstractController
 {
-    #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
+    public function register(Request $request): Response
     {
+        $entreprise = new Entreprises();
+
+        $form = $this->createForm(EntreprisesType::class, $entreprise);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entreprise = $form->getData();
+            $request->getSession()->set('entreprise', $entreprise);
+            return $this->redirectToRoute('app_register_user');
+        }
+
+        return $this->render('registration/register.html.twig', [
+            'form' => $form->createView()
+        ]);
+
+    }
+
+    #[Route('/register/user', name: 'app_register_user')]
+    public function registerUser(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $entreprise = $request->getSession()->get('entreprise');
+
+        if (!$entreprise) {
+            return $this->redirectToRoute('app_register');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $entreprise = $entityManager->getRepository(Entreprises::class)->find(1);
-            if ($entreprise) {
-                $user->setIdEntreprise($entreprise);
-            } else {
-                throw new \LogicException('Entreprise with id 1 not found.');
-            }
+            $entityManager->persist($entreprise);
+            $user->setIdEntreprise($entreprise);
 
-            $user->setRoles(['ROLE_ADMIN_ENTREPRISE']);
+            $request->getSession()->remove('entreprise');
 
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -39,15 +61,17 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $user->setRoles(['ROLE_ENTREPRISE']);
+
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_login');
+
         }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
+        return $this->render('registration/user.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }
