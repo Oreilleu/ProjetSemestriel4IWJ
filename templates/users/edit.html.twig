@@ -3,11 +3,20 @@
 {% block title %}Edit Users{% endblock %}
 
 {% block body %}
-    <h1>Edit Users</h1>
+    {{ include('components/_title.html.twig', { content: 'Mon compte' }) }}
 
-    {{ include('users/_form.html.twig', {'button_label': 'Update'}) }}
+    <h2>Identifiant de connexion : </h2>
 
-    <a href="{{ path('app_users_index') }}">back to list</a>
+    {{ include('users/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    <h2>Information sur mon entreprise : </h2>
+    
+    {{ include('entreprises/_form.html.twig' , { 'button_label': 'Modifier' }) }}
+    
+    {{ include('components/_link.html.twig' , {
+        path: 'app_users_index',
+        content :'Retour à l\'accueil'
+    }) }}
 
     {{ include('users/_delete_form.html.twig') }}
 {% endblock %}
