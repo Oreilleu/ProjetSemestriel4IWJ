@@ -3,14 +3,9 @@
 {% block title %}Créer un Client{% endblock %}
 
 {% block body %}
-    <h1 class="font-bold uppercase text-2xl my-5 border-b-black border-b-2">Créer un client</h1>
+    {{ include('components/_title.html.twig', { content: 'Créer un client' }) }}
     
     {{ include('clients/_form.html.twig') }}
-
-    {{ include('components/_link.html.twig', {
-        path: "app_clients_index",
-        content: "Liste des clients"
-    }) }}
 
     {{ include('components/_link.html.twig', {
         path: "app_clients_index",

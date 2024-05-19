@@ -3,7 +3,7 @@
 {% block title %}Edit Clients{% endblock %}
 
 {% block body %}
-        <h4 class="text-center text-3xl">Modifier le client</h4>
+    <h4 class="text-center text-3xl">Modifier le client</h4>
 
     {{ include('clients/_form.html.twig', {'button_label': 'Modifier'}) }}
     
@@ -11,12 +11,5 @@
         path: "app_clients_index",
         content: "Liste des clients"
     }) }}
-
     
-    {{ include('components/_link.html.twig', {
-        path: "app_clients_index",
-        content: "Liste des clients"
-    }) }}
-
-
 {% endblock %}
