@@ -51,6 +51,7 @@ class Devis
 
     public function __construct()
     {
+        
         $this->factures = new ArrayCollection();
         $this->relances = new ArrayCollection();
         $this->interractions = new ArrayCollection();

@@ -7,6 +7,7 @@ use App\Form\ClientsType;
 use App\Repository\ClientsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,12 +15,33 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/clients')]
 class ClientsController extends AbstractController
 {
-    #[Route('/', name: 'app_clients_index', methods: ['GET'])]
-    public function index(ClientsRepository $clientsRepository): Response
-    {
+    #[Route('/', name: 'app_clients_index')]
+    public function index(ClientsRepository $clientsRepository, Request $request): Response
+    {   
+        if ($request->getMethod() === 'GET' && $request->query->get('searchkey')) {
+            $clients = $clientsRepository->findByCritere($request->query->get('searchkey'));
+        } else {
+            $clients = $clientsRepository->findAll();
+        }
+
         return $this->render('clients/index.html.twig', [
-            'clients' => $clientsRepository->findAll(),
+            "clients" => $clients,
+            "searchkey" => $request->query->get('searchkey') ? $request->query->get('searchkey') : null
         ]);
+    }
+
+    #[Route('/search', name: 'app_clients_search', methods: ['GET', 'POST'])]
+    public function search(Request $request, ClientsRepository $clientsRepository): JsonResponse
+    {
+        $LesCriteres = [
+            'id' => $request->query->get('id'),
+            'nom' => $request->query->get('nom'),
+            'prenom' => $request->query->get('prenom'),
+        ];
+
+        $clients = $clientsRepository->search($LesCriteres);
+
+        return new JsonResponse($clients);
     }
 
     #[Route('/new', name: 'app_clients_new', methods: ['GET', 'POST'])]

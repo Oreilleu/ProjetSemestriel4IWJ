@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Clients{% endblock %}
+{% block title %}Créer un Client{% endblock %}
 
 {% block body %}
-    <h1>Create new Clients</h1>
-
+    {{ include('components/_title.html.twig', { content: 'Créer un client' }) }}
+    
     {{ include('clients/_form.html.twig') }}
 
-    <a href="{{ path('app_clients_index') }}">back to list</a>
+    {{ include('components/_link.html.twig', {
+        path: "app_clients_index",
+        content: "Liste des clients"
+    }) }}
+
 {% endblock %}

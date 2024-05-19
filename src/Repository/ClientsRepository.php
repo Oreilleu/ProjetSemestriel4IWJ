@@ -21,6 +21,17 @@ class ClientsRepository extends ServiceEntityRepository
         parent::__construct($registry, Clients::class);
     }
 
+    public function findByCritere(string $searchkey): array
+{
+    return $this->createQueryBuilder('a')
+        ->andWhere('UPPER(a.nom) LIKE :val')
+        ->orWhere('UPPER(a.prenom) LIKE :val')
+        ->setParameter('val', '%'.strtoupper($searchkey).'%')
+        ->orderBy('a.nom', 'ASC')
+        ->getQuery()
+        ->execute();
+}
+
 //    /**
 //     * @return Clients[] Returns an array of Clients objects
 //     */
