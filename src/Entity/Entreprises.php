@@ -161,4 +161,11 @@ class Entreprises
         return $this;
     }
 
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
 }
