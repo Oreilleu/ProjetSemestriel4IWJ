@@ -1,37 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Users index{% endblock %}
+{% block title %}Utilisateurs{% endblock %}
 
 {% block body %}
-    <h1>Users index</h1>
+    {{ include('components/_title.html.twig', { content: 'Liste des utilisateurs'}) }}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>actions</th>
-            </tr>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-primary-100 font-title">
+        <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#id
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Email
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Roles
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+            </th>
+        </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-200 bg-color3-50 font-subtitle">
         {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.password }}</td>
-                <td>
-                    <a href="{{ path('app_users_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_users_edit', {'id': user.id}) }}">edit</a>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ user.id }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ user.email }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ user.roles | join(', ') }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
+                    <a href="/users/{{ user.id }}/edit">
+                        <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                            {{ include('components/SVG/_update_SVG.html.twig') }}
+                        </button>
+                    </a>
+                    {{ include('components/_delete_form.html.twig', {
+                        item_id: user.id,
+                        path: 'users',
+                        labelButton: include('components/SVG/_delete_SVG.html.twig'),
+                        title: "Suppression de l'utilisateur : " ~ user.email,
+                        content: "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+                        classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
+                    }) }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" colspan="4">Aucun utilisateur trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_users_new') }}">Create new</a>
 {% endblock %}
+
