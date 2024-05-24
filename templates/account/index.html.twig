@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    {{ include('components/_title.html.twig', { content: 'Mon compte' }) }}
+
+    <h2 class="text-2xl font-bold dark:text-white mb-5" >Mes identifiants :</h2>
+    
+    {{ include('users/_form.html.twig', {
+        user_email: user.email,
+        form: formUser
+    }) }}
+
+    {{ include('components/_link.html.twig', {
+        path: 'app_account_change_password',
+        content: 'Changer mon mot de passe'
+    }) }}
+    
+    {% if is_granted('ROLE_ADMIN_ENTREPRISE') %}
+        <h2 class="text-2xl font-bold dark:text-white my-5" >Mon entreprise : </h2>
+
+        {{ include('entreprises/_form.html.twig', {
+            form: formEntreprise
+        }) }}
+    {% endif %}
+</div>
+{% endblock %}

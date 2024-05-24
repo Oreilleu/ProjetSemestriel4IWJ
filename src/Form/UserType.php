@@ -14,15 +14,11 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe',
-                'required' => false,
-                'mapped' => false,
-                'attr' => [
-                    'autocomplete' => 'new-password',
-                ],
-                // 'help' => 'Laissez vide si vous ne souhaitez pas changer le mot de passe.',
-            ])
+            // ->add('password', PasswordType::class, [
+            //     'label' => 'Mot de passe',
+            //     'required' => false,
+            //     'mapped' => false,
+            // ])
             // ->add('id_entreprise')
         ;
     }

@@ -1,4 +1,10 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ include('components/_form_group.html.twig', {
+        field: form.email,
+        label: 'Email',
+        placeholder: user_email
+    }) }}
+
+    <button class="my-3 text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3">Modifier</button>
+
 {{ form_end(form) }}
