@@ -21,7 +21,7 @@ class CategoriesProduits
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $filePath = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_categorie_produits', targetEntity: Produits::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'id_categorie_produits', targetEntity: Produits::class)]
     private Collection $produits;
 
     public function __construct()
