@@ -4,12 +4,11 @@
 
 {% block body %}
 
-<div class="example-wrapper">
     {{ include('components/_title.html.twig', { content: 'Mon compte' }) }}
 
     <h2 class="text-2xl font-bold dark:text-white mb-5" >Mes identifiants :</h2>
     
-    {{ include('users/_form.html.twig', {
+    {{ include('account/_form_user_account.html.twig', {
         form: formUser
     }) }}
 
@@ -25,5 +24,4 @@
             form: formEntreprise
         }) }}
     {% endif %}
-</div>
 {% endblock %}

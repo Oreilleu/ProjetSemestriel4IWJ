@@ -1,0 +1,10 @@
+{{ form_start(form) }}
+    {{ include('components/_form_group.html.twig', {
+        field: form.email,
+        label: 'Email',
+    }) }}
+
+    {{ include('components/_submit_button.html.twig', {
+        content: "Modifier"
+    }) }}
+{{ form_end(form) }}

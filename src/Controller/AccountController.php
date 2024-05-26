@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\User;
 use App\Form\EntreprisesType;
+use App\Form\UserAccountType;
 
 #[Route('/account')]
 class AccountController extends AbstractController
@@ -35,7 +36,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
         
-        $formUser = $this->createForm(UserType::class, $user);
+        $formUser = $this->createForm(UserAccountType::class, $user);
         $formUser->handleRequest($request);
         
         if ($formUser->isSubmitted() && $formUser->isValid()) {
