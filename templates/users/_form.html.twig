@@ -1,10 +1,19 @@
 {{ form_start(form) }}
-    {{ include('components/_form_group.html.twig', {
-        field: form.email,
-        label: 'Email',
-    }) }}
+<label class="flex flex-col">
+    {{ form_label(form.email, 'Email *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    {{ form_widget(form.email, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+</label>
 
-    {{ include('components/_submit_button.html.twig', {
-        content: "Modifier"
-    }) }}
+<label class="flex flex-col">
+    {{ form_label(form.roles, 'Roles', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    {{ form_widget(form.roles, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+</label>
+
+<input
+        type="submit"
+        value="Enregistrer"
+        class="focus:outline-none mt-5 bg-primary-500 px-2 py-2 text-white font-bold w-full hover:bg-primary-600"
+/>
 {{ form_end(form) }}
+
+
