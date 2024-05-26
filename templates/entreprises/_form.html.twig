@@ -3,37 +3,31 @@
     {{ include('components/_form_group.html.twig', {
         field: form.nom,
         label: 'Nom',
-        placeholder: entreprise.nom
     }) }}
 
     {{ include('components/_form_group.html.twig', {
         field: form.adresse,
         label: 'Adresse',
-        placeholder: entreprise.adresse
     }) }}
 
     {{ include('components/_form_group.html.twig', {
         field: form.tel,
         label: 'Téléphone',
-        placeholder: entreprise.tel
     }) }}
 
     {{ include('components/_form_group.html.twig', {
         field: form.email,
         label: 'Email',
-        placeholder: entreprise.email
     }) }}
 
     {{ include('components/_form_group.html.twig', {
         field: form.numero_siret,
         label: 'Siret',
-        placeholder: entreprise.getNumeroSiret()
     }) }}
 
     {{ include('components/_form_group.html.twig', {
         field: form.rib,
         label: 'RIB',
-        placeholder: entreprise.rib
     }) }}
 
 

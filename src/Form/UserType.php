@@ -12,15 +12,7 @@ class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('email')
-            // ->add('password', PasswordType::class, [
-            //     'label' => 'Mot de passe',
-            //     'required' => false,
-            //     'mapped' => false,
-            // ])
-            // ->add('id_entreprise')
-        ;
+        $builder->add('email');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -46,7 +46,7 @@ class AccountController extends AbstractController
 
         $entreprise = $user->getIdEntreprise();
 
-        $formEntreprise = $this->createForm(EntreprisesType::class);
+        $formEntreprise = $this->createForm(EntreprisesType::class, $entreprise);
         $formEntreprise->handleRequest($request);
 
         if($formEntreprise->isSubmitted() && $formEntreprise->isValid()) {
@@ -56,8 +56,6 @@ class AccountController extends AbstractController
         }
 
         return $this->render('account/index.html.twig', [
-            'user' => $user,
-            'entreprise' => $entreprise,
             'formUser' => $formUser->createView(),
             'formEntreprise' => $formEntreprise->createView()
         ]);
