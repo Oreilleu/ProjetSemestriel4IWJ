@@ -19,6 +19,7 @@ class UserFixtures extends Fixture
         $user1 = (new User())
             ->setEmail('user@admin.com')
             ->setRoles(['ROLE_ADMIN'])
+            ->setIdEntreprise($this->getReference('company1'));
         ;
         $user1->setPassword($this->passwordHasher->hashPassword($user1, $pwd));
         $manager->persist($user1);
@@ -28,9 +29,17 @@ class UserFixtures extends Fixture
         $user2 = (new User())
             ->setEmail('user@entreprise.com')
             ->setRoles(['ROLE_ENTREPRISE'])
+            ->setIdEntreprise($this->getReference('company2'));
         ;
         $user2->setPassword($this->passwordHasher->hashPassword($user2, $pwd));
         $manager->persist($user2);
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            EntreprisesFixtures::class,
+        ];
     }
 }
