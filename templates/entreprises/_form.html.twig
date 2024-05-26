@@ -1,37 +1,36 @@
 {{ form_start(form) }}
-<label class="flex flex-col">
-    {{ form_label(form.nom, 'Nom *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-    {{ form_widget(form.nom, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
-</label>
 
-<label class="flex flex-col">
-    {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-    {{ form_widget(form.adresse, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
-</label>
+    {{ include('components/_form_group.html.twig', {
+        field: form.nom,
+        label: 'Nom',
+    }) }}
 
-<label class="flex flex-col">
-    {{ form_label(form.tel, 'Téléphone', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-    {{ form_widget(form.tel, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
-</label>
+    {{ include('components/_form_group.html.twig', {
+        field: form.adresse,
+        label: 'Adresse',
+    }) }}
 
-<label class="flex flex-col">
-    {{ form_label(form.email, 'Email', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-    {{ form_widget(form.email, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
-</label>
+    {{ include('components/_form_group.html.twig', {
+        field: form.tel,
+        label: 'Téléphone',
+    }) }}
 
-<label class="flex flex-col">
-    {{ form_label(form.numero_siret, 'Numéro de Siret', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-    {{ form_widget(form.numero_siret, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
-</label>
+    {{ include('components/_form_group.html.twig', {
+        field: form.email,
+        label: 'Email',
+    }) }}
 
-<label class="flex flex-col">
-    {{ form_label(form.rib, 'RIB', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-    {{ form_widget(form.rib, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
-</label>
-<input
-        type="submit"
-        value="Enregistrer"
-        class="focus:outline-none mt-5 bg-primary-500 px-2 py-2 text-white font-bold w-full hover:bg-primary-600"
-/>
+    {{ include('components/_form_group.html.twig', {
+        field: form.numero_siret,
+        label: 'Siret',
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.rib,
+        label: 'RIB',
+    }) }}
+
+
+    <button class="my-3 text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3">Modifier</button>
 {{ form_end(form) }}
 

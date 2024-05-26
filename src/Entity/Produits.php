@@ -41,7 +41,7 @@ class Produits
     private ?float $prix = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?CategoriesProduits $id_categorie_produits = null;
 
     #[ORM\OneToMany(mappedBy: 'id_produit', targetEntity: LignesDevis::class)]
