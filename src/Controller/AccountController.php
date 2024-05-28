@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\User;
 use App\Form\EntreprisesType;
 use App\Form\UserAccountType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 #[Route('/account')]
 class AccountController extends AbstractController
@@ -57,6 +58,7 @@ class AccountController extends AbstractController
         }
 
         return $this->render('account/index.html.twig', [
+            'user' => $user,
             'formUser' => $formUser->createView(),
             'formEntreprise' => $formEntreprise->createView()
         ]);
@@ -96,5 +98,20 @@ class AccountController extends AbstractController
             'user' => $user,
             'form' => $form
         ]);
+    }
+
+    #[Route('/{id}', name: 'app_account_delete', methods: ['POST'])]
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            if ($this->getUser() === $user) {
+                $tokenStorage->setToken(null);
+            }
+
+            $entityManager->remove($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
     }
 }
