@@ -47,6 +47,10 @@ class Produits
     #[ORM\OneToMany(mappedBy: 'id_produit', targetEntity: LignesDevis::class)]
     private Collection $lignesDevis;
 
+    #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'produits')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprises $id_entreprise = null;
+
     public function __construct()
     {
         $this->lignesDevis = new ArrayCollection();
@@ -118,6 +122,18 @@ class Produits
                 $lignesDevi->setIdProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdEntreprise(): ?Entreprises
+    {
+        return $this->id_entreprise;
+    }
+
+    public function setIdEntreprise(?Entreprises $id_entreprise): self
+    {
+        $this->id_entreprise = $id_entreprise;
 
         return $this;
     }

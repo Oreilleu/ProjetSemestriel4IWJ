@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Produits;
+use App\Entity\User;
 use App\Form\ProduitsType;
 use App\Repository\ProduitsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,7 +30,16 @@ class ProduitsController extends AbstractController
         $form = $this->createForm(ProduitsType::class, $produit);
         $form->handleRequest($request);
 
+        $user = $this->getUser();
+
+        if(!$user instanceof User) {
+            return $this->redirectToRoute('app_register');
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $entreprise = $user->getIdEntreprise();
+            $produit->setIdEntreprise($entreprise);
+
             $entityManager->persist($produit);
             $entityManager->flush();
 

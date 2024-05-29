@@ -101,17 +101,40 @@ class AccountController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_account_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
+    public function delete(Request $request, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
     {
+        $user = $this->getUser();
+    
+        if (!$user instanceof User)  {
+            return $this->redirectToRoute('app_register');
+        }
+    
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            if ($this->getUser() === $user) {
+            if (in_array('ROLE_ADMIN_ENTREPRISE', $user->getRoles())) {
                 $tokenStorage->setToken(null);
+                
+                $entreprise = $user->getIdEntreprise();
+                $entityManager->initializeObject($entreprise);
+    
+                if ($entreprise) {
+                    
+                    $users = $entreprise->getUsers();
+                    
+                    foreach ($users as $u) {
+                        if (!in_array('ROLE_ADMIN_ENTREPRISE', $u->getRoles())) {
+                            $entityManager->remove($u);
+                        }
+                    }
+                    
+                    $entityManager->remove($entreprise);
+                }
             }
 
             $entityManager->remove($user);
             $entityManager->flush();
         }
-
+    
         return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);
     }
+    
 }
