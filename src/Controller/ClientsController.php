@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Clients;
+use App\Entity\User;
 use App\Form\ClientsType;
 use App\Repository\ClientsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,12 +17,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClientsController extends AbstractController
 {
     #[Route('/', name: 'app_clients_index')]
-    public function index(ClientsRepository $clientsRepository, Request $request): Response
+    public function index(ClientsRepository $clientsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {   
+
+        $user = $this->getUser();
+
+        if(!$user instanceof User) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $entreprise = $user->getIdEntreprise();
+        $entityManager->initializeObject($entreprise);
+
+        $clients = $entreprise->getClients();
+
         if ($request->getMethod() === 'GET' && $request->query->get('searchkey')) {
             $clients = $clientsRepository->findByCritere($request->query->get('searchkey'));
-        } else {
-            $clients = $clientsRepository->findAll();
         }
 
         return $this->render('clients/index.html.twig', [
@@ -47,11 +58,21 @@ class ClientsController extends AbstractController
     #[Route('/new', name: 'app_clients_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_register');
+        }
+
         $client = new Clients();
         $form = $this->createForm(ClientsType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $entreprise = $user->getIdEntreprise();
+            $client->setIdEntreprise($entreprise);
+
             $entityManager->persist($client);
             $entityManager->flush();
 
