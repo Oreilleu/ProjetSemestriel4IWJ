@@ -47,6 +47,9 @@ class Produits
     #[ORM\OneToMany(mappedBy: 'id_produit', targetEntity: LignesDevis::class)]
     private Collection $lignesDevis;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $filePath = null;
+
     public function __construct()
     {
         $this->lignesDevis = new ArrayCollection();
@@ -118,6 +121,18 @@ class Produits
                 $lignesDevi->setIdProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function setFilePath(?string $filePath): static
+    {
+        $this->filePath = $filePath;
 
         return $this;
     }
