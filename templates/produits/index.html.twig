@@ -60,14 +60,15 @@
 {% block body %}
   {{ include('components/_title.html.twig', { content: 'Liste des produits'}) }}
 
-
-  {% if paginate_produits|length < 1 %}
+  {% if empty == true %}
+    <p> Cette categorie ne contient pas de produits pour le moment.</p>
+  {% elseif paginate_produits|length < 1 %}
     <p>Il n'y a pas de produits pour le moment.</p>
   {% else %}
     <ul class="md:flex md:flex-wrap md:gap-6">
       {% for produit in paginate_produits %}
           {{include('components/_card.html.twig', {
-            item_categorie_title:  produit.getIdCategorieProduits() ? produit.getIdCategorieProduits().getNom() : 'Sans catégorie',
+            item_categorie_title:  produit.idCategorieProduits ? produit.idCategorieProduits.nom : 'Sans catégorie',
             item_default_image : "product",
             item_filepath: produit.filePath,
             item_nom: produit.nom,

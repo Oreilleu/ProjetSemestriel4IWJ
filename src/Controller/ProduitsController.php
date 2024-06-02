@@ -21,7 +21,7 @@ class ProduitsController extends AbstractController
         $ITEM_BY_PAGE = 2;
         $LENGTH_PRODUITS = count($produitsRepository->findAll());
 
-        $query = $produitsRepository->createQueryBuilder('cp')->getQuery();
+        $query = $produitsRepository->findAll();
 
         $produits = $paginator->paginate(
             $query,     
@@ -31,17 +31,14 @@ class ProduitsController extends AbstractController
 
         $currentPage = $produits->getCurrentPageNumber();
 
-
+        $empty = false;
 
         return $this->render('produits/index.html.twig', [
             'paginate_produits' => $produits,
             'number_page' => ceil($LENGTH_PRODUITS / $ITEM_BY_PAGE),
-            'current_page' => $currentPage
+            'current_page' => $currentPage,
+            'empty' => $empty
         ]);
-
-        return $this->render('produits/index.html.twig', [
-            'produits' => $produitsRepository->findAll(),
-        ]); 
     }
 
     #[Route('/new', name: 'app_produits_new', methods: ['GET', 'POST'])]
@@ -64,13 +61,45 @@ class ProduitsController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_produits_show', methods: ['GET'])]
-    public function show(Produits $produit): Response
+    #[Route('/categorie/{idCategorie}', name: 'app_produits_categorie', methods: ['GET'])]
+    public function categorie(ProduitsRepository $produitsRepository, PaginatorInterface $paginator, $idCategorie, Request $request): Response
     {
-        return $this->render('produits/show.html.twig', [
-            'produit' => $produit,
+
+        $ITEM_BY_PAGE = 2;
+        $LENGTH_PRODUITS = count($produitsRepository->findProduitsByCategorie($idCategorie));
+
+        $query = $produitsRepository->findProduitsByCategorie($idCategorie);
+
+        $produits = $paginator->paginate(
+            $query,     
+            $request->query->getInt('page', 1), 
+            $ITEM_BY_PAGE
+        );
+
+        $currentPage = $produits->getCurrentPageNumber();
+
+        $empty = false;
+
+        if ($query == null) {
+            $empty = true;
+        }
+
+        return $this->render('produits/index.html.twig', [
+            'paginate_produits' => $produits,
+            'number_page' => ceil($LENGTH_PRODUITS / $ITEM_BY_PAGE),
+            'current_page' => $currentPage,
+            'idCategorie' => $idCategorie,
+            'empty' => $empty
         ]);
     }
+
+    // #[Route('/{id}', name: 'app_produits_show', methods: ['GET'])]
+    // public function show(Produits $produit): Response
+    // {
+    //     return $this->render('produits/show.html.twig', [
+    //         'produit' => $produit,
+    //     ]);
+    // }
 
     #[Route('/{id}/edit', name: 'app_produits_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Produits $produit, EntityManagerInterface $entityManager): Response
