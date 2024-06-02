@@ -1,0 +1,58 @@
+<header class="bg-white z-50 fixed top-0 w-full shadow">
+    <nav class=" bg-primary-500 max-w-5xl mx-auto font-poppins p-6 flex items-center justify-between">
+        <a href="{{ path('home') }}" class="flex" aria-label="Page d'accueil">
+            <img src="{{ asset('images/logo_devis.png') }}" class="hidden md:w-7 md:inline md:mr-4" alt="Logo">
+            <span aria-hidden="true" class="text-lg lg:text-xl"> <strong>Acceuil<span class="text-rose-600">.</span></strong></span>
+        </a>
+        <button aria-label="toggle button" aria-expanded="false" id="menu-btn" class="cursor-pointer w-7 md:hidden">
+            <img src="{{ asset('images/logo_devis.png') }}" alt="Menu">
+        </button>
+        <ul id="toggled-menu" class="w-full absolute top-full left-0 -translate-y-full -z-10 text-gray-800 border-b border-gray-200 flex flex-col items-center md:static md:z-10 md:w-min md:transform-none md:border-none md:flex-row">
+            <li class="py-4 md:py-0 md:mr-6">
+                <a href="{{ path('home') }}" class="text-sm uppercase font-semibold w-full hover:text-rose-600">Accueil</a>
+            </li>
+            <li class="py-4 md:py-0 md:mr-6 group relative">
+                <a href="#" class="text-sm uppercase font-semibold w-full hover:text-rose-600">Client</a>
+                <ul class="absolute left-0 w-full mt-1 bg-white shadow-lg rounded-md hidden group-hover:block">
+                    <li class="py-2 px-4">
+                        <a href="{{ path('app_clients_new') }}" class="text-sm hover:text-rose-600">Ajout Client</a>
+                    </li>
+                    <li class="py-2 px-4">
+                        <a href="{{ path('app_clients_index') }}" class="text-sm hover:text-rose-600">Mes Clients</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="py-4 md:py-0 md:mr-6 group relative">
+                <a href="#" class="text-sm uppercase font-semibold w-full hover:text-rose-600">Facturation</a>
+                <ul class="absolute left-0 w-full mt-1 bg-white shadow-lg rounded-md hidden group-hover:block">
+                    <li class="py-2 px-4">
+                        <a href="{{ path('app_factures_index') }}" class="text-sm hover:text-rose-600">Mes factures</a>
+                    </li>
+                    <li class="py-2 px-4">
+                        <a href="{{ path('app_devis_index') }}" class="text-sm hover:text-rose-600">Mes Devis</a>
+                    </li>
+                </ul>
+            </li>
+
+             <li class="py-4 md:py-0 md:mr-6 group relative">
+                <a href="#" class="text-sm uppercase font-semibold w-full hover:text-rose-600">Catalogue</a>
+                <ul class="absolute left-0 w-full mt-1 bg-white shadow-lg rounded-md hidden group-hover:block">
+                    <li class="py-2 px-4">
+                        <a href="{{ path('app_services_index') }}" class="text-sm hover:text-rose-600">Tous les produits</a>
+                    </li>
+                    <li class="py-2 px-4">
+                        <a href="{{ path('app_services_new') }}" class="text-sm hover:text-rose-600">Créer un produit</a>
+                    </li>
+                    <li class="py-2 px-4">
+                        <a href="{{ path('app_cat_services_index') }}" class="text-sm hover:text-rose-600">Catégorie</a>
+                    </li>
+                    <li class="py-2 px-4">
+                        <a href="{{ path('app_cat_services_new') }}" class="text-sm hover:text-rose-600">Créer une catégorie</a>
+                    </li>
+                </ul>
+            </li>
+    
+        </ul>
+    </nav>
+</header>
