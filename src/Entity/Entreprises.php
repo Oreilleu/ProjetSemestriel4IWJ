@@ -36,11 +36,20 @@ class Entreprises
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: User::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: User::class)]
     private Collection $users;
 
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: RapportsFinanciers::class, orphanRemoval: true)]
     private Collection $rapportsFinanciers;
+
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: CategoriesProduits::class, cascade: ["remove"])]
+    private Collection $categories;
+
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Produits::class, cascade: ["remove"])]
+    private Collection $produits;
+
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Clients::class, cascade: ["remove"])]
+    private Collection $clients;
 
     public function __construct()
     {
@@ -164,6 +173,113 @@ class Entreprises
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            if ($user->getIdEntreprise() === $this) {
+                $user->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(CategoriesProduits $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(CategoriesProduits $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getIdEntreprise() === $this) {
+                $category->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produits $produit): self
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produits $produit): self
+    {
+        if ($this->produits->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
+            if ($produit->getIdEntreprise() === $this) {
+                $produit->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Clients $client): self
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients->add($client);
+            $client->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Clients $client): self
+    {
+        if ($this->clients->removeElement($client)) {
+            // set the owning side to null (unless already changed)
+            if ($client->getIdEntreprise() === $this) {
+                $client->setIdEntreprise(null);
+            }
+        }
 
         return $this;
     }

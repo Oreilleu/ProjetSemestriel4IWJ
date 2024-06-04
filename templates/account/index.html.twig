@@ -23,5 +23,13 @@
         {{ include('entreprises/_form.html.twig', {
             form: formEntreprise
         }) }}
+
+        {{ include('components/_delete_form.html.twig', {
+            item_id: user.id,
+            path: 'account',
+            labelButton: 'Supprimer mon compte',
+            title: 'Suppression de mon compte', 
+            content: 'Attention cette action est irréversible et supprimera toute vos données de l\'application (entreprise, produit, devis, facture ...). Voulez vous vraiment supprimer votre compte ?'
+        }) }}
     {% endif %}
 {% endblock %}

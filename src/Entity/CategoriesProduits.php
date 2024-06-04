@@ -23,6 +23,10 @@ class CategoriesProduits
 
     #[ORM\OneToMany(mappedBy: 'id_categorie_produits', targetEntity: Produits::class)]
     private Collection $produits;
+    
+    #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'categories')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprises $id_entreprise = null;
 
     public function __construct()
     {
@@ -34,8 +38,6 @@ class CategoriesProduits
     {
         return $this->nom ?? '';
     }
-
-
 
     public function getId(): ?int
     {
@@ -92,6 +94,18 @@ class CategoriesProduits
     public function setFilePath(?string $filePath): self
     {
         $this->filePath = $filePath;
+
+        return $this;
+    }
+
+    public function getIdEntreprise(): ?Entreprises
+    {
+        return $this->id_entreprise;
+    }
+
+    public function setIdEntreprise(?Entreprises $id_entreprise): self
+    {
+        $this->id_entreprise = $id_entreprise;
 
         return $this;
     }

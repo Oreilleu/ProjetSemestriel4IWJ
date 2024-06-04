@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\CategoriesProduits;
+use App\Entity\User;
 use App\Form\CategoriesProduitsType;
-use App\Repository\CategoriesProduitsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,16 +16,25 @@ use Knp\Component\Pager\PaginatorInterface;
 class CategoriesProduitsController extends AbstractController
 {
     #[Route('/', name: 'app_categories_index', methods: ['GET'])]
-    public function index(CategoriesProduitsRepository $categoriesProduitsRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(PaginatorInterface $paginator, Request $request, EntityManagerInterface $entityManager): Response
     {
 
-        $ITEM_BY_PAGE = 6;
-        $LENGTH_CATEGORIES = count($categoriesProduitsRepository->findAll());
+        $user = $this->getUser();
 
-        $query = $categoriesProduitsRepository->createQueryBuilder('cp')->getQuery();
+        if (!$user instanceof User)  {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $entreprise = $user->getIdEntreprise();
+        $entityManager->initializeObject($entreprise);
+
+        $categories = $entreprise->getCategories();
+
+        $ITEM_BY_PAGE = 6;
+        $LENGTH_CATEGORIES = count($categories);
 
         $categoriesProduits = $paginator->paginate(
-            $query,     
+            $categories,     
             $request->query->getInt('page', 1), 
             $ITEM_BY_PAGE
         );
@@ -48,9 +56,16 @@ class CategoriesProduitsController extends AbstractController
         $form = $this->createForm(CategoriesProduitsType::class, $categoriesProduit);
         $form->handleRequest($request);
 
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form['filePath']->getData();
-
+            
             if ($file) {
                 $fileName = uniqid().'.'.$file->guessExtension();
                 $file->move(
@@ -59,6 +74,9 @@ class CategoriesProduitsController extends AbstractController
                 );
                 $categoriesProduit->setFilePath('/uploads/'.$fileName);
             }
+            
+            $entreprise = $user->getIdEntreprise();
+            $categoriesProduit->setIdEntreprise($entreprise);
 
             $entityManager->persist($categoriesProduit);
             $entityManager->flush();
