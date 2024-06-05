@@ -1,56 +1,3 @@
-{# 
-  {% if produits|length < 1 %}
-    <p>Il n'y a pas de produits pour le moment.</p>
-  {% else %} #}
-
-    {# <ul>
-      <li class="p-3 mb-4 border-primary-400 border-2 rounded-xl">
-        <article class="grid grid-cols-[repeat(4,_1fr)_repeat(2,_100px)] text-center">
-          <span class='self-center'>Identifiant</span>
-          <span class='self-center'>Catégorie</span>
-          <span class='self-center'>Nom</span>
-          <span class='self-center'>Prix</span>
-        </article>
-      </li>
-      {% for produit in produits %}
-        <li class="p-5 mb-4 border-primary-400 border-2 rounded-xl">
-            <article class="grid grid-cols-[repeat(4,_1fr)_repeat(2,_100px)] text-center">
-                <span class='self-center'>{{ produit.id }}</span>
-                <span class='self-center'>{{ produit.getIdCategorieProduits() ? produit.getIdCategorieProduits().getNom() : 'Sans catégorie' }}</span>
-                <span class='self-center'>{{ produit.nom }}</span>
-                <span class='self-center'>{{ produit.prix }} €</span>
-                <span class='self-center'>
-                  <a href="{{ path('app_produits_edit', { id: produit.id }) }}">
-                    <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
-                      {{ include('components/SVG/_update_SVG.html.twig') }}
-                    </button>              
-                  </a>
-                </span>
-                <span class='self-center'>              
-                  {{ include('components/_delete_form.html.twig', { 
-                      item_id: produit.id,
-                      path: 'produits',
-                      labelButton: include('components/SVG/_delete_SVG.html.twig'),
-                      title: "Suppression du produit : " ~ produit.nom,
-                      content: "Êtes-vous sûr de vouloir supprimer ce produit ?",
-                      classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
-                       }) 
-                    }}
-                </span>
-            </article>
-        </li>
-      {% endfor %}
-    </ul> #}
-
-  {# {% endif %}
-
-
-  {{ include('components/_link.html.twig', { 
-    content: "Créer un produit", 
-    path: "app_produits_new"
-  }) }}
-{% endblock %} #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}
@@ -90,7 +37,7 @@
   {{ include("components/_pagination.html.twig", {
     current_page: current_page,
     number_page: number_page,
-    path: 'app_produits_index'
+    path: app.request.get('idCategorie') ? 'app_produits_categorie' : 'app_produits_index'
   }) }}
 
 {% endblock %}
