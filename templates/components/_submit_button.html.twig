@@ -1,0 +1,6 @@
+{# Composant button de soumission des formulaire, permet d'harmoniser tous les buttons #}
+{# Prends 1 paramètre : 
+    - content : le contenu du bouton 
+ #}
+
+<button class="my-3 text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3">{{ content|default('Envoyer') }} </button>
