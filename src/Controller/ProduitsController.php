@@ -6,6 +6,7 @@ use App\Entity\Produits;
 use App\Entity\User;
 use App\Form\ProduitsType;
 use App\Repository\ProduitsRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,28 +18,35 @@ use Knp\Component\Pager\PaginatorInterface;
 class ProduitsController extends AbstractController
 {
     #[Route('/', name: 'app_produits_index', methods: ['GET'])]
-    public function index(ProduitsRepository $produitsRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(PaginatorInterface $paginator, Request $request, EntityManagerInterface $entityManager): Response
     {
+
+        $user = $this->getUser();
+
+        if (!$user instanceof User)  {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $entreprise = $user->getIdEntreprise();
+        $entityManager->initializeObject($entreprise);
+
+        $produits = $entreprise->getProduits();
+
         $ITEM_BY_PAGE = 2;
-        $LENGTH_PRODUITS = count($produitsRepository->findAll());
+        $LENGTH_PRODUITS = count($produits);
 
-        $query = $produitsRepository->findAll();
-
-        $produits = $paginator->paginate(
-            $query,     
+        $paginate_produits = $paginator->paginate(
+            $produits,     
             $request->query->getInt('page', 1), 
             $ITEM_BY_PAGE
         );
 
-        $currentPage = $produits->getCurrentPageNumber();
-
-        $empty = false;
+        $currentPage = $paginate_produits->getCurrentPageNumber();
 
         return $this->render('produits/index.html.twig', [
-            'paginate_produits' => $produits,
+            'paginate_produits' => $paginate_produits,
             'number_page' => ceil($LENGTH_PRODUITS / $ITEM_BY_PAGE),
             'current_page' => $currentPage,
-            'empty' => $empty
         ]);
     }
 
