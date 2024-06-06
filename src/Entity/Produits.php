@@ -47,6 +47,9 @@ class Produits
     #[ORM\OneToMany(mappedBy: 'id_produit', targetEntity: LignesDevis::class)]
     private Collection $lignesDevis;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $filePath = null;
+
     #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprises $id_entreprise = null;
@@ -134,6 +137,18 @@ class Produits
     public function setIdEntreprise(?Entreprises $id_entreprise): self
     {
         $this->id_entreprise = $id_entreprise;
+
+        return $this;
+    }
+
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function setFilePath(?string $filePath): static
+    {
+        $this->filePath = $filePath;
 
         return $this;
     }

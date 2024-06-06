@@ -33,6 +33,16 @@ class Clients
     #[ORM\Column(length: 255)]
     private ?string $numero_siret = null;
 
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cp = null;
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ville = null;
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $pays = null;
+    
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
@@ -177,6 +187,42 @@ class Clients
     public function setIdEntreprise(?Entreprises $id_entreprise): self
     {
         $this->id_entreprise = $id_entreprise;
+
+        return $this;
+    }
+
+    public function getCp(): ?string
+    {
+        return $this->cp;
+    }
+
+    public function setCp(?string $cp): static
+    {
+        $this->cp = $cp;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): static
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(?string $pays): static
+    {
+        $this->pays = $pays;
 
         return $this;
     }
