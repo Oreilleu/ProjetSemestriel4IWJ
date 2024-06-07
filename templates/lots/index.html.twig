@@ -1,39 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Lots index{% endblock %}
+{% block title %}Liste des lots {% endblock %}
 
 {% block body %}
-    <h1>Lots index</h1>
+    {{ include('components/_title.html.twig', { content: 'Liste des Lots'}) }}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Superficie</th>
-                <th>Type</th>
-                <th>Adresse</th>
-                <th>actions</th>
-            </tr>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-primary-100 font-title">
+        <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#id
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#idClient
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                superficie
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                type
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                adresse
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+            </th>
+        </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-200 bg-color3-50 font-subtitle">
         {% for lot in lots %}
             <tr>
-                <td>{{ lot.id }}</td>
-                <td>{{ lot.superficie }}</td>
-                <td>{{ lot.type }}</td>
-                <td>{{ lot.adresse }}</td>
-                <td>
-                    <a href="{{ path('app_lots_show', {'id': lot.id}) }}">show</a>
-                    <a href="{{ path('app_lots_edit', {'id': lot.id}) }}">edit</a>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lot.id }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lot.idClient }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lot.superficie }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lot.type }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ lot.adresse }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
+                    <a href="/lots/{{ lot.id }}/edit">
+                        <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                            {{ include('components/SVG/_update_SVG.html.twig') }}
+                        </button>
+                    </a>
+                    {{ include('components/_delete_form.html.twig', {
+                        item_id: lot.id,
+                        path: 'lots',
+                        labelButton: include('components/SVG/_delete_SVG.html.twig'),
+                        title: "Suppression du lot n° : " ~ lot.id,
+                        content: "Êtes-vous sûr de vouloir supprimer ce lot ?",
+                        classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
+                    }) }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" colspan="4">Aucun lot trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_lots_new') }}">Create new</a>
-{% endblock %}
+    {% endblock %}

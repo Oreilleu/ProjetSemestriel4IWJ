@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Lots{% endblock %}
+{% block title %}Créer un lot{% endblock %}
 
 {% block body %}
-    <h1>Create new Lots</h1>
+
+    {{ include('components/_title.html.twig', { content: 'Créer un lot' }) }}
+
 
     {{ include('lots/_form.html.twig') }}
 
-    <a href="{{ path('app_lots_index') }}">back to list</a>
+    {{ include('components/_link.html.twig', {
+        path: "app_lots_index",
+        content: "Liste des lots"
+    }) }}
 {% endblock %}
