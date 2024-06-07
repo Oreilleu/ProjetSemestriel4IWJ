@@ -36,6 +36,11 @@ class Lots
         $this->devis = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->id_client;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
