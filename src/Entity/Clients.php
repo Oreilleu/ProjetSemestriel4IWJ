@@ -59,7 +59,10 @@ class Clients
         $this->created_at = new \DateTimeImmutable();
     }
 
-
+    public function __toString(): string
+    {
+        return $this->email ?? '';
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -226,4 +229,6 @@ class Clients
 
         return $this;
     }
+
+
 }

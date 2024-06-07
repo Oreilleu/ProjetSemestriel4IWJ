@@ -11,5 +11,9 @@
         path: "app_clients_index",
         content: "Liste des clients"
     }) }}
-    
+
+    {{ include('components/_link.html.twig', {
+        path: "app_lots_new",
+        content: "Ajouter un lot"
+    }) }}
 {% endblock %}

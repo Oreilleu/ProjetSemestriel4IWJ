@@ -25,6 +25,14 @@
                 <span class='self-center'>{{ client.id }}</span>
                 <span class='self-center'>{{ client.nom }}</span>
                 <span class='self-center'>{{ client.prenom }}</span>
+
+                <span class='self-center'>
+                  <a href="/clients/{{client.id}}">
+                    <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                      {{ include('components/SVG/_update_SVG.html.twig') }}
+                    </button>
+                  </a>
+                </span>
                 <span class='self-center'>
                   <a href="/clients/{{client.id}}/edit">
                     <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
