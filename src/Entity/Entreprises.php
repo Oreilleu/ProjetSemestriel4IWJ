@@ -51,6 +51,9 @@ class Entreprises
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Clients::class, cascade: ["remove"])]
     private Collection $clients;
 
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Devis::class, cascade: ["remove"])]
+    private Collection $devis;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -284,4 +287,30 @@ class Entreprises
         return $this;
     }
 
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevis(Devis $devis): self
+    {
+        if (!$this->devis->contains($devis)) {
+            $this->devis->add($devis);
+            $devis->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevis(Devis $devis): self
+    {
+        if ($this->devis->removeElement($devis)) {
+            // set the owning side to null (unless already changed)
+            if ($devis->getIdEntreprise() === $this) {
+                $devis->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
 }

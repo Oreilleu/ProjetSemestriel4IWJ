@@ -1,4 +1,105 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.date,
+        label: 'Date',
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.description,
+        label: 'Description',
+    }) }}
+
+    {% if app.request.attributes.get('_route') == 'app_devis_edit' %}
+        {{ include('components/_form_group.html.twig', {
+            field: form.statut,
+            label: 'Statut du devis',
+        }) }}
+    {% endif %}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.taxe,
+        label: 'Taxe',
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.client,
+        label: 'Nom du client',
+    }) }}
+
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.id_lots,
+        label: 'Lot',
+    }) }}
+
+    <div class="mb-3">
+        {{ form_label(form.list_produit, 'Liste des produits' , {'label_attr': {'class': 'block text-gray-700 text-lg font-bold mb-2'}}) }}
+        {{ form_errors(form.list_produit, { 'template': 'form/form_errors.html.twig' }) }}
+        {{ form_widget(form.list_produit, {'attr': {
+            'class': 'w-2xl shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ',
+            'placeholder': placeholder|default('')
+        } }) }}
+        {{ form_help(form.list_produit, {'help_attr': {'class': '' } }) }}
+    </div>
+
+    <p>Produit sélectionné : </p>
+
+    <ul data-list-product-id='productNameDisplay' class='flex flex-col'>
+
+    </ul>
+
+    {{ include('components/_submit_button.html.twig', {
+        content: "Envoyer"
+    }) }}
+
 {{ form_end(form) }}
+
+<script>
+    document.getElementById('devis_list_produit').addEventListener('change', (event) => {
+        const productNameDisplay = document.querySelector('[data-list-product-id="productNameDisplay"]');
+        const selectedProductName = event.target[event.target.selectedIndex].text;
+        const productId = event.target.value;
+
+        const product = {
+            id: productId,
+            name: selectedProductName
+        };
+
+        const productAlreadychosenIds = Array.from(productNameDisplay.querySelectorAll('li span[data-product-id]')).map((element) => element.getAttribute('data-product-id'));
+
+        if (!productAlreadychosenIds.includes(productId)) {
+            const createLi = document.createElement('li');
+            createLi.classList.add('inline-flex', 'items-center','justify-between', 'border-b', 'border-gray-200', 'py-2');
+
+            const createCross = document.createElement('span');
+            createCross.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width='20' height='20' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>`;
+            
+            createCross.addEventListener('click', () => {
+                productNameDisplay.removeChild(createLi);
+            });
+    
+            createLi.appendChild(createCross);
+
+            const createText = document.createElement('span');
+            createText.textContent = selectedProductName;
+            createText.setAttribute('data-product-id', productId);
+
+            createLi.appendChild(createText);
+
+            const createQuantityInput = document.createElement('input');
+            createQuantityInput.setAttribute('type', 'number');
+            createQuantityInput.setAttribute('name', 'quantity');
+            createQuantityInput.setAttribute('placeholder', 'Quantité');
+            createQuantityInput.classList.add('shadow', 'appearance-none', 'border', 'rounded', 'py-2', 'px-3', 'text-gray-700', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline');
+
+            createLi.appendChild(createQuantityInput);
+
+            productNameDisplay.appendChild(createLi);
+        }
+
+    });
+</script>
