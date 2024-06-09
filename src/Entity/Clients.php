@@ -53,10 +53,14 @@ class Clients
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprises $id_entreprise = null;
 
+    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class)]
+    private Collection $devis;
+
     public function __construct()
     {
         $this->lots = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
+        $this->devis = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -230,5 +234,30 @@ class Clients
         return $this;
     }
 
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
 
+    public function addDevis(Devis $devis): self
+    {
+        if (!$this->devis->contains($devis)) {
+            $this->devis[] = $devis;
+            $devis->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevis(Devis $devis): self
+    {
+        if ($this->devis->removeElement($devis)) {
+            // set the owning side to null (unless already changed)
+            if ($devis->getClient() === $this) {
+                $devis->setClient(null);
+            }
+        }
+
+        return $this;
+    }
 }

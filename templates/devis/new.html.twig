@@ -3,9 +3,12 @@
 {% block title %}New Devis{% endblock %}
 
 {% block body %}
-    <h1>Create new Devis</h1>
+    {{ include('components/_title.html.twig', { content: 'Créer un nouveau devis'}) }}
 
     {{ include('devis/_form.html.twig') }}
 
-    <a href="{{ path('app_devis_index') }}">back to list</a>
+    {{ include('components/_link.html.twig', {
+        content: 'Retour à la liste',
+        path: 'app_devis_index'
+    }) }}
 {% endblock %}

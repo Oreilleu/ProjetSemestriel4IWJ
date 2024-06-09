@@ -37,6 +37,7 @@ security:
         - { path: ^/categories, roles: ROLE_ENTREPRISE }
         - { path: ^/produits, roles: ROLE_ENTREPRISE }
         - { path: ^/clients, roles: ROLE_ENTREPRISE }
+        - { path: ^/devis, roles: ROLE_ENTREPRISE }
         
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER, ROLE_ADMIN_ENTREPRISE]
