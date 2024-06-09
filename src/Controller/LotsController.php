@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Lots;
 use App\Form\LotsType;
 use App\Repository\LotsRepository;
+use App\Repository\ClientsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class LotsController extends AbstractController
 {
     #[Route('/', name: 'app_lots_index', methods: ['GET'])]
-    public function index(LotsRepository $lotsRepository): Response
+    public function index(LotsRepository $lotsRepository,ClientsRepository $clientsRepository): Response
     {
         return $this->render('lots/index.html.twig', [
+            'clients' => $clientsRepository->findAll(),
             'lots' => $lotsRepository->findAll(),
         ]);
     }

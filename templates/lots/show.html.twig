@@ -23,6 +23,11 @@
                 <th>Adresse</th>
                 <td>{{ lot.adresse }}</td>
             </tr>
+
+            <tr>
+                <th>Id client</th>
+                <td>{{ lot.idClient }}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -30,5 +35,4 @@
 
     <a href="{{ path('app_lots_edit', {'id': lot.id}) }}">edit</a>
 
-    {{ include('lots/_delete_form.html.twig') }}
 {% endblock %}

@@ -1,4 +1,17 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+{{ form_label(form.superficie, 'Superficie * :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+    {{ form_widget(form.superficie, {'attr': {'class': 'shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+
+{{ form_label(form.type, 'Type * :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+    {{ form_widget(form.type, {'attr': {'class': 'shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+
+{{ form_label(form.adresse, 'Adresse * :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+    {{ form_widget(form.adresse, {'attr': {'class': 'shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+{{ form_label(form.id_client, 'Client * :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+    {{ form_widget(form.id_client, {'attr': {'class': 'shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+
+  {{ include('components/_submit_button.html.twig', {
+      content: button_label|default('')
+  }) }}
 {{ form_end(form) }}
