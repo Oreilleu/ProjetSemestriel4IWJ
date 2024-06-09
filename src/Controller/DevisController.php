@@ -88,7 +88,7 @@ class DevisController extends AbstractController
                 $lignesDevi = new LignesDevis();
                 $lignesDevi->setIdProduit($produit);
                 $lignesDevi->setIdDevis($devis); 
-                $lignesDevi->setIdStrProduit($productId);
+                $lignesDevi->setIdStrProduit($produitId);
                 $lignesDevi->setNameProduct($produit->getNom());
                 $lignesDevi->setPrixProduct($produit->getPrix());
                 $lignesDevi->setQuantite($product['quantity']);
@@ -119,8 +119,6 @@ class DevisController extends AbstractController
     #[Route('/{id}/edit', name: 'app_devis_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Devis $devi, EntityManagerInterface $entityManager): Response
     {
-        // Faire l'update d'un devis 
-        // Afficher les produits lié au devis sur le formulaire
         $user = $this->getUser();
         
         if (!$user instanceof User || !$user) {
@@ -136,8 +134,51 @@ class DevisController extends AbstractController
         ]);
 
         $form->handleRequest($request);
-            
+
+        $data = $request->request->all();
+
+        if(isset($data['devis'])    ) {
+            $devisData = $data['devis']; 
+            $listProduitJson = $devisData['list_produit']; 
+            $listProduitArray = json_decode($listProduitJson, true); 
+        }
+
+        $taxe = $devi->getTaxe();
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($productsAlreadyInDevis as $ligneDevis) {
+                $entityManager->remove($ligneDevis);
+            }
+            $entityManager->flush();
+            
+            $totalPrice = 0;
+            foreach($listProduitArray as $product) {
+                $productId = $product['productId'];
+                $produit = $entityManager->getRepository(Produits::class)->find($productId);
+                
+                $priceWithFee = $produit->getPrix() * (1 + $taxe / 100);
+                $totalPrice += $priceWithFee * $product['quantity'];
+            }
+
+            $devi->setTotalHt($totalPrice);
+
+            $entityManager->persist($devi);
+
+            foreach ($listProduitArray as $product) { 
+                $produitId = $product['productId'];
+                $produit = $entityManager->getRepository(Produits::class)->find($produitId);
+                
+                $lignesDevi = new LignesDevis();
+                $lignesDevi->setIdDevis($devi);
+                $lignesDevi->setIdProduit($produit);
+                $lignesDevi->setIdStrProduit($produitId);
+                $lignesDevi->setNameProduct($produit->getNom());
+                $lignesDevi->setPrixProduct($produit->getPrix());
+                $lignesDevi->setQuantite($product['quantity']);
+        
+                $entityManager->persist($lignesDevi);
+            }
+
             $entityManager->flush();
             
             return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
