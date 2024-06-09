@@ -8,47 +8,53 @@
 
   {{ include('clients/_search_client_form.html.twig', { search_Nom: '' }) }}
 
-  {% if clients|length < 1 %}
-    <p>Il n'y a pas de client pour le moment.</p>
-  {% else %}
-    <ul>
-      <li class="p-3 mb-4 border-primary-400 border-2 rounded-xl">
-        <article class="grid grid-cols-[repeat(4,_1fr)_repeat(2,_100px)] text-center">
-          <span class='self-center'>Identifiant</span>
-          <span class='self-center'>Nom</span>
-          <span class='self-center'>Prénom</span>
-        </article>
-      </li>
-      {% for client in clients %}
-        <li class="p-5 mb-4 border-primary-400 border-2 rounded-xl">
-            <article class="grid grid-cols-[repeat(4,_1fr)_repeat(2,_100px)] text-center">
-                <span class='self-center'>{{ client.id }}</span>
-                <span class='self-center'>{{ client.nom }}</span>
-                <span class='self-center'>{{ client.prenom }}</span>
-                <span class='self-center'>
-                  <a href="/clients/{{client.id}}/edit">
-                    <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
-                      {{ include('components/SVG/_update_SVG.html.twig') }}
-                    </button>              
-                  </a>
-                </span>
-                <span class='self-center'>              
-                  {{ include('components/_delete_form.html.twig', { 
-                      item_id: client.id,
-                      path: 'clients',
-                      labelButton: include('components/SVG/_delete_SVG.html.twig'),
-                      title: "Suppression du client : " ~ client.nom,
-                      content: "Êtes-vous sûr de vouloir supprimer ce client ?",
-                      classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
+  {% if clients is empty %}
+        {{ include('components/_empty_message.html.twig', { content: 'Aucun client n\'a été trouvé.' }) }}
+    {% else %}
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-primary-100 font-title">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Identifiant
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Nom
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Prénom
+                </th>                
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Action
+                </th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-color3-50 font-subtitle">
+            {% for client in clients %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ client.id }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ client.nom }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ client.prenom }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
+                        <a href="/clients/{{client.id}}/edit">
+                          <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                            {{ include('components/SVG/_update_SVG.html.twig') }}
+                          </button>              
+                        </a>
+                        {{ include('components/_delete_form.html.twig', { 
+                          item_id: client.id,
+                          path: 'clients',
+                          labelButton: include('components/SVG/_delete_SVG.html.twig'),
+                          title: "Suppression du client : " ~ client.nom,
+                          content: "Êtes-vous sûr de vouloir supprimer ce client ?",
+                          classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
                        }) 
                     }}
-                </span>
-            </article>
-        </li>
-      {% endfor %}
-    </ul>
-
-  {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 
   {{ include('components/_link.html.twig', { 
     content: "Créer un client", 
