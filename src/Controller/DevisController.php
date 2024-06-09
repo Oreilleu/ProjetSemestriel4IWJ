@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Devis;
+use App\Entity\LignesDevis;
+use App\Entity\Produits;
 use App\Entity\User;
 use App\Form\DevisType;
-use App\Form\LignedevisType;
-use App\Repository\DevisRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,17 +52,50 @@ class DevisController extends AbstractController
         $devis = new Devis();
         $form = $this->createForm(DevisType::class, $devis);
         $form->handleRequest($request);
-        $listProduits = $request->request->all();
-        // $listProduits = $request->request->get('devis', [''])['list_produit'] ?? [];
 
+        $data = $request->request->all();
+
+        if(isset($data['devis'])    ) {
+            $devisData = $data['devis']; 
+            $listProduitJson = $devisData['list_produit']; 
+            $listProduitArray = json_decode($listProduitJson, true); 
+        }
         
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($listProduits);
 
             $devis->setIdEntreprise($entreprise);
             $devis->setStatut('En cours');
 
+            $totalPrice = 0;
+            $taxe = $devis->getTaxe();
+
+            foreach($listProduitArray as $product) {
+                $productId = $product['productId'];
+                $produit = $entityManager->getRepository(Produits::class)->find($productId);
+                
+                $priceWithFee = $produit->getPrix() * (1 + $taxe / 100);
+                $totalPrice += $priceWithFee * $product['quantity'];
+            }
+
+            $devis->setTotalHt($totalPrice);
+
             $entityManager->persist($devis);
+
+            foreach ($listProduitArray as $product) { 
+                $produitId = $product['productId'];
+                $produit = $entityManager->getRepository(Produits::class)->find($produitId);
+                
+                $lignesDevi = new LignesDevis();
+                $lignesDevi->setIdProduit($produit);
+                $lignesDevi->setIdDevis($devis); 
+                $lignesDevi->setIdStrProduit($productId);
+                $lignesDevi->setNameProduct($produit->getNom());
+                $lignesDevi->setPrixProduct($produit->getPrix());
+                $lignesDevi->setQuantite($product['quantity']);
+        
+                $entityManager->persist($lignesDevi);
+            }
+            
             $entityManager->flush();
 
             return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
@@ -86,7 +119,17 @@ class DevisController extends AbstractController
     #[Route('/{id}/edit', name: 'app_devis_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Devis $devi, EntityManagerInterface $entityManager): Response
     {
+        // Faire l'update d'un devis 
+        // Afficher les produits lié au devis sur le formulaire
+        $user = $this->getUser();
+        
+        if (!$user instanceof User || !$user) {
+            return $this->redirectToRoute('app_register');
+        }
 
+        $entreprise = $user->getIdEntreprise();
+        $productsAlreadyInDevis = $devi->getLignesDevis();
+        $produits = $entreprise->getProduits();
         
         $form = $this->createForm(DevisType::class, $devi, [
             'show_statut_field' => true, 
@@ -103,8 +146,10 @@ class DevisController extends AbstractController
         return $this->render('devis/edit.html.twig', [
             'devi' => $devi,
             'form' => $form,
+            'produits' => $produits,
+            'productsAlreadyInDevis' => $productsAlreadyInDevis
         ]);
-        }
+    }
 
     #[Route('/{id}', name: 'app_devis_delete', methods: ['POST'])]
     public function delete(Request $request, Devis $devi, EntityManagerInterface $entityManager): Response

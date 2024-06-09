@@ -43,7 +43,7 @@
         <select id="select_product" class="w-2xl shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             <option value="" disabled selected>Sélectionnez un produit</option>
             {% for produit in produits %}
-                <option value="{{ produit.id }}">{{ produit.nom }}</option>
+                <option value="{{ produit.id }}">{{ produit.nom }} - {{ produit.prix }} €</option>
             {% endfor %}
         </select>
         {{ form_help(form.list_produit, {'help_attr': {'class': '' } }) }}
@@ -51,7 +51,25 @@
 
     <p>Produit sélectionné : </p>
 
-    <ul data-list-product-id='productNameDisplay' class='flex flex-col'></ul>
+    <ul data-list-product-id='productNameDisplay' class='flex flex-col'>
+        {% if app.request.attributes.get('_route') == 'app_devis_edit'  %}
+            {% for existingProduct in productsAlreadyInDevis %}
+                <li class='inline-flex items-center justify-between border-b border-gray-200 py-2'>
+                    <span>{{ include('components/SVG/_cross_SVG.html.twig') }}</span>
+                    <span data-product-id={{ existingProduct.getIdProduit().id }}>{{ existingProduct.getIdProduit().nom }}</span>
+                    <input 
+                        class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                        type="number" 
+                        placeholder="Quantité" 
+                        value="1"
+                        min="1"
+                        max="99"
+                        data-product-id-input-quantity={{ existingProduct.getIdProduit().id }} 
+                    />
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
 
     {{ include('components/_submit_button.html.twig', {
         content: "Envoyer"
@@ -133,10 +151,25 @@
     }
 
     function updateProductListValue(container) {
-        const products = Array.from(container.querySelectorAll('li input[data-product-id-input-quantity]')).map(input => ({
+        let products = Array.from(container.querySelectorAll('li input[data-product-id-input-quantity]')).map(input => ({
             productId: input.getAttribute('data-product-id-input-quantity'),
             quantity: input.value
         }));
+
         document.getElementById('devis_list_produit').value = JSON.stringify(products);
+
+        document.querySelectorAll('li input[data-product-id-input-quantity]').forEach(input => {
+            input.addEventListener('change', function() {
+                console.log("Événement change détecté");
+                products = Array.from(container.querySelectorAll('li input[data-product-id-input-quantity]')).map(input => ({
+                    productId: input.getAttribute('data-product-id-input-quantity'),
+                    quantity: input.value
+                }));
+
+                document.getElementById('devis_list_produit').value = JSON.stringify(products);
+            });
+        });
+
     }
+
 </script>

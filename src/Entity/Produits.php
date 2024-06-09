@@ -28,7 +28,8 @@ class Produits
         minMessage: 'Le nom du produit doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le nom du produit ne doit pas dépasser {{ limit }} caractères.'
     )]
-    #[ORM\Column(length: 100)]
+
+    #[ORM\Column(length: 100, unique: true)]
     private ?string $nom = null;
 
     #[Assert\NotBlank(

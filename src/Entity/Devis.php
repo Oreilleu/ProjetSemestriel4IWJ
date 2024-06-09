@@ -38,7 +38,7 @@ class Devis
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Interractions::class, orphanRemoval: true)]
     private Collection $interractions;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: false)]
     private ?float $total_ht = null;
 
     #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'devis')]
@@ -53,7 +53,7 @@ class Devis
     #[ORM\JoinColumn(nullable: false)]
     private ?Clients $client;
 
-    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: LignesDevis::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: LignesDevis::class, cascade: ["remove"])]
     private Collection $lignesDevis;
 
     public function __construct()

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -31,6 +32,10 @@ class DevisType extends AbstractType
             ->add('description')
             ->add('taxe', null, [
                 'constraints' => [
+                    new GreaterThanOrEqual([
+                        'value' => 0,
+                        'message' => 'La valeur minimale doit être de 0% ou plus.',
+                    ]),
                     new LessThanOrEqual([
                         'value' => 20,
                         'message' => 'La valeur maximale doit être de 20% ou moins.',
