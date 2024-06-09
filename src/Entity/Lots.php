@@ -26,7 +26,7 @@ class Lots
 
     #[ORM\ManyToOne(inversedBy: 'lots')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?clients $id_client = null;
+    private ?Clients $id_client = null;
 
     #[ORM\OneToMany(mappedBy: 'id_lots', targetEntity: Devis::class, orphanRemoval: true)]
     private Collection $devis;
