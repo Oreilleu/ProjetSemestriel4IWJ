@@ -5,16 +5,17 @@ namespace App\Form;
 use App\Entity\Clients;
 use App\Entity\Devis;
 use App\Entity\Lots;
-use App\Entity\Produits;
+use PHPUnit\Framework\Constraint\Callback;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class DevisType extends AbstractType
 {
@@ -28,7 +29,14 @@ class DevisType extends AbstractType
                 'help' => 'Date sous forme DD/MM/YYYY',
             ])
             ->add('description')
-            ->add('taxe')
+            ->add('taxe', null, [
+                'constraints' => [
+                    new LessThanOrEqual([
+                        'value' => 20,
+                        'message' => 'La valeur maximale doit être de 20% ou moins.',
+                    ]),
+                ],
+            ])
             ->add('client', EntityType::class, [
                 'class' => Clients::class,
                 'choice_label' => 'nom', 
@@ -38,7 +46,6 @@ class DevisType extends AbstractType
                 'choice_label' => 'adresse', 
             ]);
             
-        // Affiche le champ "statut" uniquemen si on a passé l'option appropriée depuis le contrôleur
         if ($options['show_statut_field']) {
             $builder->add('statut', ChoiceType::class, [
                 'choices' => [
@@ -50,16 +57,15 @@ class DevisType extends AbstractType
             ]);
         }
 
-        $builder
-            ->add('list_produit', EntityType::class, [
-                'class' => Produits::class, 
-                'choice_label' => function ($produit) {
-                    return $produit->getNom() . ' - ' . $produit->getPrix() . ' €';
-                },
-                'expanded' => false,
-                'mapped' => false,
-            ]);
-
+        $builder->add('list_produit', HiddenType::class, [
+            'mapped' => false,
+            'required' => true,
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'La liste des produits ne peut pas être vide.',
+                ]),
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
