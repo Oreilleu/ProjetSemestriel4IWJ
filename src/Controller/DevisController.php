@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Devis;
+use App\Entity\Factures;
 use App\Entity\LignesDevis;
 use App\Entity\Produits;
 use App\Entity\User;
@@ -12,6 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTime;
+use DateTimeImmutable;
 
 #[Route('/devis')]
 class DevisController extends AbstractController
@@ -149,8 +152,10 @@ class DevisController extends AbstractController
         }
 
         $taxe = $devi->getTaxe();
+        $status = $devi->getStatut();
         
         if ($form->isSubmitted() && $form->isValid()) {
+            
             foreach ($productsAlreadyInDevis as $ligneDevis) {
                 $entityManager->remove($ligneDevis);
             }
@@ -185,8 +190,25 @@ class DevisController extends AbstractController
             }
 
             $entityManager->flush();
+
+            if($status == 'Accepté') {
+                $facture = new Factures();
+                $facture->setTotalHt($devi->getTotalHt());
+                $facture->setTotalTtc($devi->getTotalHt() * $devi->getTaxe()); 
+                $facture->setTaxe($devi->getTaxe());
+                $facture->setStatut('Pas encore payé');
+                $facture->setIdDevis($devi);
+                $facture->setNameClient($devi->getClient()->getNom() . ' ' . $devi->getClient()->getPrenom());
+                $facture->setCreatedAt(new DateTimeImmutable());
             
-            return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
+                $entityManager->persist($facture);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_factures_index', [], Response::HTTP_SEE_OTHER);
+            } else {
+                return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
+            }
+            
         }
         
         return $this->render('devis/edit.html.twig', [

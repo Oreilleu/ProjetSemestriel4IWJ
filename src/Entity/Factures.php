@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\FacturesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FacturesRepository::class)]
@@ -16,30 +15,39 @@ class Factures
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    
+    #[ORM\Column]
+    private ?string $statut = null;
+    
+    #[ORM\Column]
+    private ?float $taxe = null;
+
+    #[ORM\Column]
+    private ?string $name_client = null;
+
+    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\ManyToOne(inversedBy: 'factures')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Devis $id_devis = null;
 
-    #[ORM\Column]
-    private ?int $statut = null;
-
-    #[ORM\Column]
-    private ?float $taxe = null;
-
-    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTimeImmutable $created_at = null;
-
     #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: Paiements::class, orphanRemoval: true)]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $paiements;
 
     #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: ModePaiements::class, orphanRemoval: true)]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $modePaiements;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: LignesDevis::class)]
+    private Collection $lignesDevis;
+
+    #[ORM\Column(nullable: false)]
     private ?float $total_ht = null;
+
+    #[ORM\Column(nullable: false)]
+    private ?float $total_ttc = null;
 
     public function __construct()
     {
@@ -50,18 +58,6 @@ class Factures
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): static
-    {
-        $this->date = $date;
-
-        return $this;
     }
 
     public function getIdDevis(): ?Devis
@@ -76,12 +72,12 @@ class Factures
         return $this;
     }
 
-    public function getStatut(): ?int
+    public function getStatut(): ?string
     {
         return $this->statut;
     }
 
-    public function setStatut(int $statut): static
+    public function setStatut(string $statut): static
     {
         $this->statut = $statut;
 
@@ -96,6 +92,18 @@ class Factures
     public function setTaxe(float $taxe): static
     {
         $this->taxe = $taxe;
+
+        return $this;
+    }
+
+    public function getNameClient(): ?string
+    {
+        return $this->name_client;
+    }
+
+    public function setNameClient(string $name_client): static
+    {
+        $this->name_client = $name_client;
 
         return $this;
     }
@@ -180,6 +188,45 @@ class Factures
     public function setTotalHt(?float $total_ht): static
     {
         $this->total_ht = $total_ht;
+
+        return $this;
+    }
+
+    public function getTotalTtc(): ?float
+    {
+        return $this->total_ttc;
+    }
+
+    public function setTotalTtc(?float $total_ttc): static
+    {
+        $this->total_ttc = $total_ttc;
+
+        return $this;
+    }
+
+    public function getLignesDevis(): Collection
+    {
+        return $this->lignesDevis;
+    }
+
+    public function addLignesDevi(LignesDevis $lignesDevi): static
+    {
+        if (!$this->lignesDevis->contains($lignesDevi)) {
+            $this->lignesDevis->add($lignesDevi);
+            $lignesDevi->setIdFactures($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLignesDevi(LignesDevis $lignesDevi): static
+    {
+        if ($this->lignesDevis->removeElement($lignesDevi)) {
+            // set the owning side to null (unless already changed)
+            if ($lignesDevi->getIdFactures() === $this) {
+                $lignesDevi->setIdFactures(null);
+            }
+        }
 
         return $this;
     }

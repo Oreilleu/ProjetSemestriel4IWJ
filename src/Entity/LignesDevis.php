@@ -31,6 +31,10 @@ class LignesDevis
 
     #[ORM\ManyToOne(inversedBy: 'lignesDevis')]
     #[ORM\JoinColumn(nullable: true)]
+    private ?Factures $id_factures = null;
+
+    #[ORM\ManyToOne(inversedBy: 'lignesDevis')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Produits $id_produit = null;
 
     public function getId(): ?int
@@ -77,6 +81,19 @@ class LignesDevis
     public function setIdProduit(?Produits $id_produit): static
     {
         $this->id_produit = $id_produit;
+
+        return $this;
+    }
+
+
+    public function getIdFactures(): ?Factures
+    {
+        return $this->id_factures;
+    }
+
+    public function setIdFactures(?Factures $id_factures): static
+    {
+        $this->id_factures = $id_factures;
 
         return $this;
     }

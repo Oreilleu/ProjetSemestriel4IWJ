@@ -3,41 +3,63 @@
 {% block title %}Factures index{% endblock %}
 
 {% block body %}
-    <h1>Factures index</h1>
+    {{ include('components/_title.html.twig', { content: 'Liste des Factures'}) }}
 
-    <table class="table">
-        <thead>
+    {% if factures is empty %}
+        {{ include('components/_empty_message.html.twig', { content: 'Aucune facture n\'a été trouvé.' }) }}
+    {% else %}
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-primary-100 font-title">
             <tr>
-                <th>Id</th>
-                <th>Date</th>
-                <th>Statut</th>
-                <th>Taxe</th>
-                <th>Created_at</th>
-                <th>Total_ht</th>
-                <th>actions</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Statut
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Client
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Prix TTC
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                </th>
             </tr>
-        </thead>
-        <tbody>
-        {% for facture in factures %}
-            <tr>
-                <td>{{ facture.id }}</td>
-                <td>{{ facture.date ? facture.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ facture.statut }}</td>
-                <td>{{ facture.taxe }}</td>
-                <td>{{ facture.createdAt ? facture.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ facture.totalHt }}</td>
-                <td>
-                    <a href="{{ path('app_factures_show', {'id': facture.id}) }}">show</a>
-                    <a href="{{ path('app_factures_edit', {'id': facture.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-color3-50 font-subtitle">
+            {% for facture in factures %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.getCreatedAt() ? facture.getCreatedAt()|date('d/m/Y') : '' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.statut }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.getNameClient() }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.getTotalTtc() }} €</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
+                        {% if facture.statut != 'Accepté' %}
+                            <a href="/factures/{{ facture.id }}/edit">
+                                <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                                    {{ include('components/SVG/_update_SVG.html.twig') }}
+                                </button>
+                            </a>
+                        {% endif %}
+                        {{ include('components/_delete_form.html.twig', {
+                            item_id: facture.id,
+                            path: 'factures',
+                            labelButton: include('components/SVG/_delete_SVG.html.twig'),
+                            title: "Suppression de la facture : " ~ facture.id,
+                            content: "Êtes-vous sûr de vouloir supprimer cette facture ?",
+                            classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
+                        }) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 
-    <a href="{{ path('app_factures_new') }}">Create new</a>
+    {{ include('components/_link.html.twig', { 
+        content: 'Créer une facture',
+        path: 'app_factures_new'
+    } ) }}
 {% endblock %}

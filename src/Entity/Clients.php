@@ -33,7 +33,6 @@ class Clients
     #[ORM\Column(length: 255)]
     private ?string $numero_siret = null;
 
-    
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $cp = null;
     
