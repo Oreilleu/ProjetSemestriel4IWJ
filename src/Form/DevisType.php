@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\Clients;
 use App\Entity\Devis;
 use App\Entity\Lots;
-use PHPUnit\Framework\Constraint\Callback;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -44,11 +44,13 @@ class DevisType extends AbstractType
             ])
             ->add('client', EntityType::class, [
                 'class' => Clients::class,
-                'choice_label' => 'nom', 
+                'choice_label' => 'nom',
+                'choices' => $options['clients'],
             ])
             ->add('id_lots', EntityType::class, [
                 'class' => Lots::class,
-                'choice_label' => 'adresse', 
+                'choice_label' => 'adresse',
+                'choices' => $options['lots'],
             ]);
             
         if ($options['show_statut_field']) {
@@ -77,7 +79,9 @@ class DevisType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Devis::class,
-            'show_statut_field' => false, 
+            'show_statut_field' => false,
+            'clients' => Clients::class,
+            'lots' => Lots::class
         ]);
     }
 }

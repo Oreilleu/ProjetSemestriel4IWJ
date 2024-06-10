@@ -54,6 +54,9 @@ class Entreprises
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Devis::class, cascade: ["remove"])]
     private Collection $devis;
 
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Lots::class, cascade: ["remove"])]
+    private Collection $lots;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -308,6 +311,33 @@ class Entreprises
             // set the owning side to null (unless already changed)
             if ($devis->getIdEntreprise() === $this) {
                 $devis->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLots(): Collection
+    {
+        return $this->lots;
+    }
+
+    public function addLot(Lots $lot): self
+    {
+        if (!$this->lots->contains($lot)) {
+            $this->lots->add($lot);
+            $lot->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLot(Lots $lot): self
+    {
+        if ($this->lots->removeElement($lot)) {
+            // set the owning side to null (unless already changed)
+            if ($lot->getIdEntreprise() === $this) {
+                $lot->setIdEntreprise(null);
             }
         }
 

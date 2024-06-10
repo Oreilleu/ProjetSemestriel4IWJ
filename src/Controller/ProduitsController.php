@@ -53,11 +53,20 @@ class ProduitsController extends AbstractController
     #[Route('/new', name: 'app_produits_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $produit = new Produits();
-        $form = $this->createForm(ProduitsType::class, $produit);
-        $form->handleRequest($request);
-
         $user = $this->getUser();
+
+        if (!$user instanceof User)  {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $entreprise = $user->getIdEntreprise();
+
+        $produit = new Produits();
+        $form = $this->createForm(ProduitsType::class, $produit, [
+            'categories' => $entreprise->getCategories(),
+        ]);
+
+        $form->handleRequest($request);
 
         if(!$user instanceof User) {
             return $this->redirectToRoute('app_register');
@@ -111,18 +120,23 @@ class ProduitsController extends AbstractController
         ]);
     }
 
-    // #[Route('/{id}', name: 'app_produits_show', methods: ['GET'])]
-    // public function show(Produits $produit): Response
-    // {
-    //     return $this->render('produits/show.html.twig', [
-    //         'produit' => $produit,
-    //     ]);
-    // }
-
     #[Route('/{id}/edit', name: 'app_produits_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Produits $produit, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ProduitsType::class, $produit);
+        $user = $this->getUser();
+
+        if (!$user instanceof User)  {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $entreprise = $user->getIdEntreprise();
+
+        $produit = new Produits();
+        
+        $form = $this->createForm(ProduitsType::class, $produit, [
+            'categories' => $entreprise->getCategories(),
+        ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Lots;
+use App\Entity\User;
 use App\Form\LotsType;
 use App\Repository\LotsRepository;
 use App\Repository\ClientsRepository;
@@ -18,20 +19,43 @@ class LotsController extends AbstractController
     #[Route('/', name: 'app_lots_index', methods: ['GET'])]
     public function index(LotsRepository $lotsRepository,ClientsRepository $clientsRepository): Response
     {
+        $user = $this->getUser();
+
+        if (!$user instanceof User || !$user) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $entreprise = $user->getIdEntreprise();
+
+        $lots = $entreprise->getLots();
+
         return $this->render('lots/index.html.twig', [
-            'clients' => $clientsRepository->findAll(),
-            'lots' => $lotsRepository->findAll(),
+            'lots' => $lots,
         ]);
     }
 
     #[Route('/new', name: 'app_lots_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+
+        if (!$user instanceof User || !$user) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $entreprise = $user->getIdEntreprise();
+
         $lot = new Lots();
-        $form = $this->createForm(LotsType::class, $lot);
+        $form = $this->createForm(LotsType::class, $lot, [
+            'clients' => $entreprise->getClients(),
+        ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $lot->setIdEntreprise($entreprise);
+
             $entityManager->persist($lot);
             $entityManager->flush();
 
@@ -44,18 +68,22 @@ class LotsController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_lots_show', methods: ['GET'])]
-    public function show(Lots $lot): Response
-    {
-        return $this->render('lots/show.html.twig', [
-            'lot' => $lot,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_lots_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Lots $lot, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(LotsType::class, $lot);
+        $user = $this->getUser();
+
+        if (!$user instanceof User || !$user) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $entreprise = $user->getIdEntreprise();
+
+        $lot = new Lots();
+        $form = $this->createForm(LotsType::class, $lot, [
+            'clients' => $entreprise->getClients(),
+        ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

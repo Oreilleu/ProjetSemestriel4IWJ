@@ -50,7 +50,10 @@ class DevisController extends AbstractController
         $produits = $entreprise->getProduits();
 
         $devis = new Devis();
-        $form = $this->createForm(DevisType::class, $devis);
+        $form = $this->createForm(DevisType::class, $devis, [
+            'clients' => $entreprise->getClients(),
+            'lots' => $entreprise->getLots(),
+        ]);
         $form->handleRequest($request);
 
         $data = $request->request->all();
@@ -131,6 +134,8 @@ class DevisController extends AbstractController
         
         $form = $this->createForm(DevisType::class, $devi, [
             'show_statut_field' => true, 
+            'clients' => $entreprise->getClients(),
+            'lots' => $entreprise->getLots(),
         ]);
 
         $form->handleRequest($request);

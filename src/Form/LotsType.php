@@ -6,7 +6,6 @@ use App\Entity\Clients;
 use App\Entity\Lots;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,6 +24,7 @@ class LotsType extends AbstractType
             ->add('id_client', EntityType::class, [
                 'class' => Clients::class,
                 'choice_label' => 'email',
+                'choices' => $options['clients'],
                 'placeholder' => 'Choisir un client',
             ])
         ;
@@ -34,6 +34,7 @@ class LotsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Lots::class,
+            'clients' => Clients::class,
         ]);
     }
 }
