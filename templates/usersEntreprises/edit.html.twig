@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un utilisateur{% endblock %}
+
+{% block body %}
+    {{ include('components/_title.html.twig', { content: 'Modifier un utilisateur'}) }}
+
+    {{ include('usersEntreprises/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    {{ include('components/_link.html.twig', {
+        path: "app_users_index",
+        content: "Liste des utilisateurs"
+    }) }}
+
+{% endblock %}
