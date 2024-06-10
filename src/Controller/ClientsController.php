@@ -6,6 +6,7 @@ use App\Entity\Clients;
 use App\Entity\User;
 use App\Form\ClientsType;
 use App\Repository\ClientsRepository;
+use App\Repository\LotsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,6 +56,47 @@ class ClientsController extends AbstractController
         return new JsonResponse($clients);
     }
 
+    #[Route('/by-lot', name: 'app_client_lot', methods: ['GET'])]
+    public function getLotsByClient(Request $request, LotsRepository $lotsRepository): JsonResponse
+    {
+        $user = $this->getUser();
+        
+        if (!$user instanceof User || !$user) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $lotId = $request->query->get('lotId');
+        $userEntreprise = $user->getIdEntreprise();
+        $responseArray = [];
+        
+        if ($lotId == 'all') {
+            $clientsByEntreprise = $userEntreprise->getClients();
+            foreach ($clientsByEntreprise as $client) {
+                $responseArray[] = ['id' => $client->getId(), 'nom' => $client->getNom()];
+            }
+            return new JsonResponse($responseArray);
+        }
+
+        $lot = $lotsRepository->find($lotId);
+
+        if ($lot->getIdEntreprise() !== $userEntreprise) {
+            return new JsonResponse(['error' => 'Pas authorisé'], JsonResponse::HTTP_FORBIDDEN);
+        }
+            
+        if (!$lot) {
+            return new JsonResponse(['error' => 'Lot not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+        
+        if (!$lotId) {
+            return new JsonResponse(['error' => 'Lot ID is required'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+                
+        $clientByLot = $lot->getIdClient();
+        $responseArray[] = ['id' => $clientByLot->getId(), 'nom' => $clientByLot->getNom()];
+
+        return new JsonResponse($responseArray);
+    }
+
     #[Route('/new', name: 'app_clients_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -82,14 +124,6 @@ class ClientsController extends AbstractController
         return $this->render('clients/new.html.twig', [
             'client' => $client,
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_clients_show', methods: ['GET'])]
-    public function show(Clients $client): Response
-    {
-        return $this->render('clients/show.html.twig', [
-            'client' => $client,
         ]);
     }
 

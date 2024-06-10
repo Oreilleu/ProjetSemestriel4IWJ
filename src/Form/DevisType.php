@@ -46,11 +46,13 @@ class DevisType extends AbstractType
                 'class' => Clients::class,
                 'choice_label' => 'nom',
                 'choices' => $options['clients'],
+                'placeholder' => 'Choisir un client',
             ])
             ->add('id_lots', EntityType::class, [
                 'class' => Lots::class,
                 'choice_label' => 'adresse',
                 'choices' => $options['lots'],
+                'placeholder' => 'Choisir un lot',
             ]);
             
         if ($options['show_statut_field']) {

@@ -78,6 +78,7 @@
 {{ form_end(form) }}
 
 <script>
+    // Gestion de l'ajout de produits dans la liste des produits du devis
     document.addEventListener('DOMContentLoaded', function() {
         const productNameDisplay = document.querySelector('[data-list-product-id="productNameDisplay"]');
         const existingProducts = [...document.querySelectorAll('li[data-product-id]')].map(li => ({
@@ -201,5 +202,47 @@
         removeProduct(listItem);
         });
     })
+
+
+    // Get lots by client
+    document.getElementById('devis_client').addEventListener('change', function() {
+        var clientId = this.value ? this.value : 'all';
+        fetch('/lots/by-client?clientId=' + clientId)
+            .then(response => response.json())
+            .then(data => {
+                var select = document.getElementById('devis_id_lots');
+                for (var i = select.options.length - 1; i > 0; i--) {
+                    select.remove(i);
+                }
+                data.forEach(function(lot) {
+                    var option = new Option(lot.adresse, lot.id);
+                    select.appendChild(option);
+                if(select.options.length > 1) {
+                    select.selectedIndex = 1;
+                }
+            });
+        });
+    });
+
+    // Get client by lot
+    document.getElementById('devis_id_lots').addEventListener('change', function() {
+        var lotId = this.value ? this.value : 'all';
+        fetch('/clients/by-lot?lotId=' + lotId)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                var select = document.getElementById('devis_client');
+                for (var i = select.options.length - 1; i > 0; i--) {
+                    select.remove(i);
+                }
+                data.forEach(function(client) {
+                    var option = new Option(client.nom, client.id);
+                    select.appendChild(option);
+                });
+                if(select.options.length > 1) {
+                    select.selectedIndex = 1;
+                }
+        });
+    });
 
 </script>
