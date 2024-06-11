@@ -34,7 +34,7 @@ class LignesDevis
     private ?Factures $id_factures = null;
 
     #[ORM\ManyToOne(inversedBy: 'lignesDevis')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Produits $id_produit = null;
 
     public function getId(): ?int

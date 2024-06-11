@@ -121,7 +121,7 @@ class ProduitsController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_produits_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Produits $produit, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Produits $product, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
 
@@ -131,9 +131,7 @@ class ProduitsController extends AbstractController
 
         $entreprise = $user->getIdEntreprise();
 
-        $produit = new Produits();
-        
-        $form = $this->createForm(ProduitsType::class, $produit, [
+        $form = $this->createForm(ProduitsType::class, $product, [
             'categories' => $entreprise->getCategories(),
         ]);
 
@@ -146,7 +144,7 @@ class ProduitsController extends AbstractController
         }
 
         return $this->render('produits/edit.html.twig', [
-            'produit' => $produit,
+            'produit' => $product,
             'form' => $form,
         ]);
     }

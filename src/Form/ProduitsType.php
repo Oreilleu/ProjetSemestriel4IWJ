@@ -26,6 +26,7 @@ class ProduitsType extends AbstractType
                 'choice_label' => 'nom',
                 'choices' => $options['categories'],
                 'placeholder' => 'Choisir une catégorie',
+                'required' => false,
             ])
         ;
     }

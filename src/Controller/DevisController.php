@@ -57,6 +57,7 @@ class DevisController extends AbstractController
             'clients' => $entreprise->getClients(),
             'lots' => $entreprise->getLots(),
         ]);
+
         $form->handleRequest($request);
 
         $data = $request->request->all();
@@ -162,11 +163,14 @@ class DevisController extends AbstractController
             $entityManager->flush();
             
             $totalPrice = 0;
+
             foreach($listProduitArray as $product) {
                 $productId = $product['productId'];
                 $produit = $entityManager->getRepository(Produits::class)->find($productId);
-                
-                $priceWithFee = $produit->getPrix() * (1 + $taxe / 100);
+
+                $priceProduct = $product['price'] ? $product['price'] : $produit->getPrix();
+
+                $priceWithFee = $priceProduct * (1 + $taxe / 100);
                 $totalPrice += $priceWithFee * $product['quantity'];
             }
 
@@ -177,13 +181,15 @@ class DevisController extends AbstractController
             foreach ($listProduitArray as $product) { 
                 $produitId = $product['productId'];
                 $produit = $entityManager->getRepository(Produits::class)->find($produitId);
+                $productName = $product['name'] ? $product['name'] : $produit->getNom();
+                $productPrice = $product['price'] ? $product['price'] : $produit->getPrix();
                 
                 $lignesDevi = new LignesDevis();
                 $lignesDevi->setIdDevis($devi);
                 $lignesDevi->setIdProduit($produit);
                 $lignesDevi->setIdStrProduit($produitId);
-                $lignesDevi->setNameProduct($produit->getNom());
-                $lignesDevi->setPrixProduct($produit->getPrix());
+                $lignesDevi->setNameProduct($productName);
+                $lignesDevi->setPrixProduct($productPrice);
                 $lignesDevi->setQuantite($product['quantity']);
         
                 $entityManager->persist($lignesDevi);

@@ -56,7 +56,7 @@
             {% for existingProduct in productsAlreadyInDevis %}
                 <li class='inline-flex items-center justify-between border-b border-gray-200 py-2'>
                     <span data-cross>{{ include('components/SVG/_cross_SVG.html.twig') }}</span>
-                    <span data-product-id={{ existingProduct.getIdProduit().id }}>{{ existingProduct.getIdProduit().nom }} - {{ existingProduct.getPrixProduct() }} €</span>
+                    <span data-product-id={{ existingProduct.getIdStrProduit() }}>{{ existingProduct.getNameProduct() }} - {{ existingProduct.getPrixProduct() }} €</span>
                     <input 
                         class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
                         type="number" 
@@ -64,7 +64,9 @@
                         value={{ existingProduct.getQuantite() }}
                         min="1"
                         max="99"
-                        data-product-id-input-quantity={{ existingProduct.getIdProduit().id }} 
+                        data-product-id-input-quantity={{ existingProduct.getIdStrProduit() }} 
+                        data-product-name={{ existingProduct.getNameProduct() }}
+                        data-product-price={{ existingProduct.getPrixProduct() }}
                     />
                 </li>
             {% endfor %}
@@ -81,9 +83,12 @@
     // Gestion de l'ajout de produits dans la liste des produits du devis
     document.addEventListener('DOMContentLoaded', function() {
         const productNameDisplay = document.querySelector('[data-list-product-id="productNameDisplay"]');
+
         const existingProducts = [...document.querySelectorAll('li[data-product-id]')].map(li => ({
             productId: li.querySelector('span[data-product-id]').getAttribute('data-product-id'),
-            quantity: li.querySelector('input[data-product-id-input-quantity]').value
+            quantity: li.querySelector('input').value,
+            name: li.querySelector('input').getAttribute('data-product-name'),
+            price: li.querySelector('input').getAttribute('data-product-price'),
         }));
 
         updateProductListValue(productNameDisplay, existingProducts);
@@ -95,7 +100,9 @@
         if (!products) {
             products = Array.from(container.querySelectorAll('li input[data-product-id-input-quantity]')).map(input => ({
                 productId: input.getAttribute('data-product-id-input-quantity'),
-                quantity: input.value
+                quantity: input.value,
+                name: input.getAttribute('data-product-name'),
+                price: input.getAttribute('data-product-price'),
             }));
         }
 
@@ -137,6 +144,8 @@
         const productText = document.createElement('span');
         productText.textContent = productName;
         productText.setAttribute('data-product-id', productId);
+        productText.setAttribute('data-product-name', null);
+        productText.setAttribute('data-product-price', null);
         listItem.appendChild(productText);
 
         const quantityInput = createQuantityInput(productId);
@@ -177,7 +186,9 @@
     function updateProductListValue(container) {
         let products = Array.from(container.querySelectorAll('li input[data-product-id-input-quantity]')).map(input => ({
             productId: input.getAttribute('data-product-id-input-quantity'),
-            quantity: input.value
+            quantity: input.value,
+            name: input.getAttribute('data-product-name'),
+            price: input.getAttribute('data-product-price'),
         }));
 
         document.getElementById('devis_list_produit').value = JSON.stringify(products);
@@ -187,7 +198,9 @@
                 console.log("Événement change détecté");
                 products = Array.from(container.querySelectorAll('li input[data-product-id-input-quantity]')).map(input => ({
                     productId: input.getAttribute('data-product-id-input-quantity'),
-                    quantity: input.value
+                    quantity: input.value,
+                    name: input.getAttribute('data-product-name'),
+                    price: input.getAttribute('data-product-price'),
                 }));
 
                 document.getElementById('devis_list_produit').value = JSON.stringify(products);

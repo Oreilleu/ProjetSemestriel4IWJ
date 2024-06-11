@@ -122,7 +122,6 @@ class LotsController extends AbstractController
 
         $entreprise = $user->getIdEntreprise();
 
-        $lot = new Lots();
         $form = $this->createForm(LotsType::class, $lot, [
             'clients' => $entreprise->getClients(),
         ]);
