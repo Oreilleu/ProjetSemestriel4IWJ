@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Entity(repositoryClass: DevisRepository::class)]
 class Devis
 {
@@ -231,9 +230,6 @@ class Devis
         return $this;
     }
 
-    /**
-     * @return Collection<int, LignesDevis>
-     */
     public function getLignesDevis(): Collection
     {
         return $this->lignesDevis;

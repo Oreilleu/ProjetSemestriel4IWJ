@@ -29,7 +29,7 @@ class LignesDevis
     #[ORM\JoinColumn(nullable: false)]
     private ?Devis $id_devis = null;
 
-    #[ORM\ManyToOne(inversedBy: 'lignesDevis')]
+    #[ORM\ManyToOne(targetEntity: Factures::class, inversedBy: 'lignesDevis')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Factures $id_factures = null;
 

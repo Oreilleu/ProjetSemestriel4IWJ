@@ -198,17 +198,28 @@ class DevisController extends AbstractController
             $entityManager->flush();
 
             if($status == 'Accepté') {
+                $entityManager->refresh($devi);
+                $ligneDevis = $devi->getLignesDevis();
+
                 $facture = new Factures();
                 $facture->setTotalHt($devi->getTotalHt());
-                $facture->setTotalTtc($devi->getTotalHt() * $devi->getTaxe()); 
+                $facture->setTotalTtc($devi->getTotalHt() * (1 + $devi->getTaxe() / 100)); 
                 $facture->setTaxe($devi->getTaxe());
                 $facture->setStatut('Pas encore payé');
                 $facture->setIdDevis($devi);
                 $facture->setNameClient($devi->getClient()->getNom() . ' ' . $devi->getClient()->getPrenom());
                 $facture->setCreatedAt(new DateTimeImmutable());
-            
+                
                 $entityManager->persist($facture);
                 $entityManager->flush();
+
+                foreach ($ligneDevis as $ligne) {
+                    $ligne->setIdFactures($facture); 
+                    $entityManager->persist($ligne);
+                }
+
+                $entityManager->flush();
+            
 
                 return $this->redirectToRoute('app_factures_index', [], Response::HTTP_SEE_OTHER);
             } else {

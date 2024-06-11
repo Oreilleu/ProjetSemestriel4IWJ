@@ -40,7 +40,7 @@ class Factures
     #[ORM\JoinColumn(nullable: true)]
     private Collection $modePaiements;
 
-    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: LignesDevis::class)]
+    #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: LignesDevis::class)]
     private Collection $lignesDevis;
 
     #[ORM\Column(nullable: false)]
