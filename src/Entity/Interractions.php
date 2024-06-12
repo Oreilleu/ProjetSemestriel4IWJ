@@ -31,7 +31,6 @@ class Interractions
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Factures $id_factures = null;
 
-
     public function getId(): ?int
     {
         return $this->id;
