@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Devis;
 use App\Entity\Factures;
+use App\Entity\Interractions;
 use App\Entity\LignesDevis;
 use App\Entity\Produits;
 use App\Entity\User;
@@ -88,6 +89,15 @@ class DevisController extends AbstractController
 
             $entityManager->persist($devis);
 
+            $interraction = new Interractions();
+            $interraction->setIdClient($devis->getClient());
+            $interraction->setIdDevis($devis);
+            $interraction->setContent('Un nouveau devis (id : ' . $devis->getId() . ') a été créé, son status est : En cours');
+            $interraction->setCreatedAt(new DateTimeImmutable());
+            $entityManager->persist($interraction);
+
+            $devis->addInterraction($interraction);
+
             foreach ($listProduitArray as $product) { 
                 $produitId = $product['productId'];
                 $produit = $entityManager->getRepository(Produits::class)->find($produitId);
@@ -158,7 +168,6 @@ class DevisController extends AbstractController
 
         $taxe = $devi->getTaxe();
         $status = $devi->getStatut();
-        
         if ($form->isSubmitted() && $form->isValid()) {
             
             foreach ($productsAlreadyInDevis as $ligneDevis) {
@@ -199,6 +208,13 @@ class DevisController extends AbstractController
                 $entityManager->persist($lignesDevi);
             }
 
+            $interraction = new Interractions();
+            $interraction->setIdClient($devi->getClient());
+            $interraction->setIdDevis($devi);
+            $interraction->setContent('Un devis a été modifié (id : ' . $devi->getId() . '), son status est : ' . $status);
+            $interraction->setCreatedAt(new DateTimeImmutable());
+            $entityManager->persist($interraction);
+
             $entityManager->flush();
 
             if($status == 'Accepté') {
@@ -209,13 +225,20 @@ class DevisController extends AbstractController
                 $facture->setTotalHt($devi->getTotalHt());
                 $facture->setTotalTtc($devi->getTotalHt() * (1 + $devi->getTaxe() / 100)); 
                 $facture->setTaxe($devi->getTaxe());
-                $facture->setStatut('Pas encore payé');
+                $facture->setStatut('En cours de paiement');
                 $facture->setIdDevis($devi);
                 $facture->setNameClient($devi->getClient()->getNom() . ' ' . $devi->getClient()->getPrenom());
                 $facture->setCreatedAt(new DateTimeImmutable());
                 
                 $entityManager->persist($facture);
                 $entityManager->flush();
+
+                $interraction = new Interractions();
+                $interraction->setIdClient($devi->getClient());
+                $interraction->setIdFactures($facture);
+                $interraction->setContent('Une facture a été créer (id : ' . $facture->getId() . '), son status est : ' . $facture->getStatut());
+                $interraction->setCreatedAt(new DateTimeImmutable());
+                $entityManager->persist($interraction);
 
                 foreach ($ligneDevis as $ligne) {
                     $ligne->setIdFactures($facture); 

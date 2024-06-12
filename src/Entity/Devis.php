@@ -52,7 +52,7 @@ class Devis
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Relances::class, orphanRemoval: true)]
     private Collection $relances;
 
-    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Interractions::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Interractions::class)]
     private Collection $interractions;
     
     public function __construct()
