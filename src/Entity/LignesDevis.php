@@ -24,16 +24,16 @@ class LignesDevis
     
     #[ORM\Column]
     private ?int $quantite = null;
-
-    #[ORM\ManyToOne(inversedBy: 'lignesDevis')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Devis $id_devis = null;
-
+    
     #[ORM\ManyToOne(targetEntity: Factures::class, inversedBy: 'lignesDevis')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Factures $id_factures = null;
 
-    #[ORM\ManyToOne(inversedBy: 'lignesDevis')]
+    #[ORM\ManyToOne(targetEntity: Devis::class,inversedBy: 'lignesDevis')]
+    #[ORM\JoinColumn(nullable: true,  onDelete: 'SET NULL')]
+    private ?Devis $id_devis = null;
+
+    #[ORM\ManyToOne(targetEntity: Produits::class, inversedBy: 'lignesDevis')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Produits $id_produit = null;
 

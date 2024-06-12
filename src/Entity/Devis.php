@@ -27,8 +27,26 @@ class Devis
 
     #[ORM\Column]
     private ?float $taxe = null;
-
-    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Factures::class, orphanRemoval: true)]
+    
+    #[ORM\Column(nullable: false)]
+    private ?float $total_ht = null;
+    
+    #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprises $id_entreprise = null;
+    
+    #[ORM\ManyToOne(targetEntity: Lots::class, inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Lots $id_lots = null;
+    
+    #[ORM\ManyToOne(targetEntity: Clients::class, inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Clients $client;
+    
+    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: LignesDevis::class)]
+    private Collection $lignesDevis;
+    
+    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Factures::class)]
     private Collection $factures;
 
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Relances::class, orphanRemoval: true)]
@@ -36,25 +54,7 @@ class Devis
 
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: Interractions::class, orphanRemoval: true)]
     private Collection $interractions;
-
-    #[ORM\Column(nullable: false)]
-    private ?float $total_ht = null;
-
-    #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'devis')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Entreprises $id_entreprise = null;
-
-    #[ORM\ManyToOne(targetEntity: Lots::class, inversedBy: 'devis')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Lots $id_lots = null;
-
-    #[ORM\ManyToOne(targetEntity: Clients::class, inversedBy: 'devis')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Clients $client;
-
-    #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: LignesDevis::class, cascade: ["remove"])]
-    private Collection $lignesDevis;
-
+    
     public function __construct()
     {
         $this->factures = new ArrayCollection();

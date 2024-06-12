@@ -3,7 +3,7 @@
 {% block title %}Edit Devis{% endblock %}
 
 {% block body %}
-    {{ include('components/_title.html.twig', { content: 'Modifier le devis'}) }}
+    {{ include('components/_title.html.twig', { content: 'Modifier le devis ' ~ devi.id}) }}
 
     {{ include('devis/_form.html.twig', {
         button_label: 'Modifier',

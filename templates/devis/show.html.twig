@@ -3,40 +3,56 @@
 {% block title %}Devis{% endblock %}
 
 {% block body %}
-    <h1>Devis</h1>
+    {{ include('components/_title.html.twig', { content: 'Devis ' ~ devi.id}) }}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ devi.id }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ devi.date ? devi.date|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ devi.description }}</td>
-            </tr>
-            <tr>
-                <th>Statut</th>
-                <td>{{ devi.statut }}</td>
-            </tr>
-            <tr>
-                <th>Taxe</th>
-                <td>{{ devi.taxe }}</td>
-            </tr>
-            <tr>
-                <th>Total_ht</th>
-                <td>{{ devi.totalHt }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <ul class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
+        <li>
+            <span class="font-semibold text-gray-900 dark:text-white">Id : </span> {{ devi.id }}
+        </li>
+        <li>
+            <span class="font-semibold text-gray-900 dark:text-white">Date : </span> {{ devi.date ? devi.date|date('d/m/Y') : '' }}
+        </li>
+        <li>
+            <span class="font-semibold text-gray-900 dark:text-white">Description : </span> {{ devi.description }}
+        </li>
+        <li>
+            <span class="font-semibold text-gray-900 dark:text-white">Statut : </span> {{ devi.statut }}
+        </li>
+        <li>
+            <span class="font-semibold text-gray-900 dark:text-white">Taxe : </span> {{ devi.taxe }}
+        </li>
+        <li>
+            <span class="font-semibold text-gray-900 dark:text-white">Total HT : </span> {{ devi.totalHt }} €
+        </li>
+        <li>
+           <span class="font-semibold text-gray-900 dark:text-white">Total TTC : </span> {{ devi.totalHt * (1 + devi.taxe / 100)}} €
+        </li>
+        <li>
+            <span class="font-semibold text-gray-900 dark:text-white">Client : </span> {{ devi.getClient().nom}}
+        </li>
+    </ul>
 
-    <a href="{{ path('app_devis_index') }}">back to list</a>
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Liste des produits</h2>
 
-    <a href="{{ path('app_devis_edit', {'id': devi.id}) }}">edit</a>
+    <ul>
+        {% for ligneDevis in devi.getLignesDevis() %}
+            <li>
+                <span class="font-semibold text-gray-900 dark:text-white">{{ ligneDevis.getNameProduct() }} : </span> {{ ligneDevis.getQuantite() }} x {{ ligneDevis.getPrixProduct }} €
+            </li>
+        {% endfor %}
+    </ul>
 
-    {{ include('devis/_delete_form.html.twig') }}
+    {% if devi.statut != 'Accepté' %}
+        {{ include('components/_link.html.twig', {
+            content: 'Modifier le devis',
+            path: 'app_devis_edit',
+            id: devi.id
+        }) }}
+    {% endif %}
+
+    {{ include('components/_link.html.twig', {
+        content: 'Retour à la liste',
+        path: 'app_devis_index'
+    }) }}
+
 {% endblock %}

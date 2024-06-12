@@ -126,10 +126,14 @@ class DevisController extends AbstractController
     #[Route('/{id}/edit', name: 'app_devis_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Devis $devi, EntityManagerInterface $entityManager): Response
     {
+
         $user = $this->getUser();
         
         if (!$user instanceof User || !$user) {
             return $this->redirectToRoute('app_register');
+        }
+        if($devi->getStatut() == 'Accepté') {
+            return $this->redirectToRoute('app_devis_show', ['id' => $devi->getId()], Response::HTTP_SEE_OTHER);
         }
 
         $entreprise = $user->getIdEntreprise();
@@ -240,6 +244,15 @@ class DevisController extends AbstractController
     public function delete(Request $request, Devis $devi, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$devi->getId(), $request->request->get('_token'))) {
+
+            $lignesDevis = $devi->getLignesDevis();
+            foreach($lignesDevis as $ligneDevis) {
+
+                if(!$ligneDevis->getIdFactures()) {
+                    $entityManager->remove($ligneDevis);
+                }
+            }
+
             $entityManager->remove($devi);
             $entityManager->flush();
         }
