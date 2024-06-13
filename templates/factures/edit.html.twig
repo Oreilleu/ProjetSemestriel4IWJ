@@ -7,9 +7,11 @@
 
     {{ include('factures/_show_components.html.twig') }}
 
-    <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 uppercase my-6"> Ajouter un paiement </h3>  
+    {% if facture.getStatut() is not same as 'Payée' %}
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 uppercase my-6"> Ajouter un paiement </h3>  
 
-    {{ include('paiements/_form.html.twig')  }}
+        {{ include('paiements/_form.html.twig')  }}
+    {% endif %}
 
     {{ include('components/_link.html.twig', {
         content: 'Retour à la liste',

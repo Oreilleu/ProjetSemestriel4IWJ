@@ -2,10 +2,8 @@
 
 namespace App\Service;
 
-use App\Entity\Clients;
 use App\Entity\Devis;
 use App\Entity\Factures;
-use App\Entity\Interractions;
 use App\Entity\LignesDevis;
 use App\Entity\Produits;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,11 +13,13 @@ class DevisService
 {
     private $entityManager;
     private $emailService;
+    private $interractionService;
 
-    public function __construct(EntityManagerInterface $entityManager, EmailService $emailService)
+    public function __construct(EntityManagerInterface $entityManager, EmailService $emailService, InterractionService $interractionService)
     {
         $this->entityManager = $entityManager;
         $this->emailService = $emailService;
+        $this->interractionService = $interractionService;
     }
 
     public function handleDevisCreation(Devis $devis, array $requestData, $entreprise)
@@ -35,7 +35,7 @@ class DevisService
         $devis->setTotalHt($totalPrice);
         
         $this->entityManager->persist($devis);
-        $this->createDevisInterraction($devis, 'Un devis a été créé (id : ' . $devis->getId() . '), son statut est : ' . $devis->getStatut());
+        $this->interractionService->createDevisInterraction($devis, 'Un devis a été créé (id : ' . $devis->getId() . '), son statut est : ' . $devis->getStatut());
         $this->addLignesDevis($devis, $listProduitArray);
         
         $this->entityManager->flush();
@@ -93,30 +93,6 @@ class DevisService
         return $totalPrice;
     }
 
-    private function createDevisInterraction(Devis $devis, string $content)
-    {
-        $interraction = new Interractions();
-        $interraction->setIdClient($devis->getClient());
-        $interraction->setIdDevis($devis);
-        $interraction->setContent($content);
-        $interraction->setCreatedAt(new DateTimeImmutable());
-
-        $this->entityManager->persist($interraction);
-        $devis->addInterraction($interraction);
-    }
-
-    private function createFactureInterraction(Factures $facture, string $content, Clients $idClient)
-    {
-        $interraction = new Interractions();
-        $interraction->setIdClient($idClient);
-        $interraction->setIdFactures($facture);
-        $interraction->setContent($content);
-        $interraction->setCreatedAt(new DateTimeImmutable());
-
-        $this->entityManager->persist($interraction);
-        $facture->addInterraction($interraction);
-    }
-
     private function addLignesDevis(Devis $devis, array $listProduitArray)
     {
         foreach ($listProduitArray as $product) {
@@ -171,7 +147,7 @@ class DevisService
 
         $this->entityManager->persist($devi);
         $this->addLignesDevis($devi, $listProduitArray);
-        $this->createDevisInterraction($devi, 'Un devis a été modifié (id : ' . $devi->getId() . '), son statut est : ' . $status);
+        $this->interractionService->createDevisInterraction($devi, 'Un devis a été modifié (id : ' . $devi->getId() . '), son statut est : ' . $status);
 
         $this->entityManager->flush();
 
@@ -207,7 +183,7 @@ class DevisService
 
         $this->entityManager->persist($facture);
 
-        $this->createFactureInterraction($facture, 'Une facture a été créée (id : ' . $facture->getId() . '), son statut est : ' . $facture->getStatut(), $devi->getClient());
+        $this->interractionService->createFactureInterraction($facture, 'Une facture a été créée (id : ' . $facture->getId() . '), son statut est : ' . $facture->getStatut(), $devi->getClient());
 
         foreach ($lignesDevis as $ligne) {
             $ligne->setIdFactures($facture);
