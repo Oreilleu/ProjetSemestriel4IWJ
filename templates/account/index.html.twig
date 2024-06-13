@@ -31,5 +31,17 @@
             title: 'Suppression de mon compte', 
             content: 'Attention cette action est irréversible et supprimera toute vos données de l\'application (entreprise, produit, devis, facture ...). Voulez vous vraiment supprimer votre compte ?'
         }) }}
+
+        {% if is_granted('ROLE_ADMIN') %}
+        {{ include('components/_link.html.twig', {
+        path: 'app_admin_user_add',
+        content: 'Ajouter un utilisateur'
+        }) }}
+        {% else %}
+        {{ include('components/_link.html.twig', {
+        path: 'app_user_add',
+        content: 'Ajouter un utilisateur'
+        }) }}
+        {% endif %}
     {% endif %}
 {% endblock %}

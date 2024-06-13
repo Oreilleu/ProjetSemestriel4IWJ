@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Users{% endblock %}
+{% block title %}Nouvel utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Create new Users</h1>
+    {{ include('components/_title.html.twig', { content: 'Ajouter un utilisateur'}) }}
+    
 
     {{ include('users/_form.html.twig') }}
 
     {{ include('components/_link.html.twig', {
-        path: "app_admin_users_index",
+        path: "app_users_index",
         content: "Liste des utilisateurs"
     }) }}
+
 {% endblock %}
