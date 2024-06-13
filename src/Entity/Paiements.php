@@ -14,16 +14,19 @@ class Paiements
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column]
+    private ?float $montant = null;
+
+    #[ORM\Column]
+    private ?string $method = null;
+
     #[ORM\ManyToOne(inversedBy: 'paiements')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Factures $id_facture = null;
 
-    #[ORM\Column]
-    private ?float $montant = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_paiement = null;
-
+    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $created_at = null;
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -41,6 +44,18 @@ class Paiements
         return $this;
     }
 
+    public function getMethod(): ?string
+    {
+        return $this->method;
+    }
+
+    public function setMethod(string $method): static
+    {
+        $this->method = $method;
+
+        return $this;
+    }
+
     public function getMontant(): ?float
     {
         return $this->montant;
@@ -53,14 +68,14 @@ class Paiements
         return $this;
     }
 
-    public function getDatePaiement(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->date_paiement;
+        return $this->created_at;
     }
 
-    public function setDatePaiement(\DateTimeInterface $date_paiement): static
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
-        $this->date_paiement = $date_paiement;
+        $this->created_at = $created_at;
 
         return $this;
     }

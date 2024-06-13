@@ -15,7 +15,6 @@ class Factures
     #[ORM\Column]
     private ?int $id = null;
 
-    
     #[ORM\Column]
     private ?string $statut = null;
     
@@ -25,34 +24,34 @@ class Factures
     #[ORM\Column]
     private ?string $name_client = null;
 
-    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTimeImmutable $created_at = null;
-
-    #[ORM\ManyToOne(inversedBy: 'factures')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Devis $id_devis = null;
-
-    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: Paiements::class, orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: true)]
-    private Collection $paiements;
-
-    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: ModePaiements::class, orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: true)]
-    private Collection $modePaiements;
-
-    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: LignesDevis::class)]
-    private Collection $lignesDevis;
-
     #[ORM\Column(nullable: false)]
     private ?float $total_ht = null;
-
+    
     #[ORM\Column(nullable: false)]
     private ?float $total_ttc = null;
+    
+    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $created_at = null;
+    
+    #[ORM\ManyToOne(inversedBy: 'factures')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?Devis $id_devis = null;
+
+    #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: LignesDevis::class)]
+    private Collection $lignesDevis;
+    
+    #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: Interractions::class)]
+    private Collection $interractions;
+    
+    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: Paiements::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private Collection $paiements;
 
     public function __construct()
     {
         $this->paiements = new ArrayCollection();
-        $this->modePaiements = new ArrayCollection();
+        $this->lignesDevis = new ArrayCollection();
+        $this->interractions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,9 +119,6 @@ class Factures
         return $this;
     }
 
-    /**
-     * @return Collection<int, Paiements>
-     */
     public function getPaiements(): Collection
     {
         return $this->paiements;
@@ -141,39 +137,8 @@ class Factures
     public function removePaiement(Paiements $paiement): static
     {
         if ($this->paiements->removeElement($paiement)) {
-            // set the owning side to null (unless already changed)
             if ($paiement->getIdFacture() === $this) {
                 $paiement->setIdFacture(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ModePaiements>
-     */
-    public function getModePaiements(): Collection
-    {
-        return $this->modePaiements;
-    }
-
-    public function addModePaiement(ModePaiements $modePaiement): static
-    {
-        if (!$this->modePaiements->contains($modePaiement)) {
-            $this->modePaiements->add($modePaiement);
-            $modePaiement->setIdFacture($this);
-        }
-
-        return $this;
-    }
-
-    public function removeModePaiement(ModePaiements $modePaiement): static
-    {
-        if ($this->modePaiements->removeElement($modePaiement)) {
-            // set the owning side to null (unless already changed)
-            if ($modePaiement->getIdFacture() === $this) {
-                $modePaiement->setIdFacture(null);
             }
         }
 
@@ -222,9 +187,34 @@ class Factures
     public function removeLignesDevi(LignesDevis $lignesDevi): static
     {
         if ($this->lignesDevis->removeElement($lignesDevi)) {
-            // set the owning side to null (unless already changed)
             if ($lignesDevi->getIdFactures() === $this) {
                 $lignesDevi->setIdFactures(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getInterractions(): Collection
+    {
+        return $this->interractions;
+    }
+
+    public function addInterraction(Interractions $interraction): static
+    {
+        if (!$this->interractions->contains($interraction)) {
+            $this->interractions->add($interraction);
+            $interraction->setIdFactures($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInterraction(Interractions $interraction): static
+    {
+        if ($this->interractions->removeElement($interraction)) {
+            if ($interraction->getIdFactures() === $this) {
+                $interraction->setIdFactures(null);
             }
         }
 

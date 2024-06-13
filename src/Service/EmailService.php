@@ -16,8 +16,9 @@ class EmailService
 
     public function sendEmail(string $to, string $subject, string $content): void
     {
+        // TODO : Mettre une adresse noreply
         $email = (new Email())
-            ->from('no-reply@facturation.com')
+            ->from('apicard18@myges.fr')
             ->to($to)
             ->subject($subject)
             ->html($content);

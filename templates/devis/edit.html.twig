@@ -3,7 +3,7 @@
 {% block title %}Edit Devis{% endblock %}
 
 {% block body %}
-    {{ include('components/_title.html.twig', { content: 'Modifier le devis'}) }}
+    {{ include('components/_title.html.twig', { content: 'Modifier le devis ' ~ devi.id}) }}
 
     {{ include('devis/_form.html.twig', {
         button_label: 'Modifier',
@@ -15,6 +15,7 @@
         path: 'devis',
         labelButton: 'Supprimer',
         classButton: 'my-3 text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3',
+        classForm: "inline-block",
         title: "Suppression du devis : " ~ devi.id,
         content: "Êtes-vous sûr de vouloir supprimer ce devis ?",
     }) }}

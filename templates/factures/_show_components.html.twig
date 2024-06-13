@@ -1,55 +1,44 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Devis{% endblock %}
-
-{% block body %}
-    {{ include('components/_title.html.twig', { content: 'Devis ' ~ devi.id}) }}
-
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mx-auto my-4">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mx-auto my-4">
         <div class="mb-8">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                <svg class="w-4 h-4 text-gray-600 dark:text-gray-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                Information Devis
+                {{ include('components/SVG/_valid_SVG.html.twig') }}
+                Information Facture
             </h2>
             <ul class="space-y-1">
                 <li class="flex">
                     <span class="font-semibold text-gray-900 dark:text-white w-24">Id :</span> 
-                    <span>{{ devi.id }}</span>
+                    <span>{{ facture.id }}</span>
                 </li>
                 <li class="flex">
                     <span class="font-semibold text-gray-900 dark:text-white w-24">Date :</span> 
-                    <span>{{ devi.date ? devi.date|date('d/m/Y') : '' }}</span>
+                    <span>{{ facture.getCreatedAt() ? facture.getCreatedAt()|date('d/m/Y') : '' }}</span>
                 </li>
                 <li class="flex">
                     <span class="font-semibold text-gray-900 dark:text-white w-24">Statut :</span> 
-                    <span>{{ devi.statut }}</span>
+                    <span>{{ facture.statut }}</span>
                 </li>
                 <li class="flex">
                     <span class="font-semibold text-gray-900 dark:text-white w-24">Taxe :</span> 
-                    <span>{{ devi.taxe }}%</span>
+                    <span>{{ facture.taxe }}%</span>
                 </li>
                 <li class="flex">
                     <span class="font-semibold text-gray-900 dark:text-white w-24">Total HT :</span> 
-                    <span>{{ devi.totalHt }} €</span>
+                    <span>{{ facture.totalHt }} €</span>
                 </li>
                 <li class="flex">
                     <span class="font-semibold text-gray-900 dark:text-white w-24">Total TTC :</span> 
-                    <span>{{ devi.totalHt * (1 + devi.taxe / 100) }} €</span>
+                    <span>{{ facture.totalHt * (1 + facture.taxe / 100) }} €</span>
                 </li>
                 <li class="flex">
                     <span class="font-semibold text-gray-900 dark:text-white w-24">Client :</span> 
-                    <span>{{ devi.getClient().nom }}</span>
+                    <span>{{ facture.getIdDevis().getClient().nom }}</span>
                 </li>
             </ul>
         </div>
 
-        <div>
+        <div class='mb-8'>
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                <svg class="w-4 h-4 text-gray-600 dark:text-gray-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h1l1-5h10l1 5h1m-6 4h.01M13 16H7m-2 0h1m10 0h1m-6 4H6m2 0h8"></path>
-                </svg>
+                {{ include('components/SVG/_list_products_SVG.html.twig') }}
                 Liste des Produits
             </h2>
             <table class="min-w-full bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
@@ -61,7 +50,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800">
-                    {% for ligneDevis in devi.getLignesDevis() %}
+                    {% for ligneDevis in facture.getLignesDevis() %}
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ ligneDevis.getNameProduct() }}</td>
                             <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ ligneDevis.getQuantite() }}</td>
@@ -71,19 +60,29 @@
                 </tbody>
             </table>
         </div>
+        
+        <div>
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                {{ include('components/SVG/_list_payments_SVG.html.twig') }}
+                Liste des Paiements Reçus
+            </h2>
+            <table class="min-w-full bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
+                <thead class="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                        <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Date</th>
+                        <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Montant (€)</th>
+                        <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Méthode</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-gray-800">
+                    {% for paiement in facture.getPaiements() %}
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ paiement.getCreatedAt()|date('d/m/Y') }}</td>
+                            <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ paiement.getMontant() }} €</td>
+                            <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ paiement.getMethod() }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    {% if devi.statut != 'Accepté' %}
-        {{ include('components/_link.html.twig', {
-            content: 'Modifier le devis',
-            path: 'app_devis_edit',
-            id: devi.id
-        }) }}
-    {% endif %}
-
-    {{ include('components/_link.html.twig', {
-        content: 'Retour à la liste',
-        path: 'app_devis_index'
-    }) }}
-
-{% endblock %}

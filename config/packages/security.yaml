@@ -38,6 +38,8 @@ security:
         - { path: ^/produits, roles: ROLE_ENTREPRISE }
         - { path: ^/clients, roles: ROLE_ENTREPRISE }
         - { path: ^/devis, roles: ROLE_ENTREPRISE }
+        - { path: ^/factures, roles: [ROLE_ENTREPRISE, ROLE_COMPTABLE] }
+        - { path: ^/factures/edit, roles: ROLE_COMPTABLE }
         
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER, ROLE_ADMIN_ENTREPRISE]

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -65,14 +66,25 @@ class DevisType extends AbstractType
                 'data' => 'En cours',
             ]);
         }
-
         $builder->add('list_produit', HiddenType::class, [
             'mapped' => false,
             'required' => true,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'La liste des produits ne peut pas être vide.',
-                ]),
+            new NotBlank([
+                'message' => 'La liste des produits ne peut pas être vide.',
+            ]),
+            new Callback([
+                'callback' => function ($value, ExecutionContextInterface $context) {
+                    if (is_array($value) && empty($value)) {
+                        $context->buildViolation('La liste des produits ne peut pas être vide.')
+                        ->addViolation();
+                    }
+                    if ($value == '[]') {
+                        $context->buildViolation('La liste des produits ne peut pas être vide.')
+                        ->addViolation();
+                    }
+                },
+            ]),
             ],
         ]);
     }

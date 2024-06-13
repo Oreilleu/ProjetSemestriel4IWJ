@@ -45,15 +45,18 @@ class Clients
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Lots::class, orphanRemoval: true)]
-    private Collection $lots;
-
     #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'clients')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprises $id_entreprise = null;
 
+    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Lots::class, orphanRemoval: true)]
+    private Collection $lots;
+
     #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class)]
     private Collection $devis;
+
+    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Interractions::class, cascade: ["remove"])]
+    private Collection $interractions;
 
     public function __construct()
     {
@@ -254,6 +257,33 @@ class Clients
             // set the owning side to null (unless already changed)
             if ($devis->getClient() === $this) {
                 $devis->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getInterraction(): Collection
+    {
+        return $this->interractions;
+    }
+
+    public function addInterraction(Interractions $interraction): self
+    {
+        if (!$this->interractions->contains($interraction)) {
+            $this->interractions[] = $interraction;
+            $interraction->setIdClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInterraction(Interractions $interraction): self
+    {
+        if ($this->interractions->removeElement($interraction)) {
+            // set the owning side to null (unless already changed)
+            if ($interraction->getIdClient() === $this) {
+                $interraction->setIdClient(null);
             }
         }
 
