@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Factures;
+use App\Entity\Paiements;
 use App\Form\FacturesType;
+use App\Form\PaiementsType;
 use App\Repository\FacturesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,10 +55,15 @@ class FacturesController extends AbstractController
     #[Route('/{id}/edit', name: 'app_factures_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Factures $facture, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(FacturesType::class, $facture);
+        $form = $this->createForm(PaiementsType::class, new Paiements());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $paiement = $form->getData();
+            $paiement->setCreatedAt(new \DateTimeImmutable());
+            $paiement->setIdFacture($facture);
+
+            $entityManager->persist($paiement);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_factures_index', [], Response::HTTP_SEE_OTHER);

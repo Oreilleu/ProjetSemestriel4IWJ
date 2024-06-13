@@ -37,24 +37,19 @@ class Factures
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Devis $id_devis = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: Paiements::class, orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: true)]
-    private Collection $paiements;
-
-    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: ModePaiements::class, orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: true)]
-    private Collection $modePaiements;
-
     #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: LignesDevis::class)]
     private Collection $lignesDevis;
-
+    
     #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: Interractions::class)]
     private Collection $interractions;
+    
+    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: Paiements::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private Collection $paiements;
 
     public function __construct()
     {
         $this->paiements = new ArrayCollection();
-        $this->modePaiements = new ArrayCollection();
         $this->lignesDevis = new ArrayCollection();
         $this->interractions = new ArrayCollection();
     }
@@ -144,32 +139,6 @@ class Factures
         if ($this->paiements->removeElement($paiement)) {
             if ($paiement->getIdFacture() === $this) {
                 $paiement->setIdFacture(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getModePaiements(): Collection
-    {
-        return $this->modePaiements;
-    }
-
-    public function addModePaiement(ModePaiements $modePaiement): static
-    {
-        if (!$this->modePaiements->contains($modePaiement)) {
-            $this->modePaiements->add($modePaiement);
-            $modePaiement->setIdFacture($this);
-        }
-
-        return $this;
-    }
-
-    public function removeModePaiement(ModePaiements $modePaiement): static
-    {
-        if ($this->modePaiements->removeElement($modePaiement)) {
-            if ($modePaiement->getIdFacture() === $this) {
-                $modePaiement->setIdFacture(null);
             }
         }
 

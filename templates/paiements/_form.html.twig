@@ -1,4 +1,15 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ include('components/_form_group.html.twig', {
+        field: form.montant,
+        label: 'Montant : ',
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.method,
+        label: 'Méthode de paiement : ',
+    }) }}
+
+    {{ include('components/_submit_button.html.twig', {
+        content: "Envoyer"
+    }) }}
 {{ form_end(form) }}

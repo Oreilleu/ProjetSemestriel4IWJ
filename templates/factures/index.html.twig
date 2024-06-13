@@ -41,6 +41,13 @@
                                 {{ include('components/SVG/_eye_SVG.html.twig') }}
                             </button>
                         </a>
+                        {% if is_granted('ROLE_COMPTABLE') %}
+                            <a href="/factures/{{ facture.id }}/edit">
+                                <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                                    {{ include('components/SVG/_update_SVG.html.twig') }}
+                                </button>
+                            </a>
+                        {% endif %}
                         {# {% if facture.statut != 'Accepté' %}
                             <a href="/factures/{{ facture.id }}/edit">
                                 <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">

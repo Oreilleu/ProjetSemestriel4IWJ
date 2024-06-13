@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Paiements;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,8 +14,13 @@ class PaiementsType extends AbstractType
     {
         $builder
             ->add('montant')
-            ->add('date_paiement')
-            ->add('id_facture')
+            ->add('method', ChoiceType::class, [
+                'choices' => [
+                    'Carte bancaire' => 'Carte bancaire',
+                    'Virement bancaire' => 'Virement bancaire',
+                    'Prélèvement bancaire' => 'Prélèvement bancaire',
+                ],
+            ])
         ;
     }
 
