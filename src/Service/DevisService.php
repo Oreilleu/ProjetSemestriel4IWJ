@@ -14,10 +14,12 @@ use DateTimeImmutable;
 class DevisService
 {
     private $entityManager;
+    private $emailService;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, EmailService $emailService)
     {
         $this->entityManager = $entityManager;
+        $this->emailService = $emailService;
     }
 
     public function handleDevisCreation(Devis $devis, array $requestData, $entreprise)
@@ -37,6 +39,26 @@ class DevisService
         $this->addLignesDevis($devis, $listProduitArray);
         
         $this->entityManager->flush();
+
+        $this->sendDevisCreationEmail($devis);
+    }
+
+    private function sendDevisCreationEmail(Devis $devis): void
+    {
+        $subject = 'Nouveau devis créé';
+        $content = 'Un nouveau devis a été créé avec l\'ID : ' . $devis->getId();
+        $recipient = $devis->getClient()->getEmail();
+
+        $this->emailService->sendEmail($recipient, $subject, $content);
+    }
+
+    private function sendFactureCreationEmail(Factures $facture): void
+    {
+        $subject = 'Nouvelle facture créée';
+        $content = 'Une nouvelle facture a été créée avec l\'ID : ' . $facture->getId();
+        $recipient = $facture->getIdDevis()->getClient()->getEmail(); 
+
+        $this->emailService->sendEmail($recipient, $subject, $content);
     }
 
     private function initializeDevis(Devis $devis, $entreprise)
@@ -193,5 +215,7 @@ class DevisService
         }
 
         $this->entityManager->flush();
+
+        $this->sendFactureCreationEmail($facture);
     }
 }

@@ -3,10 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Devis;
-use App\Entity\Factures;
-use App\Entity\Interractions;
-use App\Entity\LignesDevis;
-use App\Entity\Produits;
 use App\Entity\User;
 use App\Form\DevisType;
 use App\Service\DevisService;
@@ -15,8 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use DateTime;
-use DateTimeImmutable;
 
 #[Route('/devis')]
 class DevisController extends AbstractController
