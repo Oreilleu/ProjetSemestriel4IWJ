@@ -30,7 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\Length(min: 4, minMessage: "Le mot de passe doit contenir au moins {{ limit }} caractères")]
+    #[Assert\Length(min: 12, minMessage: "Le mot de passe doit contenir au moins {{ limit }} caractères")]
     private ?string $password = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]

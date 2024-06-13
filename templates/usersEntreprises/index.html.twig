@@ -50,5 +50,11 @@
         {% endfor %}
         </tbody>
     </table>
+
+    {{ include('components/_link.html.twig', {
+        path: "app_user_add",
+        content: "Ajouter un utilisateur"
+    }) }}
+
 {% endblock %}
 

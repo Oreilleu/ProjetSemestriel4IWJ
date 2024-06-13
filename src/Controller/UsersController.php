@@ -22,7 +22,7 @@ class UsersController extends AbstractController
         ]);
     }
 
-    #[Route('/users/new', name: 'app_admin_user_new', methods: ['GET', 'POST'])]
+    #[Route('/users/new', name: 'app_admin_user_add', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -36,7 +36,7 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('app_users_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('users/new.html.twig', [
+        return $this->render('usersEntreprises/new.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
