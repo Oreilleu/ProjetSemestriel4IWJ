@@ -4,7 +4,7 @@
 
 {% block body %}
     {{ include('components/_title.html.twig', { content: 'Liste des devis'}) }}
-    
+
     {% if devis is empty %}
         {{ include('components/_empty_message.html.twig', { content: 'Aucun devis n\'a été trouvé.' }) }}
     {% else %}
@@ -33,7 +33,7 @@
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ devi.date ? devi.date|date('d/m/Y') : '' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ devi.statut }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ devi.Client.nom }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ devi.client.nom }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ devi.getTotalHt() }} €</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
                         {% if devi.statut != 'Accepté' %}
@@ -51,6 +51,12 @@
                             content: "Êtes-vous sûr de vouloir supprimer ce devis ?",
                             classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
                         }) }}
+
+                        <a href="{{ path('app_devis_facture_pdf', {id: devi.id}) }}">
+                            <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                                {{ include('components/SVG/_generate_pdf_SVG.html.twig') }}
+                            </button>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}
@@ -58,7 +64,7 @@
         </table>
     {% endif %}
 
-    {{ include('components/_link.html.twig', { 
+    {{ include('components/_link.html.twig', {
         content: 'Créer un nouveau devis',
         path: 'app_devis_new'
     } ) }}
