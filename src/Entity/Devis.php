@@ -41,7 +41,7 @@ class Devis
     
     #[ORM\ManyToOne(targetEntity: Clients::class, inversedBy: 'devis')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Clients $client;
+    private ?Clients $id_client;
     
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: LignesDevis::class)]
     private Collection $lignesDevis;
@@ -271,12 +271,12 @@ class Devis
 
     public function getClient(): ?Clients
     {
-        return $this->client;
+        return $this->id_client;
     }
 
-    public function setClient(?Clients $client): self
+    public function setClient(?Clients $id_client): self
     {
-        $this->client = $client;
+        $this->id_client = $id_client;
 
         return $this;
     }

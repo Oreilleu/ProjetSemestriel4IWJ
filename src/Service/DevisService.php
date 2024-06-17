@@ -173,12 +173,13 @@ class DevisService
         $lignesDevis = $devi->getLignesDevis();
 
         $facture = new Factures();
+        $facture->setIdEntreprise($devi->getIdEntreprise());
         $facture->setTotalHt($devi->getTotalHt());
         $facture->setTotalTtc($devi->getTotalHt() * (1 + $devi->getTaxe() / 100));
         $facture->setTaxe($devi->getTaxe());
         $facture->setStatut('En cours de paiement');
         $facture->setIdDevis($devi);
-        $facture->setNameClient($devi->getClient()->getNom() . ' ' . $devi->getClient()->getPrenom());
+        $facture->setClient($devi->getClient());
         $facture->setCreatedAt(new DateTimeImmutable());
 
         $this->entityManager->persist($facture);

@@ -1,0 +1,6 @@
+zenstruck_schedule:
+    timezone: 'Europe/Paris'  # Définissez votre timezone
+    tasks:
+        - description: 'Tâche quotidienne'  # Description de la tâche
+          frequency: '* * * * *'  # Utilise l'expression cron ou les alias prédéfinis
+          task: 'app:daily-relance-factures'  # Commande Symfony à exécuter

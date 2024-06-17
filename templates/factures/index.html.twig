@@ -33,7 +33,7 @@
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.getCreatedAt() ? facture.getCreatedAt()|date('d/m/Y') : '' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.statut }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.getNameClient() }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.getClient().nom }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.getTotalTtc() }} €</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
                         <a href="/factures/{{ facture.id }}">

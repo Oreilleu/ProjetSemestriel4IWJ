@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: EntreprisesRepository::class)]
 class Entreprises
 {
@@ -33,6 +35,14 @@ class Entreprises
     #[ORM\Column(length: 100)]
     private ?string $rib = null;
 
+    #[ORM\Column(options: ["default" => 7])]
+    #[Assert\Range(min: 7, max: 30)]
+    private ?int $interval_relance_devis = 7;
+    
+    #[ORM\Column(options: ["default" => 7])]
+    #[Assert\Range(min: 7, max: 30)]
+    private ?int $interval_relance_factures = 7;
+
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
@@ -53,6 +63,9 @@ class Entreprises
 
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Devis::class, cascade: ["remove"])]
     private Collection $devis;
+
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Factures::class, cascade: ["remove"])]
+    private Collection $factures;
 
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Lots::class, cascade: ["remove"])]
     private Collection $lots;
@@ -137,6 +150,30 @@ class Entreprises
     public function setRib(string $rib): static
     {
         $this->rib = $rib;
+
+        return $this;
+    }
+
+    public function getIntervalRelanceDevis(): ?int
+    {
+        return $this->interval_relance_devis;
+    }
+
+    public function setIntervalRelanceDevis(int $new_interval): static
+    {
+        $this->interval_relance_devis = $new_interval;
+
+        return $this;
+    }
+
+    public function getIntervalRelanceFactures(): ?int
+    {
+        return $this->interval_relance_factures;
+    }
+
+    public function setIntervalRelanceFactures(int $new_interval): static
+    {
+        $this->interval_relance_factures = $new_interval;
 
         return $this;
     }
@@ -311,6 +348,33 @@ class Entreprises
             // set the owning side to null (unless already changed)
             if ($devis->getIdEntreprise() === $this) {
                 $devis->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFactures(): Collection
+    {
+        return $this->factures;
+    }
+
+    public function addFactures(Factures $facture): self
+    {
+        if (!$this->factures->contains($facture)) {
+            $this->factures->add($facture);
+            $facture->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactures(Factures $facture): self
+    {
+        if ($this->factures->removeElement($facture)) {
+            // set the owning side to null (unless already changed)
+            if ($facture->getIdEntreprise() === $this) {
+                $facture->setIdEntreprise(null);
             }
         }
 

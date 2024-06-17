@@ -21,9 +21,7 @@ class Factures
     #[ORM\Column]
     private ?float $taxe = null;
 
-    #[ORM\Column]
-    private ?string $name_client = null;
-
+    
     #[ORM\Column(nullable: false)]
     private ?float $total_ht = null;
     
@@ -36,22 +34,54 @@ class Factures
     #[ORM\ManyToOne(inversedBy: 'factures')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Devis $id_devis = null;
-
-    #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: LignesDevis::class)]
+    
+    #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'factures')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprises $id_entreprise = null;
+    
+    #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: LignesDevis::class, cascade: ["remove"])]
     private Collection $lignesDevis;
     
     #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: Interractions::class)]
     private Collection $interractions;
     
-    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: Paiements::class)]
+    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: Paiements::class, cascade: ["remove"])]
     #[ORM\JoinColumn(nullable: true)]
     private Collection $paiements;
+    
+    #[ORM\ManyToOne(targetEntity: Clients::class, inversedBy: 'facture')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Clients $id_client = null;
 
     public function __construct()
     {
         $this->paiements = new ArrayCollection();
         $this->lignesDevis = new ArrayCollection();
         $this->interractions = new ArrayCollection();
+    }
+
+    public function getIdEntreprise(): ?Entreprises
+    {
+        return $this->id_entreprise;
+    }
+
+    public function setIdEntreprise(?Entreprises $id_entreprise): self
+    {
+        $this->id_entreprise = $id_entreprise;
+
+        return $this;
+    }
+
+    public function getClient(): ?Clients
+    {
+        return $this->id_client;
+    }
+
+    public function setClient(?Clients $id_client): self
+    {
+        $this->id_client = $id_client;
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -95,17 +125,17 @@ class Factures
         return $this;
     }
 
-    public function getNameClient(): ?string
-    {
-        return $this->name_client;
-    }
+    // public function getNameClient(): ?string
+    // {
+    //     return $this->name_client;
+    // }
 
-    public function setNameClient(string $name_client): static
-    {
-        $this->name_client = $name_client;
+    // public function setNameClient(string $name_client): static
+    // {
+    //     $this->name_client = $name_client;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
