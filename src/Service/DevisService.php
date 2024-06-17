@@ -184,7 +184,7 @@ class DevisService
 
         $this->entityManager->persist($facture);
 
-        $this->interractionService->createFactureInterraction($facture, 'Une facture a été créée (id : ' . $facture->getId() . '), son statut est : ' . $facture->getStatut(), $devi->getClient());
+        $this->interractionService->createFactureInterraction($facture, 'Une facture a été créée (id : ' . $facture->getId() . '), son statut est : ' . $facture->getStatut());
 
         foreach ($lignesDevis as $ligne) {
             $ligne->setIdFactures($facture);

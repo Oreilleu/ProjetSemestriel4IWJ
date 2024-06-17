@@ -27,6 +27,9 @@ class Factures
     
     #[ORM\Column(nullable: false)]
     private ?float $total_ttc = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $last_relance = null;
     
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
@@ -80,6 +83,18 @@ class Factures
     public function setClient(?Clients $id_client): self
     {
         $this->id_client = $id_client;
+
+        return $this;
+    }
+
+    public function getLastRelance(): ?\DateTimeImmutable
+    {
+        return $this->last_relance;
+    }
+
+    public function setLastRelance(?\DateTimeImmutable $last_relance): self
+    {
+        $this->last_relance = $last_relance;
 
         return $this;
     }

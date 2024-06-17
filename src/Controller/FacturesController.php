@@ -120,7 +120,7 @@ class FacturesController extends AbstractController
             : "Un paiement partiel, d'un montant de {$paiement->getMontant()} € a été effectué pour la facture : {$facture->getId()}.";
 
         $this->sendPaymentEmail($facture, $isFullyPaid);
-        $this->interractionService->createFactureInterraction($facture, $message, $facture->getIdDevis()->getClient());
+        $this->interractionService->createFactureInterraction($facture, $message);
     }
 
     private function sendPaymentEmail(Factures $facture, bool $isFullyPaid): void

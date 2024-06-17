@@ -48,21 +48,6 @@
                                 </button>
                             </a>
                         {% endif %}
-                        {# {% if facture.statut != 'Accepté' %}
-                            <a href="/factures/{{ facture.id }}/edit">
-                                <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
-                                    {{ include('components/SVG/_update_SVG.html.twig') }}
-                                </button>
-                            </a>
-                        {% endif %}
-                        {{ include('components/_delete_form.html.twig', {
-                            item_id: facture.id,
-                            path: 'factures',
-                            labelButton: include('components/SVG/_delete_SVG.html.twig'),
-                            title: "Suppression de la facture : " ~ facture.id,
-                            content: "Êtes-vous sûr de vouloir supprimer cette facture ?",
-                            classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
-                        }) }} #}
                     </td>
                 </tr>
             {% endfor %}
@@ -70,8 +55,4 @@
         </table>
     {% endif %}
 
-    {# {{ include('components/_link.html.twig', { 
-        content: 'Créer une facture',
-        path: 'app_factures_new'
-    } ) }} #}
 {% endblock %}
