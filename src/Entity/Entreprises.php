@@ -62,6 +62,7 @@ class Entreprises
         $this->users = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
         $this->rapportsFinanciers = new ArrayCollection();
+        $this->clients = new ArrayCollection();
     }
 
     public function __toString(): string
