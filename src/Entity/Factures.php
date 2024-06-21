@@ -20,7 +20,6 @@ class Factures
     
     #[ORM\Column]
     private ?float $taxe = null;
-
     
     #[ORM\Column(nullable: false)]
     private ?float $total_ht = null;
@@ -41,7 +40,11 @@ class Factures
     #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'factures')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprises $id_entreprise = null;
-    
+
+    #[ORM\ManyToOne(targetEntity: Clients::class, inversedBy: 'facture')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Clients $id_client = null;
+
     #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: LignesDevis::class, cascade: ["remove"])]
     private Collection $lignesDevis;
     
@@ -51,10 +54,6 @@ class Factures
     #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: Paiements::class, cascade: ["remove"])]
     #[ORM\JoinColumn(nullable: true)]
     private Collection $paiements;
-    
-    #[ORM\ManyToOne(targetEntity: Clients::class, inversedBy: 'facture')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Clients $id_client = null;
 
     public function __construct()
     {
@@ -139,18 +138,6 @@ class Factures
 
         return $this;
     }
-
-    // public function getNameClient(): ?string
-    // {
-    //     return $this->name_client;
-    // }
-
-    // public function setNameClient(string $name_client): static
-    // {
-    //     $this->name_client = $name_client;
-
-    //     return $this;
-    // }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {

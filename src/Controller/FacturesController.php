@@ -4,17 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Factures;
 use App\Entity\Paiements;
+use App\Entity\User;
 use App\Form\FacturesType;
 use App\Form\PaiementsType;
 use App\Repository\FacturesRepository;
 use App\Service\EmailService;
 use App\Service\InterractionService;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/factures')]
 class FacturesController extends AbstractController
@@ -32,8 +33,18 @@ class FacturesController extends AbstractController
     #[Route('/', name: 'app_factures_index', methods: ['GET'])]
     public function index(FacturesRepository $facturesRepository): Response
     {
+        $user = $this->getUser();
+
+        if (!$user instanceof User || !$user) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $entreprise = $user->getIdEntreprise();
+
+        $factures = $entreprise->getFactures();
+        
         return $this->render('factures/index.html.twig', [
-            'factures' => $facturesRepository->findAll(),
+            'factures' => $factures,
         ]);
     }
 
@@ -65,6 +76,7 @@ class FacturesController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_COMPTABLE')]
     #[Route('/{id}/edit', name: 'app_factures_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Factures $facture, EntityManagerInterface $entityManager): Response
     {
@@ -73,7 +85,6 @@ class FacturesController extends AbstractController
         $totalPaid = array_reduce($paiements->toArray(), fn($carry, $paiement) => $carry + $paiement->getMontant(), 0);
         $maxAmount = $totalTtcFacture - $totalPaid;
 
-        
         $form = $this->createForm(PaiementsType::class, new Paiements(), [
             'max_amount' => $maxAmount,
         ]);
@@ -112,7 +123,7 @@ class FacturesController extends AbstractController
 
     private function processPayment(Paiements $paiement, Factures $facture, float $maxAmount): void
     {
-        $isFullyPaid = $maxAmount === $paiement->getMontant();
+        $isFullyPaid = $this->floatsAreEqual($paiement->getMontant(), $maxAmount, 0.00000001);
         $facture->setStatut($isFullyPaid ? 'Payée' : 'Partiellement payée');
 
         $message = $isFullyPaid
@@ -129,9 +140,14 @@ class FacturesController extends AbstractController
         $content = $isFullyPaid
             ? "Un nouveau paiement a été effectué pour la facture : {$facture->getId()}. La facture est totalement payée."
             : "Un paiement partiel a été effectué pour la facture : {$facture->getId()}.";
-        $recipient = $facture->getIdDevis()->getClient()->getEmail();
+        $recipient = $facture->getClient()->getEmail();
 
         $this->emailService->sendEmail($recipient, $subject, $content);
+    }
+
+    private function floatsAreEqual(float $a, float $b, float $tolerance): bool
+    {
+        return abs($a - $b) <= $tolerance;
     }
     
 }

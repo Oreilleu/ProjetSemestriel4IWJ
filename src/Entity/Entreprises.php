@@ -188,9 +188,13 @@ class Entreprises
         return $this->created_at;
     }
 
-    /**
-     * @return Collection<int, RapportsFinanciers>
-     */
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
     public function getRapportsFinanciers(): Collection
     {
         return $this->rapportsFinanciers;
@@ -209,18 +213,10 @@ class Entreprises
     public function removeRapportsFinancier(RapportsFinanciers $rapportsFinancier): static
     {
         if ($this->rapportsFinanciers->removeElement($rapportsFinancier)) {
-            // set the owning side to null (unless already changed)
             if ($rapportsFinancier->getIdEntreprise() === $this) {
                 $rapportsFinancier->setIdEntreprise(null);
             }
         }
-
-        return $this;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
 
         return $this;
     }
