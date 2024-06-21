@@ -13,18 +13,28 @@ class LignesDevis
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(nullable: false)]
+    private ?string $id_str_produit = null;
+    
+    #[ORM\Column(nullable: false)]
+    private ?string $name_product = null;
+
+    #[ORM\Column(nullable: false)]
+    private ?float $prix_product = null;
+    
     #[ORM\Column]
     private ?int $quantite = null;
+    
+    #[ORM\ManyToOne(targetEntity: Factures::class, inversedBy: 'lignesDevis')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Factures $id_factures = null;
 
-    #[ORM\Column]
-    private ?float $prix_unitaire = null;
-
-    #[ORM\ManyToOne(inversedBy: 'lignesDevis')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Devis::class,inversedBy: 'lignesDevis')]
+    #[ORM\JoinColumn(nullable: true,  onDelete: 'SET NULL')]
     private ?Devis $id_devis = null;
 
-    #[ORM\ManyToOne(inversedBy: 'lignesDevis')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Produits::class, inversedBy: 'lignesDevis')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Produits $id_produit = null;
 
     public function getId(): ?int
@@ -51,18 +61,6 @@ class LignesDevis
         return $this;
     }
 
-    public function getPrixUnitaire(): ?float
-    {
-        return $this->prix_unitaire;
-    }
-
-    public function setPrixUnitaire(float $prix_unitaire): static
-    {
-        $this->prix_unitaire = $prix_unitaire;
-
-        return $this;
-    }
-
     public function getIdDevis(): ?Devis
     {
         return $this->id_devis;
@@ -84,6 +82,52 @@ class LignesDevis
     {
         $this->id_produit = $id_produit;
 
+        return $this;
+    }
+
+
+    public function getIdFactures(): ?Factures
+    {
+        return $this->id_factures;
+    }
+
+    public function setIdFactures(?Factures $id_factures): static
+    {
+        $this->id_factures = $id_factures;
+
+        return $this;
+    }
+
+    public function getIdStrProduit(): string
+    {
+        return $this->id_str_produit;
+    }
+
+    public function setIdStrProduit(string $id_str_produit): self
+    {
+        $this->id_str_produit = $id_str_produit;
+        return $this;
+    }
+
+    public function getNameProduct(): string
+    {
+        return $this->name_product;
+    }
+
+    public function setNameProduct(string $name_product): self
+    {
+        $this->name_product = $name_product;
+        return $this;
+    }
+
+    public function getPrixProduct(): float
+    {
+        return $this->prix_product;
+    }
+
+    public function setPrixProduct(float $prix_product): self
+    {
+        $this->prix_product = $prix_product;
         return $this;
     }
 }

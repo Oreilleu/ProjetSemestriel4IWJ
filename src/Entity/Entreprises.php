@@ -36,14 +36,26 @@ class Entreprises
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: User::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: User::class)]
     private Collection $users;
 
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: RapportsFinanciers::class, orphanRemoval: true)]
     private Collection $rapportsFinanciers;
 
-    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Clients::class)]
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: CategoriesProduits::class, cascade: ["remove"])]
+    private Collection $categories;
+
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Produits::class, cascade: ["remove"])]
+    private Collection $produits;
+
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Clients::class, cascade: ["remove"])]
     private Collection $clients;
+
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Devis::class, cascade: ["remove"])]
+    private Collection $devis;
+
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Lots::class, cascade: ["remove"])]
+    private Collection $lots;
 
     public function __construct()
     {
@@ -51,6 +63,11 @@ class Entreprises
         $this->created_at = new \DateTimeImmutable();
         $this->rapportsFinanciers = new ArrayCollection();
         $this->clients = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom ?? '';
     }
 
     public function getId(): ?int
@@ -165,15 +182,99 @@ class Entreprises
         return $this;
     }
 
-    /**
-     * @return Collection<int, Clients>
-     */
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            if ($user->getIdEntreprise() === $this) {
+                $user->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(CategoriesProduits $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(CategoriesProduits $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getIdEntreprise() === $this) {
+                $category->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produits $produit): self
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produits $produit): self
+    {
+        if ($this->produits->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
+            if ($produit->getIdEntreprise() === $this) {
+                $produit->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function getClients(): Collection
     {
         return $this->clients;
     }
 
-    public function addClient(Clients $client): static
+    public function addClient(Clients $client): self
     {
         if (!$this->clients->contains($client)) {
             $this->clients->add($client);
@@ -183,7 +284,7 @@ class Entreprises
         return $this;
     }
 
-    public function removeClient(Clients $client): static
+    public function removeClient(Clients $client): self
     {
         if ($this->clients->removeElement($client)) {
             // set the owning side to null (unless already changed)
@@ -195,4 +296,57 @@ class Entreprises
         return $this;
     }
 
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevis(Devis $devis): self
+    {
+        if (!$this->devis->contains($devis)) {
+            $this->devis->add($devis);
+            $devis->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevis(Devis $devis): self
+    {
+        if ($this->devis->removeElement($devis)) {
+            // set the owning side to null (unless already changed)
+            if ($devis->getIdEntreprise() === $this) {
+                $devis->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLots(): Collection
+    {
+        return $this->lots;
+    }
+
+    public function addLot(Lots $lot): self
+    {
+        if (!$this->lots->contains($lot)) {
+            $this->lots->add($lot);
+            $lot->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLot(Lots $lot): self
+    {
+        if ($this->lots->removeElement($lot)) {
+            // set the owning side to null (unless already changed)
+            if ($lot->getIdEntreprise() === $this) {
+                $lot->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
 }

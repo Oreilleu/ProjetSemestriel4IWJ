@@ -26,14 +26,23 @@ class Lots
 
     #[ORM\ManyToOne(inversedBy: 'lots')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?clients $id_client = null;
+    private ?Clients $id_client = null;
 
     #[ORM\OneToMany(mappedBy: 'id_lots', targetEntity: Devis::class, orphanRemoval: true)]
     private Collection $devis;
 
+    #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'lots')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprises $id_entreprise = null;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->id_client;
     }
 
     public function getId(): ?int
@@ -118,4 +127,17 @@ class Lots
 
         return $this;
     }
+
+    public function getIdEntreprise(): ?Entreprises
+    {
+        return $this->id_entreprise;
+    }
+
+    public function setIdEntreprise(?Entreprises $id_entreprise): self
+    {
+        $this->id_entreprise = $id_entreprise;
+
+        return $this;
+    }
+
 }

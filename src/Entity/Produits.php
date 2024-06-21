@@ -28,7 +28,8 @@ class Produits
         minMessage: 'Le nom du produit doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le nom du produit ne doit pas dépasser {{ limit }} caractères.'
     )]
-    #[ORM\Column(length: 100)]
+
+    #[ORM\Column(length: 100, unique: true)]
     private ?string $nom = null;
 
     #[Assert\NotBlank(
@@ -41,11 +42,18 @@ class Produits
     private ?float $prix = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?CategoriesProduits $id_categorie_produits = null;
 
     #[ORM\OneToMany(mappedBy: 'id_produit', targetEntity: LignesDevis::class)]
     private Collection $lignesDevis;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $filePath = null;
+
+    #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'produits')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprises $id_entreprise = null;
 
     public function __construct()
     {
@@ -118,6 +126,30 @@ class Produits
                 $lignesDevi->setIdProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdEntreprise(): ?Entreprises
+    {
+        return $this->id_entreprise;
+    }
+
+    public function setIdEntreprise(?Entreprises $id_entreprise): self
+    {
+        $this->id_entreprise = $id_entreprise;
+
+        return $this;
+    }
+
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function setFilePath(?string $filePath): static
+    {
+        $this->filePath = $filePath;
 
         return $this;
     }

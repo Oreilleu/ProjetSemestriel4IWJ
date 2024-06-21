@@ -3,40 +3,26 @@
 {% block title %}Factures{% endblock %}
 
 {% block body %}
-    <h1>Factures</h1>
+    {{ include('components/_title.html.twig', { content: 'Facture ' ~ facture.id}) }}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ facture.id }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ facture.date ? facture.date|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Statut</th>
-                <td>{{ facture.statut }}</td>
-            </tr>
-            <tr>
-                <th>Taxe</th>
-                <td>{{ facture.taxe }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ facture.createdAt ? facture.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Total_ht</th>
-                <td>{{ facture.totalHt }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {{ include('factures/_show_components.html.twig') }}
 
-    <a href="{{ path('app_factures_index') }}">back to list</a>
+    {% if is_granted('ROLE_COMPTABLE') %}
+        {{ include('components/_link.html.twig', {
+            content: 'Gérer la facture',
+            path: 'app_factures_edit',
+            id: facture.id
+        }) }}
+    {% endif %}
 
-    <a href="{{ path('app_factures_edit', {'id': facture.id}) }}">edit</a>
+    {{ include('components/_link.html.twig', {
+        content: 'Télécharger en pdf',
+        path: 'app_factures_show',
+        id: facture.id,
+    }) }}
 
-    {{ include('factures/_delete_form.html.twig') }}
+    {{ include('components/_link.html.twig', {
+        content: 'Retour à la liste',
+        path: 'app_factures_index'
+    }) }}
 {% endblock %}

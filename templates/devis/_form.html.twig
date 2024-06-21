@@ -1,4 +1,261 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr' : {'class': 'initialDisplay'}}) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.date,
+        label: 'Date',
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.description,
+        label: 'Description',
+    }) }}
+
+    {% if app.request.attributes.get('_route') == 'app_devis_edit' %}
+        {{ include('components/_form_group.html.twig', {
+            field: form.statut,
+            label: 'Statut du devis',
+        }) }}
+    {% endif %}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.taxe,
+        label: 'Taxe',
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.client,
+        label: 'Nom du client',
+    }) }}
+
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.id_lots,
+        label: 'Lot',
+    }) }}
+
+    <div class="mb-3">
+        {{ form_label(form.list_produit, 'Liste des produits' , {'label_attr': {'class': 'block text-gray-700 text-lg font-bold mb-2'}}) }}
+        {{ form_errors(form.list_produit, { 'template': 'form/form_errors.html.twig' }) }}
+        {{ form_widget(form.list_produit, {'attr': {
+            'class': 'w-2xl shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ',
+            'placeholder': placeholder|default('')
+        } }) }}
+        <select id="select_product" class="w-2xl shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <option value="" disabled selected>Sélectionnez un produit</option>
+            {% for produit in produits %}
+                <option value="{{ produit.id }}">{{ produit.nom }} - {{ produit.prix }} €</option>
+            {% endfor %}
+        </select>
+        {{ form_help(form.list_produit, {'help_attr': {'class': '' } }) }}
+    </div>
+
+    <p>Produit sélectionné : </p>
+
+    <ul data-list-product-id='productNameDisplay' class='flex flex-col'>
+        {% if app.request.attributes.get('_route') == 'app_devis_edit'  %}
+            {% for existingProduct in productsAlreadyInDevis %}
+                <li class='inline-flex items-center justify-between border-b border-gray-200 py-2'>
+                    <span data-cross>{{ include('components/SVG/_cross_SVG.html.twig') }}</span>
+                    <span data-product-id={{ existingProduct.getIdStrProduit() }}>{{ existingProduct.getNameProduct() }} - {{ existingProduct.getPrixProduct() }} €</span>
+                    <input 
+                        class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                        type="number" 
+                        placeholder="Quantité" 
+                        value={{ existingProduct.getQuantite() }}
+                        min="1"
+                        max="99"
+                        data-product-id-input-quantity={{ existingProduct.getIdStrProduit() }} 
+                        data-product-name={{ existingProduct.getNameProduct() }}
+                        data-product-price={{ existingProduct.getPrixProduct() }}
+                    />
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+    {{ include('components/_submit_button.html.twig', {
+        content: "Envoyer"
+    }) }}
+
 {{ form_end(form) }}
+
+<script>
+    // Gestion de l'ajout de produits dans la liste des produits du devis
+    document.addEventListener('DOMContentLoaded', function() {
+        const productNameDisplay = document.querySelector('[data-list-product-id="productNameDisplay"]');
+
+        const existingProducts = [...document.querySelectorAll('li[data-product-id]')].map(li => ({
+            productId: li.querySelector('span[data-product-id]').getAttribute('data-product-id'),
+            quantity: li.querySelector('input').value,
+            name: li.querySelector('input').getAttribute('data-product-name'),
+            price: li.querySelector('input').getAttribute('data-product-price'),
+        }));
+
+        updateProductListValue(productNameDisplay, existingProducts);
+
+        document.getElementById('select_product').addEventListener('change', handleProductSelection);
+    });
+
+    function updateProductListValue(container, products = null) {
+        if (!products) {
+            products = Array.from(container.querySelectorAll('li input[data-product-id-input-quantity]')).map(input => ({
+                productId: input.getAttribute('data-product-id-input-quantity'),
+                quantity: input.value,
+                name: input.getAttribute('data-product-name'),
+                price: input.getAttribute('data-product-price'),
+            }));
+        }
+
+        document.getElementById('devis_list_produit').value = JSON.stringify(products);
+    }
+
+   document.getElementById('select_product').addEventListener('change', handleProductSelection);
+
+    function handleProductSelection(event) {
+        const productId = event.target.value;
+        const selectedProductName = event.target[event.target.selectedIndex].text;
+        const productNameDisplay = document.querySelector('[data-list-product-id="productNameDisplay"]');
+
+        if (!isProductAlreadyChosen(productId, productNameDisplay)) {
+            addProductToList(productId, selectedProductName, productNameDisplay);
+        }
+
+        updateProductListValue(productNameDisplay);
+    }
+
+    function isProductAlreadyChosen(productId, container) {
+        const productAlreadyChosenIds = Array.from(container.querySelectorAll('li span[data-product-id]'))
+            .map(element => element.getAttribute('data-product-id'));
+        return productAlreadyChosenIds.includes(productId);
+    }
+
+    function addProductToList(productId, productName, container) {
+        const listItem = createListItem(productId, productName);
+        container.appendChild(listItem);
+    }
+
+    function createListItem(productId, productName) {
+        const listItem = document.createElement('li');
+        listItem.classList.add('inline-flex', 'items-center', 'justify-between', 'border-b', 'border-gray-200', 'py-2');
+
+        const crossIcon = createCrossIcon();
+        listItem.appendChild(crossIcon);
+
+        const productText = document.createElement('span');
+        productText.textContent = productName;
+        productText.setAttribute('data-product-id', productId);
+        productText.setAttribute('data-product-name', null);
+        productText.setAttribute('data-product-price', null);
+        listItem.appendChild(productText);
+
+        const quantityInput = createQuantityInput(productId);
+        listItem.appendChild(quantityInput);
+
+        crossIcon.addEventListener('click', () => removeProduct(listItem));
+
+        return listItem;
+    }
+
+    function createCrossIcon() {
+        const cross = document.createElement('span');
+        cross.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width='20' height='20' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+        return cross;
+    }
+
+    function createQuantityInput(productId) {
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.placeholder = 'Quantité';
+        input.min = 1;
+        input.max = 99;
+        input.value = 1;
+        input.setAttribute('data-product-id-input-quantity', productId);
+        input.classList.add('shadow', 'appearance-none', 'border', 'rounded', 'py-2', 'px-3', 'text-gray-700', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline');
+        input.addEventListener('change', () => {
+            input.value = Math.max(1, Math.min(99, input.value));
+        });
+        return input;
+    }
+
+    function removeProduct(listItem) {
+        const productNameDisplay = listItem.parentNode;
+        productNameDisplay.removeChild(listItem);
+        updateProductListValue(productNameDisplay);
+    }
+
+    function updateProductListValue(container) {
+        let products = Array.from(container.querySelectorAll('li input[data-product-id-input-quantity]')).map(input => ({
+            productId: input.getAttribute('data-product-id-input-quantity'),
+            quantity: input.value,
+            name: input.getAttribute('data-product-name'),
+            price: input.getAttribute('data-product-price'),
+        }));
+
+        document.getElementById('devis_list_produit').value = JSON.stringify(products);
+
+        document.querySelectorAll('li input[data-product-id-input-quantity]').forEach(input => {
+            input.addEventListener('change', function() {
+                console.log("Événement change détecté");
+                products = Array.from(container.querySelectorAll('li input[data-product-id-input-quantity]')).map(input => ({
+                    productId: input.getAttribute('data-product-id-input-quantity'),
+                    quantity: input.value,
+                    name: input.getAttribute('data-product-name'),
+                    price: input.getAttribute('data-product-price'),
+                }));
+
+                document.getElementById('devis_list_produit').value = JSON.stringify(products);
+            });
+        });
+
+    }
+
+    document.querySelectorAll('li span[data-cross]').forEach(input => {
+        input.addEventListener('click', function(event) {
+        const listItem = event.target.closest('li');
+        removeProduct(listItem);
+        });
+    })
+
+
+    // Get lots by client
+    document.getElementById('devis_client').addEventListener('change', function() {
+        var clientId = this.value ? this.value : 'all';
+        fetch('/lots/by-client?clientId=' + clientId)
+            .then(response => response.json())
+            .then(data => {
+                var select = document.getElementById('devis_id_lots');
+                for (var i = select.options.length - 1; i > 0; i--) {
+                    select.remove(i);
+                }
+                data.forEach(function(lot) {
+                    var option = new Option(lot.adresse, lot.id);
+                    select.appendChild(option);
+                if(select.options.length > 1) {
+                    select.selectedIndex = 1;
+                }
+            });
+        });
+    });
+
+    // Get client by lot
+    document.getElementById('devis_id_lots').addEventListener('change', function() {
+        var lotId = this.value ? this.value : 'all';
+        fetch('/clients/by-lot?lotId=' + lotId)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                var select = document.getElementById('devis_client');
+                for (var i = select.options.length - 1; i > 0; i--) {
+                    select.remove(i);
+                }
+                data.forEach(function(client) {
+                    var option = new Option(client.nom, client.id);
+                    select.appendChild(option);
+                });
+                if(select.options.length > 1) {
+                    select.selectedIndex = 1;
+                }
+        });
+    });
+
+</script>

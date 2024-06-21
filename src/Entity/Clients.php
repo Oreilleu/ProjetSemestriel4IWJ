@@ -33,21 +33,42 @@ class Clients
     #[ORM\Column(length: 255)]
     private ?string $numero_siret = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cp = null;
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ville = null;
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $pays = null;
+    
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
+    #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'clients')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprises $id_entreprise = null;
 
     #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Lots::class, orphanRemoval: true)]
     private Collection $lots;
 
-    #[ORM\ManyToOne(inversedBy: 'clients')]
-    private ?Entreprises $id_entreprise = null;
+    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class)]
+    private Collection $devis;
+
+    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Interractions::class, cascade: ["remove"])]
+    private Collection $interractions;
 
     public function __construct()
     {
         $this->lots = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->devis = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->email ?? '';
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -172,10 +193,101 @@ class Clients
         return $this->id_entreprise;
     }
 
-    public function setIdEntreprise(?Entreprises $id_entreprise): static
+    public function setIdEntreprise(?Entreprises $id_entreprise): self
     {
         $this->id_entreprise = $id_entreprise;
 
         return $this;
     }
+
+    public function getCp(): ?string
+    {
+        return $this->cp;
+    }
+
+    public function setCp(?string $cp): static
+    {
+        $this->cp = $cp;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): static
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(?string $pays): static
+    {
+        $this->pays = $pays;
+
+        return $this;
+    }
+
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevis(Devis $devis): self
+    {
+        if (!$this->devis->contains($devis)) {
+            $this->devis[] = $devis;
+            $devis->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevis(Devis $devis): self
+    {
+        if ($this->devis->removeElement($devis)) {
+            // set the owning side to null (unless already changed)
+            if ($devis->getClient() === $this) {
+                $devis->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getInterraction(): Collection
+    {
+        return $this->interractions;
+    }
+
+    public function addInterraction(Interractions $interraction): self
+    {
+        if (!$this->interractions->contains($interraction)) {
+            $this->interractions[] = $interraction;
+            $interraction->setIdClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInterraction(Interractions $interraction): self
+    {
+        if ($this->interractions->removeElement($interraction)) {
+            // set the owning side to null (unless already changed)
+            if ($interraction->getIdClient() === $this) {
+                $interraction->setIdClient(null);
+            }
+        }
+
+        return $this;
+    }
 }
+

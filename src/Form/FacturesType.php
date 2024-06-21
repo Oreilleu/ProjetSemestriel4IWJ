@@ -12,7 +12,6 @@ class FacturesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date')
             ->add('statut')
             ->add('taxe')
             ->add('created_at')

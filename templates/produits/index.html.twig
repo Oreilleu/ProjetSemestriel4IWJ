@@ -1,44 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Produits index{% endblock %}
+{% block title %}
+  Liste des produits
+{% endblock %}
 
 {% block body %}
-        <h1 class="font-bold uppercase text-2xl my-5 border-b-black border-b-2">Liste des produits</h1>
+  {{ include('components/_title.html.twig', { content: 'Liste des produits'}) }}
+
+  {% if app.request.get('idCategorie') and paginate_produits|length < 1  %}
+    <p> Cette categorie ne contient pas de produits pour le moment.</p>
+  {% elseif paginate_produits|length < 1 %}
+    <p>Il n'y a pas de produits pour le moment.</p>
+  {% else %}
+    <ul class="md:flex md:flex-wrap md:gap-6">
+      {% for produit in paginate_produits %}
+          {{include('components/_card.html.twig', {
+            item_categorie_title:  produit.idCategorieProduits ? produit.idCategorieProduits.nom : 'Sans catégorie',
+            item_default_image : "product",
+            item_filepath: produit.filePath,
+            item_nom: produit.nom,
+            item_id: produit.id,
+            item_prix: produit.prix,
+            item_path: "produits",
+            item_type: "produit",
+            delete_content: "Êtes-vous sûr de vouloir supprimer ce produit ?"
+          })}}
+      {% endfor %}
+    </ul>
+  {% endif %}
 
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Catégorie</th>
-                <th>Nom</th>
-                <th>Prix</th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for produit in produits %}
-            <tr>
-                {# <td>{{ produit.idCategorieProduits.nom }}</td> #}
-                <td>{{ produit.nom }}</td>
-                <td>{{ produit.prix }} €</td>
-                <td>
-                    <a href="{{ path('app_produits_show', {'id': produit.id}) }}">show</a>
-                    <a href="{{ path('app_produits_edit', {'id': produit.id}) }}">edit</a>
-                </td>
-                <td>
-                    {{ include('produits/_delete_form.html.twig') }}
-                </td>
+   {{ include('components/_link.html.twig', {
+    path: "app_produits_new", 
+    content: "Créer un produit"
+  }) }}
+  
+  {{ include("components/_pagination.html.twig", {
+    current_page: current_page,
+    number_page: number_page,
+    path: app.request.get('idCategorie') ? 'app_produits_categorie' : 'app_produits_index'
+  }) }}
 
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_produits_new') }}">Create new</a>
 {% endblock %}

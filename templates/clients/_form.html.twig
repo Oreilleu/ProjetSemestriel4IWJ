@@ -1,4 +1,80 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+
+    {{ form_start(form) }}
+      <label class="flex flex-col">
+        {{ form_label(form.nom, 'Nom *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+        <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.nom) }}
+    </div>
+        {{ form_widget(form.nom, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+      </label>
+
+      <label class="flex flex-col">
+        {{ form_label(form.prenom, 'Prénom *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+        <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.prenom) }}
+        </div>
+        {{ form_widget(form.prenom, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+      </label>
+
+      <label class="flex flex-col col-span-2">
+        {{ form_label(form.email, 'Email *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+        <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.email) }}
+    </div>
+        {{ form_widget(form.email, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+      </label>
+
+      <label class="flex flex-col col-span-2">
+        {{ form_label(form.tel, 'Téléphone *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+        <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.tel) }}
+    </div>
+        {{ form_widget(form.tel, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+      </label>
+
+      <label class="flex flex-col col-span-2">
+        {{ form_label(form.adresse, 'Adresse *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+        <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.adresse) }}
+    </div>
+        {{ form_widget(form.adresse, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+      </label>
+
+      <label class="flex flex-col col-span-2">
+        {{ form_label(form.cp, 'Code postal *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+        <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.cp) }}
+    </div>
+        {{ form_widget(form.cp, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+      </label>
+
+      <label class="flex flex-col col-span-2">
+        {{ form_label(form.ville, 'Ville *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+        <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.ville) }}
+    </div>
+        {{ form_widget(form.ville, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+      </label>
+
+      <label class="flex flex-col col-span-2">
+        {{ form_label(form.pays, 'Pays *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+        <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.pays) }}
+    </div>
+        {{ form_widget(form.pays, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+      </label>
+
+      <label class="flex flex-col col-span-2">
+        {{ form_label(form.numero_siret, 'Siret *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
+        <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.numero_siret) }}
+    </div>
+        {{ form_widget(form.numero_siret, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
+      </label>
+
+    <input
+      type="submit"
+      value="Enregistrer le client"
+      class="focus:outline-none mt-5 bg-primary-500 px-2 py-2 text-white font-bold w-full"
+    />
+    {{ form_end(form) }}

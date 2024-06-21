@@ -3,52 +3,29 @@
 {% block title %}Clients{% endblock %}
 
 {% block body %}
-    <h1>Clients</h1>
+    <h2 class="text-3xl">Détails du client N° {{ client.id }}</h2>
+    <div class="flex flex-col col-span-2">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ client.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ client.nom }}</td>
-            </tr>
-            <tr>
-                <th>Prenom</th>
-                <td>{{ client.prenom }}</td>
-            </tr>
-            <tr>
-                <th>Adresse</th>
-                <td>{{ client.adresse }}</td>
-            </tr>
-            <tr>
-                <th>Tel</th>
-                <td>{{ client.tel }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ client.email }}</td>
-            </tr>
-            <tr>
-                <th>Numero_siret</th>
-                <td>{{ client.numeroSiret }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ client.createdAt ? client.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Id_devis</th>
-                <td>{{ client.idDevis }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <label class="block text-gray-700 text-sm font-bold mb-2">Nom</label>
+        <input type="text" value="{{ client.nom }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
 
-    <a href="{{ path('app_clients_index') }}">back to list</a>
+        <label class="block text-gray-700 text-sm font-bold mb-2">Prenom</label>
+        <input type="text" value="{{ client.prenom }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
 
-    <a href="{{ path('app_clients_edit', {'id': client.id}) }}">edit</a>
+        <label class="block text-gray-700 text-sm font-bold mb-2">Adresse</label>
+        <input type="text" value="{{ client.adresse }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
 
-    {{ include('clients/_delete_form.html.twig') }}
+        <label class="block text-gray-700 text-sm font-bold mb-2">Téléphone</label>
+        <input type="text" value="{{ client.tel }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
+
+        <label class="block text-gray-700 text-sm font-bold mb-2">Adresse Email</label>
+        <input type="text" value="{{ client.email }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
+
+        <label class="block text-gray-700 text-sm font-bold mb-2">Siret</label>
+        <input type="text" value="{{ client.numeroSiret }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
+    </div>
+
+    <!--<a href="path('app_clients_edit', {'id': client.id})">Ajouter un lot</a>-->
+    <a href="{{ path('app_lots_new') }}">Ajouter un lot</a>
+    <a href="{{ path('app_clients_index') }}">Retour a la liste des clients</a>
 {% endblock %}

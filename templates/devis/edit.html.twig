@@ -3,11 +3,25 @@
 {% block title %}Edit Devis{% endblock %}
 
 {% block body %}
-    <h1>Edit Devis</h1>
+    {{ include('components/_title.html.twig', { content: 'Modifier le devis ' ~ devi.id}) }}
 
-    {{ include('devis/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('devis/_form.html.twig', {
+        button_label: 'Modifier',
+        form_action: path('app_devis_edit', {id: devi.id}),
+    }) }}
 
-    <a href="{{ path('app_devis_index') }}">back to list</a>
+    {{ include('components/_delete_form.html.twig', {
+        item_id: devi.id,
+        path: 'devis',
+        labelButton: 'Supprimer',
+        classButton: 'my-3 text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-lg mr-3',
+        classForm: "inline-block",
+        title: "Suppression du devis : " ~ devi.id,
+        content: "Êtes-vous sûr de vouloir supprimer ce devis ?",
+    }) }}
 
-    {{ include('devis/_delete_form.html.twig') }}
+    {{ include('components/_link.html.twig', {
+        content: 'Retour à la liste',
+        path: 'app_devis_index'
+    }) }}
 {% endblock %}

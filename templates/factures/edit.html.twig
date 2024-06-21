@@ -3,11 +3,18 @@
 {% block title %}Edit Factures{% endblock %}
 
 {% block body %}
-    <h1>Edit Factures</h1>
+    {{ include('components/_title.html.twig', { content: 'Facture ' ~ facture.id}) }}
 
-    {{ include('factures/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('factures/_show_components.html.twig') }}
 
-    <a href="{{ path('app_factures_index') }}">back to list</a>
+    {% if facture.getStatut() is not same as 'Payée' %}
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 uppercase my-6"> Ajouter un paiement </h3>  
 
-    {{ include('factures/_delete_form.html.twig') }}
+        {{ include('paiements/_form.html.twig')  }}
+    {% endif %}
+
+    {{ include('components/_link.html.twig', {
+        content: 'Retour à la liste',
+        path: 'app_factures_index'
+    }) }}
 {% endblock %}
