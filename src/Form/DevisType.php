@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Clients;
 use App\Entity\Devis;
 use App\Entity\Lots;
-use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -26,9 +25,16 @@ class DevisType extends AbstractType
         $builder
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
-                'html5' => false,
-                'format' => 'dd/MM/yyyy',
-                'help' => 'Date sous forme DD/MM/YYYY',
+                'input' => 'datetime_immutable',
+                'label' => 'Date',
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'La date de début est obligatoire.']),
+                    new GreaterThanOrEqual([
+                        'value' => '2000-01-01',
+                        'message' => 'La date doit être supérieure ou égale à l\'année 2000.',
+                    ]),
+                ],
             ])
             ->add('description')
             ->add('taxe', null, [

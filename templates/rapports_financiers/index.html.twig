@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des rapports financier{% endblock %}
+
+{% block body %}
+    {{ include('components/_title.html.twig', { content: 'Liste des rapports financier'}) }}
+
+    {% if rapports_financiers is empty %}
+        {{ include('components/_empty_message.html.twig', { content: 'Aucun rapport n\'a été trouvé.' }) }}
+    {% else %}
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-primary-100 font-title">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Identifiant
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date de début
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date de fin
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Prix HT
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Prix TTC
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                </th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-color3-50 font-subtitle">
+            {% for rapports_financier in rapports_financiers %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ rapports_financier.getId() }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ rapports_financier.getStartDate() ? rapports_financier.getStartDate()|date('d/m/Y') : '' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ rapports_financier.getEndDate() ? rapports_financier.getEndDate()|date('d/m/Y') : '' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ rapports_financier.getTotalHt() }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ rapports_financier.getTotalTtc() }} €</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
+                        <a href="/rapports-financiers/{{ rapports_financier.id }}">
+                            <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                                {{ include('components/SVG/_eye_SVG.html.twig') }}
+                            </button>
+                        </a>
+                        {% if is_granted('ROLE_COMPTABLE') %}
+                            <a href="/rapports-financiers/{{ rapports_financier.id }}/edit">
+                                <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                                    {{ include('components/SVG/_update_SVG.html.twig') }}
+                                </button>
+                            </a>
+                            {{ include('components/_delete_form.html.twig', {
+                                item_id: rapports_financier.id,
+                                path: 'rapports_financiers',
+                                labelButton: include('components/SVG/_delete_SVG.html.twig'),
+                                title: "Suppression du rapport financier : " ~ rapports_financier.id,
+                                content: "Êtes-vous sûr de vouloir supprimer ce rapport financier ?",
+                                classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
+                            }) }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {{ include('components/_link.html.twig', {
+    path: "app_rapports_financiers_new", 
+    content: "Créer un rapports financier"
+    }) }}
+
+{% endblock %}
