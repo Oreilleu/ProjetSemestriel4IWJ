@@ -4,14 +4,14 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\CallbackTransformer;
 
-class UserType extends AbstractType
+class UserEntreprisesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -28,9 +28,7 @@ class UserType extends AbstractType
                 'expanded' => true,
                 'label' => 'Rôle',
                 'required' => true,
-            ])
-            ->add('id_entreprise')
-            ;
+            ]);
             if ($options['data']->getId() === null) {
                 $builder->add('password', PasswordType::class, [
                     'required' => true,

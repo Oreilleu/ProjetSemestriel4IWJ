@@ -30,10 +30,10 @@ class InterractionService
         $devis->addInterraction($interraction);
     }
 
-    public function createFactureInterraction(Factures $facture, string $content, Clients $idClient)
+    public function createFactureInterraction(Factures $facture, string $content)
     {
         $interraction = new Interractions();
-        $interraction->setIdClient($idClient);
+        $interraction->setIdClient($facture->getClient());
         $interraction->setIdFactures($facture);
         $interraction->setContent($content);
         $interraction->setCreatedAt(new DateTimeImmutable());
