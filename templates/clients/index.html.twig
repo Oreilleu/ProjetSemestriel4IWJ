@@ -44,9 +44,10 @@
                           item_id: client.id,
                           path: 'clients',
                           labelButton: include('components/SVG/_delete_SVG.html.twig'),
+                          classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded',
+                          classForm: 'inline-block',
                           title: "Suppression du client : " ~ client.nom,
-                          content: "Êtes-vous sûr de vouloir supprimer ce client ?",
-                          classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
+                          content: "Êtes-vous sûr de vouloir supprimer ce client ? Attention, cette action supprimera tous les devis et factures lié à ce client.",
                        }) 
                     }}
                     </td>
