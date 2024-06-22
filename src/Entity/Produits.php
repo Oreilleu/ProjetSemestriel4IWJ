@@ -29,7 +29,7 @@ class Produits
         maxMessage: 'Le nom du produit ne doit pas dépasser {{ limit }} caractères.'
     )]
 
-    #[ORM\Column(length: 100, unique: true)]
+    #[ORM\Column(length: 100)]
     private ?string $nom = null;
 
     #[Assert\NotBlank(

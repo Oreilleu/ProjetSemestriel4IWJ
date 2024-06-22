@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+//Validate form
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: ClientsRepository::class)]
 class Clients
 {
@@ -15,21 +19,73 @@ class Clients
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+
+    #[Assert\Length(min: 1, 
+    max: 255,
+    minMessage: 'Le nom de l\'entreprise doit contenir au moins {{ limit }} caractères.',
+    maxMessage: 'Le nom de l\'entreprise ne doit pas dépasser {{ limit }} caractères.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
+
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\Length(min: 1,
+    max: 255,
+    minMessage: 'Le prénom de l\'entreprise doit contenir au moins {{ limit }} caractères.',
+    maxMessage: 'Le prénom de l\'entreprise ne doit pas dépasser {{ limit }} caractères.'
+    )]
 
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\Length(min: 1,
+    max: 255,
+    minMessage: 'L\'adresse de l\'entreprise doit contenir au moins {{ limit }} caractères.',
+    maxMessage: 'L\'adresse de l\'entreprise ne doit pas dépasser {{ limit }} caractères.'
+    )]   
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+
+    #[Assert\Type(
+        type: 'numeric',
+        message: 'Veuillez renseigner un numéro de téléphone valide.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $tel = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\Email(
+        message: 'Veuillez renseigner une adresse email valide.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\Length(min: 14,
+    max: 14,
+    minMessage: 'Le numéro de SIRET doit contenir {{ limit }} caractères.',
+    maxMessage: 'Le numéro de SIRET doit contenir {{ limit }} caractères.'
+    )]
+    #[Assert\Type(
+        type: 'numeric',
+        message: 'Veuillez renseigner un numéro de téléphone valide.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $numero_siret = null;
 

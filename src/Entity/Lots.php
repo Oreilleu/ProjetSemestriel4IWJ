@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+//Validate forms
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: LotsRepository::class)]
 class Lots
 {
@@ -15,9 +19,23 @@ class Lots
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\Type(
+        type: 'numeric',
+        message: 'Veuillez renseigner une superficie en nombre.'
+    )]
     #[ORM\Column(nullable: true)]
     private ?float $superficie = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+
+    #[Assert\Length(
+        min: 1, 
+        max: 255,
+        minMessage: 'Le type de lot doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le type de lot ne doit pas dépasser {{ limit }} caractères.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
