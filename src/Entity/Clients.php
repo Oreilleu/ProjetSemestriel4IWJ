@@ -52,8 +52,11 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Lots::class, orphanRemoval: true)]
     private Collection $lots;
 
-    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class)]
+    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class, cascade: ["remove"])]
     private Collection $devis;
+
+    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Factures::class, cascade: ["remove"])]
+    private Collection $facture;
 
     #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Interractions::class, cascade: ["remove"])]
     private Collection $interractions;
@@ -158,9 +161,6 @@ class Clients
         return $this;
     }
 
-    /**
-     * @return Collection<int, Lots>
-     */
     public function getLots(): Collection
     {
         return $this->lots;
@@ -179,7 +179,6 @@ class Clients
     public function removeLot(Lots $lot): static
     {
         if ($this->lots->removeElement($lot)) {
-            // set the owning side to null (unless already changed)
             if ($lot->getIdClient() === $this) {
                 $lot->setIdClient(null);
             }
@@ -263,6 +262,32 @@ class Clients
         return $this;
     }
 
+    public function getFacture(): Collection
+    {
+        return $this->facture;
+    }
+
+    public function addFacture(Factures $facture): self
+    {
+        if (!$this->facture->contains($facture)) {
+            $this->facture[] = $facture;
+            $facture->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(Factures $facture): self
+    {
+        if ($this->devis->removeElement($facture)) {
+            if ($facture->getClient() === $this) {
+                $facture->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function getInterraction(): Collection
     {
         return $this->interractions;
@@ -290,3 +315,4 @@ class Clients
         return $this;
     }
 }
+
