@@ -6,6 +6,7 @@ use App\Entity\Devis;
 use App\Entity\User;
 use App\Form\DevisType;
 use App\Service\DevisService;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +44,7 @@ class DevisController extends AbstractController
     }
 
     #[Route('/new', name: 'app_devis_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $user = $this->getUser();
         

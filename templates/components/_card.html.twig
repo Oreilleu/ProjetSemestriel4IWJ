@@ -28,14 +28,16 @@
 			</a>
 		{% endif %}
 		{% if item_path == 'produits' %}
-			{{ include('components/_delete_form.html.twig', { 
-        item_id,
-        path: item_path,
-        labelButton: include('components/SVG/_delete_SVG.html.twig'),
-        classButton: "bg-primary-300 border-0 py-2 px-8 rounded",
-        classForm: "inline-block",
-        title: "Suppression de la " ~ item_type ~ " : " ~ item_nom,
-        content: delete_content  }) }}
+		{{ include('components/_delete_form.html.twig', { 
+			item_id,
+			path: item_path,
+			labelButton: include('components/SVG/_delete_SVG.html.twig'),
+			classButton: "bg-primary-300 border-0 py-2 px-8 rounded",
+			classForm: "inline-block",
+			title: "Suppression de la " ~ item_type ~ " : " ~ item_nom,
+			content: delete_content  
+			}) 
+		}}
 		{% else %}
 			<a href="{{ path('app_' ~ item_path ~ '_edit', { id: item_id }) }}" tabindex="-1" class="mr-3" >
 				<button class="bg-primary-300 border-0 py-2 px-8 rounded ">

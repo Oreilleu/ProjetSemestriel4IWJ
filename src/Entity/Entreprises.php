@@ -7,8 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-//Validate forms
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EntreprisesRepository::class)]
@@ -76,6 +74,14 @@ class Entreprises
     #[ORM\Column(length: 100)]
     private ?string $rib = null;
 
+    #[ORM\Column(options: ["default" => 7])]
+    #[Assert\Range(min: 7, max: 30)]
+    private ?int $interval_relance_devis = 7;
+    
+    #[ORM\Column(options: ["default" => 7])]
+    #[Assert\Range(min: 7, max: 30)]
+    private ?int $interval_relance_factures = 7;
+
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
 
@@ -97,6 +103,9 @@ class Entreprises
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Devis::class, cascade: ["remove"])]
     private Collection $devis;
 
+    #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Factures::class, cascade: ["remove"])]
+    private Collection $factures;
+
     #[ORM\OneToMany(mappedBy: 'id_entreprise', targetEntity: Lots::class, cascade: ["remove"])]
     private Collection $lots;
 
@@ -105,6 +114,7 @@ class Entreprises
         $this->users = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
         $this->rapportsFinanciers = new ArrayCollection();
+        $this->clients = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -189,14 +199,42 @@ class Entreprises
         return $this;
     }
 
+    public function getIntervalRelanceDevis(): ?int
+    {
+        return $this->interval_relance_devis;
+    }
+
+    public function setIntervalRelanceDevis(int $new_interval): static
+    {
+        $this->interval_relance_devis = $new_interval;
+
+        return $this;
+    }
+
+    public function getIntervalRelanceFactures(): ?int
+    {
+        return $this->interval_relance_factures;
+    }
+
+    public function setIntervalRelanceFactures(int $new_interval): static
+    {
+        $this->interval_relance_factures = $new_interval;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
     }
 
-    /**
-     * @return Collection<int, RapportsFinanciers>
-     */
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
     public function getRapportsFinanciers(): Collection
     {
         return $this->rapportsFinanciers;
@@ -215,18 +253,10 @@ class Entreprises
     public function removeRapportsFinancier(RapportsFinanciers $rapportsFinancier): static
     {
         if ($this->rapportsFinanciers->removeElement($rapportsFinancier)) {
-            // set the owning side to null (unless already changed)
             if ($rapportsFinancier->getIdEntreprise() === $this) {
                 $rapportsFinancier->setIdEntreprise(null);
             }
         }
-
-        return $this;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
 
         return $this;
     }
@@ -359,6 +389,33 @@ class Entreprises
             // set the owning side to null (unless already changed)
             if ($devis->getIdEntreprise() === $this) {
                 $devis->setIdEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFactures(): Collection
+    {
+        return $this->factures;
+    }
+
+    public function addFactures(Factures $facture): self
+    {
+        if (!$this->factures->contains($facture)) {
+            $this->factures->add($facture);
+            $facture->setIdEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactures(Factures $facture): self
+    {
+        if ($this->factures->removeElement($facture)) {
+            // set the owning side to null (unless already changed)
+            if ($facture->getIdEntreprise() === $this) {
+                $facture->setIdEntreprise(null);
             }
         }
 

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un rapports financier{% endblock %}
+
+{% block body %}
+    {{ include('components/_title.html.twig', { content: 'Créer un rapports financier'}) }}
+    
+    {{ include('rapports_financiers/_form.html.twig') }}
+
+    {{ include('components/_link.html.twig', {
+        path: "app_rapports_financiers_index", 
+        content: "Retour à la liste"
+    }) }}
+{% endblock %}

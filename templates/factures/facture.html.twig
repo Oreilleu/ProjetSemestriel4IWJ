@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Facture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .company-details, .client-details {
+            width: 48%;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .company-details {
+            text-align: left;
+        }
+        .client-details {
+            text-align: right;
+        }
+        .details-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        .details-table th, .details-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .details-table th {
+            background-color: #f2f2f2;
+        }
+        .totals {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .totals p {
+            margin: 0;
+        }
+        p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Facture</h1>
+        <p>{{ entreprise.nom }}</p>
+        <p>{{ entreprise.adresse }}</p>
+        <p>Tél: {{ entreprise.tel }}</p>
+        <p>Email: {{ entreprise.email }}</p>
+        <p>Numéro SIRET: {{ entreprise.getNumeroSiret() }}</p>
+        <p>RIB: {{ entreprise.rib }}</p>
+    </div>
+    <div class="company-details">
+        <h2>De:</h2>
+        <p>{{ entreprise.nom }}</p>
+        <p>{{ entreprise.adresse }}</p>
+        <p>Tél: {{ entreprise.tel }}</p>
+        <p>Email: {{ entreprise.email }}</p>
+    </div>
+    <div class="client-details">
+        <h2>Pour:</h2>
+        <p>{{ client.nom }} {{ client.prenom }}</p>
+        <p>{{ client.adresse }}</p>
+        <p>Tél: {{ client.tel }}</p>
+        <p>Email: {{ client.email }}</p>
+    </div>
+    <table class="details-table">
+        <thead>
+        <tr>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Prix Unitaire (HT)</th>
+            <th>Total (HT)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ factures.idDevis.description }}</td>
+            <td>{{ factures.idDevis.date|date('d/m/Y') }}</td>
+            <td>{{ factures.idDevis.getTotalHt()  }} €</td>
+            <td>{{ factures.idDevis.getTotalHt() }} €</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="totals">
+        <p>Total HT: {{ factures.idDevis.getTotalHt() }} €</p>
+        <p>TVA ({{ factures.taxe }}%): {{ (factures.idDevis.getTotalHt() * (factures.taxe / 100))|number_format(2, ',', ' ') }} €</p>
+        <p><strong>Total TTC: {{ (factures.idDevis.getTotalHt() * (1 + factures.taxe / 100))|number_format(2, ',', ' ') }} €</strong></p>
+    </div>
+    <p>Merci pour votre confiance.</p>
+</div>
+</body>
+</html>
