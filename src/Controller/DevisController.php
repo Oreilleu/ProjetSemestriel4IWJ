@@ -59,7 +59,7 @@ class DevisController extends AbstractController
         );
     }
 
-    #[Route('/{id}/download', name: 'app_devis_doanwload_facture_pdf', methods: ['GET'])]
+    #[Route('/{id}/download', name: 'app_devis_download_facture_pdf', methods: ['GET'])]
     public function downloadPdf(Devis $devi, PdfService $pdfService): Response
     {
         $html = $this->renderView('devis/facture.html.twig', [
