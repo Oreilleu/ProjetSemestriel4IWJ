@@ -83,25 +83,23 @@
         <tr>
             <th>Description</th>
             <th>Date</th>
-            <th>Quantité</th>
             <th>Prix Unitaire (HT)</th>
             <th>Total (HT)</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>{{ devi.description }}</td>
-            <td>{{ devi.date ? devi.date|date('d/m/Y') : '' }}</td>
-            <td>1</td>
-            <td>{{ devi.getTotalHt() }} €</td>
-            <td>{{ devi.getTotalHt() }} €</td>
+            <td>{{ factures.idDevis.description }}</td>
+            <td>{{ factures.idDevis.date|date('d/m/Y') }}</td>
+            <td>{{ factures.idDevis.getTotalHt()  }} €</td>
+            <td>{{ factures.idDevis.getTotalHt() }} €</td>
         </tr>
         </tbody>
     </table>
     <div class="totals">
-        <p>Total HT: {{ devi.getTotalHt() }} €</p>
-        <p>TVA ({{ devi.taxe }}%): {{ (devi.getTotalHt() * (devi.taxe / 100))|number_format(2, ',', ' ') }} €</p>
-        <p><strong>Total TTC: {{ (devi.getTotalHt() * (1 + devi.taxe / 100))|number_format(2, ',', ' ') }} €</strong></p>
+        <p>Total HT: {{ factures.idDevis.getTotalHt() }} €</p>
+        <p>TVA ({{ factures.taxe }}%): {{ (factures.idDevis.getTotalHt() * (factures.taxe / 100))|number_format(2, ',', ' ') }} €</p>
+        <p><strong>Total TTC: {{ (factures.idDevis.getTotalHt() * (1 + factures.taxe / 100))|number_format(2, ',', ' ') }} €</strong></p>
     </div>
     <p>Merci pour votre confiance.</p>
 </div>
