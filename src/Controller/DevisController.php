@@ -6,6 +6,7 @@ use App\Entity\Devis;
 use App\Entity\User;
 use App\Form\DevisType;
 use App\Service\DevisService;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

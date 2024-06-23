@@ -10,6 +10,7 @@ use App\Form\PaiementsType;
 use App\Repository\FacturesRepository;
 use App\Service\EmailService;
 use App\Service\InterractionService;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,6 +49,37 @@ class FacturesController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/facture/pdf', name: 'app_facture_pdf', methods: ['GET'])]
+    public function generatePdf(Factures $factures, PdfService $pdfService): Response
+    {
+        $html = $this->renderView('factures/facture.html.twig', [
+            'factures' => $factures,
+            'entreprise' => $factures->getIdEntreprise(),
+            'client' => $factures->getClient()
+        ]);
+
+        return new Response(
+            $pdfService->generatePdf($html),
+            Response::HTTP_OK,
+            ['Content-Type' => 'application/pdf']
+        );
+    }
+
+    #[Route('/{id}/download', name: 'app_download_facture_pdf', methods: ['GET'])]
+    public function downloadPdf(Factures $factures, PdfService $pdfService): Response
+    {
+        $html = $this->renderView('factures/facture.html.twig', [
+            'factures' => $factures,
+            'entreprise' => $factures->getIdEntreprise(),
+            'client' => $factures->getClient()
+        ]);
+
+        $filename = 'facture-' . $factures->getId() . '-' . $factures->getClient()->getNom() . '-' . $factures->getClient()->getPrenom();
+
+        $pdfService->downloadPdf($html, $filename);
+
+        return $this->redirectToRoute('app_factures_index', [], Response::HTTP_SEE_OTHER);
+    }
     #[Route('/new', name: 'app_factures_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
