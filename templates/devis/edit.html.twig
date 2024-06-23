@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Devis{% endblock %}
+{% block title %}Modifier devis - {{ devi.id }}{% endblock %}
 
 {% block body %}
     {{ include('components/_title.html.twig', { content: 'Modifier le devis ' ~ devi.id}) }}
