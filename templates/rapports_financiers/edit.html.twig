@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit RapportsFinanciers{% endblock %}
+{% block title %}Modifier rapport financier - {{ rapports_financier.id }}{% endblock %}
 
 {% block body %}
     {{ include('components/_title.html.twig', { content: 'Rapports financier ' ~ rapports_financier.id}) }}

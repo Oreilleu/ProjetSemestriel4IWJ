@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport Financier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .company-details, .report-details {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .company-details p, .report-details p {
+            margin: 0;
+            line-height: 1.6;
+        }
+        .report-details {
+            margin-top: 40px;
+        }
+        .report-details h2 {
+            margin-bottom: 10px;
+        }
+        .totals {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .totals p {
+            margin: 0;
+        }
+        p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Rapport Financier</h1>
+        <p>{{ entreprise.nom }}</p>
+        <p>{{ entreprise.adresse }}</p>
+        <p>Tél: {{ entreprise.tel }}</p>
+        <p>Email: {{ entreprise.email }}</p>
+    </div>
+    <div class="report-details">
+        <h2>Détails du rapport</h2>
+        <p><strong>Période:</strong> {{ rapports_financier.getStartDate()|date('d/m/Y') }} - {{ rapports_financier.getEndDate()|date('d/m/Y') }}</p>
+        <p><strong>Date de création:</strong> {{ rapports_financier.getCreatedAt()|date('d/m/Y H:i') }}</p>
+    </div>
+    <div class="totals">
+        <p><strong>Total HT:</strong> {{ rapports_financier.totalHt|number_format(2, ',', ' ') }} €</p>
+        <p><strong>Total TTC:</strong> {{ rapports_financier.totalTtc|number_format(2, ',', ' ') }} €</p>
+    </div>
+</div>
+</body>
+</html>
