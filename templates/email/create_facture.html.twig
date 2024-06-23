@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle facture créée</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #dabb97;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px 0;
+        }
+        .content {
+            padding: 30px;
+            color: #444444;
+        }
+        .footer {
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 10px 0;
+            font-size: 12px;
+            color: #888888;
+        }
+        .details {
+            margin-bottom: 20px;
+        }
+        .details p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Nouvelle facture créée</h1>
+    </div>
+    <div class="content">
+        <div class="details">
+            <p>Une nouvelle facture a été créée pour {{ facture.getClient().getEmail() }} :</p>
+            <p><strong>ID de la facture :</strong> {{ facture.getId() }}</p>
+            <p><strong>Date de création :</strong> {{ "now"|date('d/m/Y H:i') }}</p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Ceci est un e-mail automatique, merci de ne pas y répondre.</p>
+    </div>
+</div>
+</body>
+</html>

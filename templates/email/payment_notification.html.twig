@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification de paiement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #dabb97;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px 0;
+        }
+        .content {
+            padding: 30px;
+            color: #444444;
+        }
+        .footer {
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 10px 0;
+            font-size: 12px;
+            color: #888888;
+        }
+        .details {
+            margin-bottom: 20px;
+        }
+        .details p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Nouveau paiement effectué</h1>
+    </div>
+    <div class="content">
+        <p>Bonjour {{ facture.getClient().getNom() }},</p>
+        {% if isFullyPaid %}
+            <p>Un nouveau paiement a été effectué pour la facture n°{{ facture.getId() }}.</p>
+            <p>La facture est maintenant totalement payée.</p>
+        {% else %}
+            <p>Un paiement partiel a été effectué pour la facture n°{{ facture.getId() }}.</p>
+        {% endif %}
+    </div>
+    <div class="footer">
+        <p>Ceci est un e-mail automatique, merci de ne pas y répondre.</p>
+    </div>
+</div>
+</body>
+</html>

@@ -8,6 +8,7 @@ use App\Entity\LignesDevis;
 use App\Entity\Produits;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTimeImmutable;
+use Twig\Environment;
 
 class DevisService
 {
@@ -15,11 +16,13 @@ class DevisService
     private $emailService;
     private $interractionService;
 
-    public function __construct(EntityManagerInterface $entityManager, EmailService $emailService, InterractionService $interractionService)
+    private  $twig;
+    public function __construct(EntityManagerInterface $entityManager, EmailService $emailService, InterractionService $interractionService, Environment $twig)
     {
         $this->entityManager = $entityManager;
         $this->emailService = $emailService;
         $this->interractionService = $interractionService;
+        $this->twig = $twig;
     }
 
     public function handleDevisCreation(Devis $devis, array $requestData, $entreprise)
@@ -46,8 +49,12 @@ class DevisService
     private function sendDevisCreationEmail(Devis $devis): void
     {
         $subject = 'Nouveau devis créé';
-        $content = 'Un nouveau devis a été créé avec l\'ID : ' . $devis->getId();
+        $template = 'email/create_devis.html.twig';
         $recipient = $devis->getClient()->getEmail();
+
+        $content = $this->twig->render($template, [
+            'devis' => $devis,
+        ]);
 
         $this->emailService->sendEmail($recipient, $subject, $content);
     }
@@ -55,8 +62,12 @@ class DevisService
     private function sendFactureCreationEmail(Factures $facture): void
     {
         $subject = 'Nouvelle facture créée';
-        $content = 'Une nouvelle facture a été créée avec l\'ID : ' . $facture->getId();
+        $template = 'email/create_facture.html.twig';
         $recipient = $facture->getIdDevis()->getClient()->getEmail(); 
+
+        $content = $this->twig->render($template, [
+            'facture' => $facture,
+        ]);
 
         $this->emailService->sendEmail($recipient, $subject, $content);
     }
