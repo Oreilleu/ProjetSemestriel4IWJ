@@ -20,54 +20,54 @@ class Entreprises
     private ?int $id = null;
 
     #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'    
+        message: 'Nom_not_blank'    
     )]
     #[Assert\Length(
         min: 1, 
         max: 100,
-        minMessage: 'Le nom de l\'entreprise doit contenir au moins {{ limit }} caractères.',
-        maxMessage: 'Le nom de l\'entreprise ne doit pas dépasser {{ limit }} caractères.'
+        minMessage: 'Nom_length_min',
+        maxMessage: 'Nom_length_max'
     )]
     #[ORM\Column(length: 100)]
     private ?string $nom = null;
 
     #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'    
+        message: 'Adresse_not_blank'   
     )]
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
     #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'    
+        message: 'Tel_not_blank'    
     )]
     #[Assert\Type(
         type: 'numeric',
-        message: 'Veuillez renseigner un numéro de téléphone valide.'
+        message: 'Tel_invalid'
     )]
     #[ORM\Column(length: 14)]
     private ?string $tel = null;
 
     #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'    
+        message: 'Email_not_blank'    
     )]
     #[Assert\Email(
-        message: 'Veuillez renseigner une adresse email valide.'
+        message: 'Email_invalid'
     )]
     #[ORM\Column(length: 100)]
     private ?string $email = null;
 
     #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'    
+        message: 'SIRET_not_blank'    
     )]
     #[Assert\Length(
         min: 14, 
         max: 14,
-        minMessage: 'Le numéro de SIRET doit contenir {{ limit }} caractères.',
-        maxMessage: 'Le numéro de SIRET doit contenir {{ limit }} caractères.'
+        minMessage: 'SIRET_length',
+        maxMessage: 'SIRET_length'
     )]
     #[Assert\Type(
         type: 'numeric',
-        message: 'Veuillez renseigner un numéro de téléphone valide.'
+        message: 'SIRET_invalid'
     )]
     #[ORM\Column(length: 100)]
     private ?string $numero_siret = null;
