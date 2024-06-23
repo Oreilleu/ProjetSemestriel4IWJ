@@ -1,14 +1,5 @@
 {{ form_start(form) }}
 <label class="flex flex-col">
-    {{ form_label(form.id_entreprise, 'Entreprise :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
-    <div class="text-red-500 text-sm font-bold mb-3">
-        {{ form_errors(form.id_entreprise, {'attr': {'class': 'text-red-500 text-sm font-bold mb-3'}}) }}
-    </div>   
-    {{ form_widget(form.id_entreprise, {'attr': {'class': 'shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }} 
-    
-</label>
-
-<label class="flex flex-col">
     {{ form_label(form.email, 'Email *', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
     <div class="text-red-500 text-sm font-bold mb-3">
         {{ form_errors(form.email) }}

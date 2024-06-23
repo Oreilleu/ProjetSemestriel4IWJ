@@ -17,20 +17,59 @@ class Entreprises
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(
+        message: 'Nom_not_blank'    
+    )]
+    #[Assert\Length(
+        min: 1, 
+        max: 100,
+        minMessage: 'Nom_length_min',
+        maxMessage: 'Nom_length_max'
+    )]
     #[ORM\Column(length: 100)]
     private ?string $nom = null;
 
+    #[Assert\NotBlank(
+        message: 'Adresse_not_blank'   
+    )]
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
+    #[Assert\NotBlank(
+        message: 'Tel_not_blank'    
+    )]
+    #[Assert\Type(
+        type: 'numeric',
+        message: 'Tel_invalid'
+    )]
     #[ORM\Column(length: 14)]
     private ?string $tel = null;
 
+    #[Assert\NotBlank(
+        message: 'Email_not_blank'    
+    )]
+    #[Assert\Email(
+        message: 'Email_invalid'
+    )]
     #[ORM\Column(length: 100)]
     private ?string $email = null;
 
+    #[Assert\NotBlank(
+        message: 'SIRET_not_blank'    
+    )]
+    #[Assert\Length(
+        min: 14, 
+        max: 14,
+        minMessage: 'SIRET_length',
+        maxMessage: 'SIRET_length'
+    )]
+    #[Assert\Type(
+        type: 'numeric',
+        message: 'SIRET_invalid'
+    )]
     #[ORM\Column(length: 100)]
     private ?string $numero_siret = null;
+
 
     #[ORM\Column(length: 100)]
     private ?string $rib = null;
