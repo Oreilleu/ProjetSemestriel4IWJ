@@ -101,6 +101,11 @@
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Ajouter
                             un client</a>
                     </li>
+                    <li>
+                        <a href="{{ path('app_lots_new') }}"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Ajouter
+                            un lot</a>
+                    </li>
                 </ul>
             </li>
 
@@ -166,14 +171,22 @@
                 </button>
                 <ul id="dropdown-produits" class="hidden py-2 space-y-2">
                     <li>
-                        <a href="{{ path('app_devis_index') }}"
+                        <a href="{{ path('app_produits_index') }}"
                             class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">
-                            Mes devis</a>
+                            Tous les produits</a>
                     </li>
                     <li>
-                        <a href="{{ path('app_factures_index') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Ajouter
-                            Mes factures</a>
+                        <a href="{{ path('app_produits_new') }}"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Créer un produit</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_categories_index') }}"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">
+                            Catégorie</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_categories_new') }}"
+                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">Créer une catégorie</a>
                     </li>
                 </ul>
             </li>
