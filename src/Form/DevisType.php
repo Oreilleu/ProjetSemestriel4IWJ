@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Clients;
 use App\Entity\Devis;
 use App\Entity\Lots;
-use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -15,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -26,11 +26,26 @@ class DevisType extends AbstractType
         $builder
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
-                'html5' => false,
-                'format' => 'dd/MM/yyyy',
-                'help' => 'Date sous forme DD/MM/YYYY',
+                'input' => 'datetime_immutable',
+                'label' => 'Date',
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'La date de début est obligatoire.']),
+                    new GreaterThanOrEqual([
+                        'value' => '2000-01-01',
+                        'message' => 'La date doit être supérieure ou égale à l\'année 2000.',
+                    ]),
+                ],
             ])
-            ->add('description')
+            ->add('description', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'La description est obligatoire.']),
+                    new Length([
+                        'max' => 40,
+                        'maxMessage' => 'La description ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                ],
+            ])
             ->add('taxe', null, [
                 'constraints' => [
                     new GreaterThanOrEqual([
@@ -69,6 +84,8 @@ class DevisType extends AbstractType
         $builder->add('list_produit', HiddenType::class, [
             'mapped' => false,
             'required' => true,
+            'help' => 'Les produits sélectionnés s\'afficheront dans la liste des produits ci-dessous.',
+            'error_bubbling'=> false,
             'constraints' => [
             new NotBlank([
                 'message' => 'La liste des produits ne peut pas être vide.',
@@ -77,11 +94,11 @@ class DevisType extends AbstractType
                 'callback' => function ($value, ExecutionContextInterface $context) {
                     if (is_array($value) && empty($value)) {
                         $context->buildViolation('La liste des produits ne peut pas être vide.')
-                        ->addViolation();
+                                ->addViolation();
                     }
                     if ($value == '[]') {
                         $context->buildViolation('La liste des produits ne peut pas être vide.')
-                        ->addViolation();
+                                ->addViolation();
                     }
                 },
             ]),

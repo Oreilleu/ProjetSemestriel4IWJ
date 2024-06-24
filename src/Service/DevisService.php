@@ -33,6 +33,7 @@ class DevisService
 
         $totalPrice = $this->calculateTotalPriceHT($listProduitArray);
         $devis->setTotalHt($totalPrice);
+        $devis->setCreatedAt(new DateTimeImmutable());
         
         $this->entityManager->persist($devis);
         $this->interractionService->createDevisInterraction($devis, 'Un devis a été créé (id : ' . $devis->getId() . '), son statut est : ' . $devis->getStatut());
@@ -173,17 +174,18 @@ class DevisService
         $lignesDevis = $devi->getLignesDevis();
 
         $facture = new Factures();
+        $facture->setIdEntreprise($devi->getIdEntreprise());
         $facture->setTotalHt($devi->getTotalHt());
         $facture->setTotalTtc($devi->getTotalHt() * (1 + $devi->getTaxe() / 100));
         $facture->setTaxe($devi->getTaxe());
         $facture->setStatut('En cours de paiement');
         $facture->setIdDevis($devi);
-        $facture->setNameClient($devi->getClient()->getNom() . ' ' . $devi->getClient()->getPrenom());
+        $facture->setClient($devi->getClient());
         $facture->setCreatedAt(new DateTimeImmutable());
 
         $this->entityManager->persist($facture);
 
-        $this->interractionService->createFactureInterraction($facture, 'Une facture a été créée (id : ' . $facture->getId() . '), son statut est : ' . $facture->getStatut(), $devi->getClient());
+        $this->interractionService->createFactureInterraction($facture, 'Une facture a été créée (id : ' . $facture->getId() . '), son statut est : ' . $facture->getStatut());
 
         foreach ($lignesDevis as $ligne) {
             $ligne->setIdFactures($facture);

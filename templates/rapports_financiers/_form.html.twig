@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+    {{ include('components/_form_group.html.twig', {
+        field: form.start_date,
+        label: 'Date de début',
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.end_date,
+        label: 'Date de fin',
+    }) }}
+
+    {{ include('components/_submit_button.html.twig', {
+        content: "Envoyer"
+    }) }}
+{{ form_end(form) }}

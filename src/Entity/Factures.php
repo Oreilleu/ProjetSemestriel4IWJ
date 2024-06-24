@@ -20,15 +20,15 @@ class Factures
     
     #[ORM\Column]
     private ?float $taxe = null;
-
-    #[ORM\Column]
-    private ?string $name_client = null;
-
+    
     #[ORM\Column(nullable: false)]
     private ?float $total_ht = null;
     
     #[ORM\Column(nullable: false)]
     private ?float $total_ttc = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $last_relance = null;
     
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $created_at = null;
@@ -36,14 +36,22 @@ class Factures
     #[ORM\ManyToOne(inversedBy: 'factures')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Devis $id_devis = null;
+    
+    #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'factures')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprises $id_entreprise = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: LignesDevis::class)]
+    #[ORM\ManyToOne(targetEntity: Clients::class, inversedBy: 'facture')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Clients $id_client = null;
+
+    #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: LignesDevis::class, cascade: ["remove"])]
     private Collection $lignesDevis;
     
     #[ORM\OneToMany(mappedBy: 'id_factures', targetEntity: Interractions::class)]
     private Collection $interractions;
     
-    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: Paiements::class)]
+    #[ORM\OneToMany(mappedBy: 'id_facture', targetEntity: Paiements::class, cascade: ["remove"])]
     #[ORM\JoinColumn(nullable: true)]
     private Collection $paiements;
 
@@ -52,6 +60,42 @@ class Factures
         $this->paiements = new ArrayCollection();
         $this->lignesDevis = new ArrayCollection();
         $this->interractions = new ArrayCollection();
+    }
+
+    public function getIdEntreprise(): ?Entreprises
+    {
+        return $this->id_entreprise;
+    }
+
+    public function setIdEntreprise(?Entreprises $id_entreprise): self
+    {
+        $this->id_entreprise = $id_entreprise;
+
+        return $this;
+    }
+
+    public function getClient(): ?Clients
+    {
+        return $this->id_client;
+    }
+
+    public function setClient(?Clients $id_client): self
+    {
+        $this->id_client = $id_client;
+
+        return $this;
+    }
+
+    public function getLastRelance(): ?\DateTimeImmutable
+    {
+        return $this->last_relance;
+    }
+
+    public function setLastRelance(?\DateTimeImmutable $last_relance): self
+    {
+        $this->last_relance = $last_relance;
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -91,18 +135,6 @@ class Factures
     public function setTaxe(float $taxe): static
     {
         $this->taxe = $taxe;
-
-        return $this;
-    }
-
-    public function getNameClient(): ?string
-    {
-        return $this->name_client;
-    }
-
-    public function setNameClient(string $name_client): static
-    {
-        $this->name_client = $name_client;
 
         return $this;
     }

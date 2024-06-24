@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+    {{ include('components/_form_group.html.twig', {
+        field: form.interval_relance_devis,
+        label: 'Interval de relance en jours pour les devis',
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.interval_relance_factures,
+        label: 'Interval de relance en jours pour les factures',
+    }) }}
+
+    {{ include('components/_submit_button.html.twig', {
+        content: "Envoyer"
+    }) }}
+{{ form_end(form) }}

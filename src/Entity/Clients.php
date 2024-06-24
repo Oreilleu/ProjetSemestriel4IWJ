@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+//Validate form
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: ClientsRepository::class)]
 class Clients
 {
@@ -15,21 +19,73 @@ class Clients
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+
+    #[Assert\Length(min: 1, 
+    max: 255,
+    minMessage: 'Le nom de l\'entreprise doit contenir au moins {{ limit }} caractères.',
+    maxMessage: 'Le nom de l\'entreprise ne doit pas dépasser {{ limit }} caractères.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
+
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\Length(min: 1,
+    max: 255,
+    minMessage: 'Le prénom de l\'entreprise doit contenir au moins {{ limit }} caractères.',
+    maxMessage: 'Le prénom de l\'entreprise ne doit pas dépasser {{ limit }} caractères.'
+    )]
 
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\Length(min: 1,
+    max: 255,
+    minMessage: 'L\'adresse de l\'entreprise doit contenir au moins {{ limit }} caractères.',
+    maxMessage: 'L\'adresse de l\'entreprise ne doit pas dépasser {{ limit }} caractères.'
+    )]   
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+
+    #[Assert\Type(
+        type: 'numeric',
+        message: 'Veuillez renseigner un numéro de téléphone valide.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $tel = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\Email(
+        message: 'Veuillez renseigner une adresse email valide.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\Length(min: 14,
+    max: 14,
+    minMessage: 'Le numéro de SIRET doit contenir {{ limit }} caractères.',
+    maxMessage: 'Le numéro de SIRET doit contenir {{ limit }} caractères.'
+    )]
+    #[Assert\Type(
+        type: 'numeric',
+        message: 'Veuillez renseigner un numéro de téléphone valide.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $numero_siret = null;
 
@@ -52,8 +108,11 @@ class Clients
     #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Lots::class, orphanRemoval: true)]
     private Collection $lots;
 
-    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class)]
+    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Devis::class, cascade: ["remove"])]
     private Collection $devis;
+
+    #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Factures::class, cascade: ["remove"])]
+    private Collection $facture;
 
     #[ORM\OneToMany(mappedBy: 'id_client', targetEntity: Interractions::class, cascade: ["remove"])]
     private Collection $interractions;
@@ -158,9 +217,6 @@ class Clients
         return $this;
     }
 
-    /**
-     * @return Collection<int, Lots>
-     */
     public function getLots(): Collection
     {
         return $this->lots;
@@ -179,7 +235,6 @@ class Clients
     public function removeLot(Lots $lot): static
     {
         if ($this->lots->removeElement($lot)) {
-            // set the owning side to null (unless already changed)
             if ($lot->getIdClient() === $this) {
                 $lot->setIdClient(null);
             }
@@ -263,6 +318,32 @@ class Clients
         return $this;
     }
 
+    public function getFacture(): Collection
+    {
+        return $this->facture;
+    }
+
+    public function addFacture(Factures $facture): self
+    {
+        if (!$this->facture->contains($facture)) {
+            $this->facture[] = $facture;
+            $facture->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(Factures $facture): self
+    {
+        if ($this->devis->removeElement($facture)) {
+            if ($facture->getClient() === $this) {
+                $facture->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function getInterraction(): Collection
     {
         return $this->interractions;
@@ -290,3 +371,4 @@ class Clients
         return $this;
     }
 }
+

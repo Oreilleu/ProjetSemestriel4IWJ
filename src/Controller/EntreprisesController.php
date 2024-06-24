@@ -14,14 +14,19 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/entreprises')]
 class EntreprisesController extends AbstractController
 {
+
+    public function __construct()
+    {
+    }
     #[Route('/', name: 'app_entreprises_index', methods: ['GET'])]
     public function index(EntreprisesRepository $entreprisesRepository): Response
     {
+        $entreprises = $entreprisesRepository->findAll();
+
         return $this->render('entreprises/index.html.twig', [
-            'entreprises' => $entreprisesRepository->findAll(),
+            'entreprises' => $entreprises,
         ]);
     }
-
     #[Route('/new', name: 'app_entreprises_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

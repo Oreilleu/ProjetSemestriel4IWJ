@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+//Validate forms
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: CategoriesProduitsRepository::class)]
 class CategoriesProduits
 {
@@ -15,9 +19,18 @@ class CategoriesProduits
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(
+        message: 'Veuillez renseigner ce champ.'    
+    )]
+    #[Assert\Length(
+        min: 1, 
+        max: 100,
+        minMessage: 'Le nom de la catégorie doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le nom de la catégorie ne doit pas dépasser {{ limit }} caractères.'
+    )]
     #[ORM\Column(length: 100)]
     private ?string $nom = null;
-
+    
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $filePath = null;
 

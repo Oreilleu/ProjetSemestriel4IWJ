@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\DevisRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DevisRepository::class)]
@@ -15,21 +14,27 @@ class Devis
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
-
+    
     #[ORM\Column(length: 255)]
     private ?string $description = null;
-
+    
     #[ORM\Column]
     private ?string $statut = null;
-
+    
     #[ORM\Column]
     private ?float $taxe = null;
     
     #[ORM\Column(nullable: false)]
     private ?float $total_ht = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $last_relance = null;
+    
+    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $created_at = null;
+
+    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $date = null;
     
     #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'devis')]
     #[ORM\JoinColumn(nullable: false)]
@@ -41,7 +46,7 @@ class Devis
     
     #[ORM\ManyToOne(targetEntity: Clients::class, inversedBy: 'devis')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Clients $client;
+    private ?Clients $id_client;
     
     #[ORM\OneToMany(mappedBy: 'id_devis', targetEntity: LignesDevis::class)]
     private Collection $lignesDevis;
@@ -68,12 +73,12 @@ class Devis
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate(\DateTimeImmutable $date): static
     {
         $this->date = $date;
 
@@ -116,9 +121,6 @@ class Devis
         return $this;
     }
 
-    /**
-     * @return Collection<int, Factures>
-     */
     public function getFactures(): Collection
     {
         return $this->factures;
@@ -137,7 +139,6 @@ class Devis
     public function removeFacture(Factures $facture): static
     {
         if ($this->factures->removeElement($facture)) {
-            // set the owning side to null (unless already changed)
             if ($facture->getIdDevis() === $this) {
                 $facture->setIdDevis(null);
             }
@@ -146,9 +147,6 @@ class Devis
         return $this;
     }
 
-    /**
-     * @return Collection<int, Relances>
-     */
     public function getRelances(): Collection
     {
         return $this->relances;
@@ -167,7 +165,6 @@ class Devis
     public function removeRelance(Relances $relance): static
     {
         if ($this->relances->removeElement($relance)) {
-            // set the owning side to null (unless already changed)
             if ($relance->getIdDevis() === $this) {
                 $relance->setIdDevis(null);
             }
@@ -176,9 +173,6 @@ class Devis
         return $this;
     }
 
-    /**
-     * @return Collection<int, Interractions>
-     */
     public function getInterractions(): Collection
     {
         return $this->interractions;
@@ -248,7 +242,6 @@ class Devis
     public function removeLignesDevi(LignesDevis $lignesDevi): static
     {
         if ($this->lignesDevis->removeElement($lignesDevi)) {
-            // set the owning side to null (unless already changed)
             if ($lignesDevi->getIdDevis() === $this) {
                 $lignesDevi->setIdDevis(null);
             }
@@ -271,12 +264,36 @@ class Devis
 
     public function getClient(): ?Clients
     {
-        return $this->client;
+        return $this->id_client;
     }
 
-    public function setClient(?Clients $client): self
+    public function setClient(?Clients $id_client): self
     {
-        $this->client = $client;
+        $this->id_client = $id_client;
+
+        return $this;
+    }
+
+    public function getLastRelance(): ?\DateTimeImmutable
+    {
+        return $this->last_relance;
+    }
+
+    public function setLastRelance(?\DateTimeImmutable $last_relance): self
+    {
+        $this->last_relance = $last_relance;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }
