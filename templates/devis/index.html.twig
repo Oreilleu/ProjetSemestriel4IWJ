@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Devis index{% endblock %}
+{% block title %}Devis{% endblock %}
 
 {% block body %}
     {{ include('components/_title.html.twig', { content: 'Liste des devis'}) }}
@@ -51,6 +51,16 @@
                             content: "Êtes-vous sûr de vouloir supprimer ce devis ?",
                             classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
                         }) }}
+                        <a href="{{ path('app_devis_pdf', {id: devi.id}) }}">
+                            <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                                {{ include('components/SVG/_generate_pdf_SVG.html.twig') }}
+                            </button>
+                        </a>
+                        <a href="{{ path('app_devis_download_pdf', {id: devi.id}) }}">
+                            <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                                {{ include('components/SVG/_download_pdf_SVG.html.twig') }}
+                            </button>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

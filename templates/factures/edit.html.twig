@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Factures{% endblock %}
+{% block title %}Modifier facture - {{ facture.id }}{% endblock %}
 
 {% block body %}
     {{ include('components/_title.html.twig', { content: 'Facture ' ~ facture.id}) }}
