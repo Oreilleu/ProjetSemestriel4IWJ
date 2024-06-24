@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Twig\Environment;
 
 class DailyCheckInvoice extends Command
 {
@@ -18,13 +19,16 @@ class DailyCheckInvoice extends Command
     private $interractionService;
     private $entityManager;
 
-    public function __construct(FacturesRepository $factureRepository, EmailService $emailService, InterractionService $interractionService, EntityManagerInterface $entityManager)
+    private $twig;
+
+    public function __construct(FacturesRepository $factureRepository, EmailService $emailService, InterractionService $interractionService, EntityManagerInterface $entityManager,Environment $twig)
     {
         parent::__construct();
         $this->factureRepository = $factureRepository;
         $this->emailService = $emailService;
         $this->interractionService = $interractionService;
         $this->entityManager = $entityManager;
+        $this->twig = $twig;
     }
 
     protected function configure(): void
@@ -37,8 +41,12 @@ class DailyCheckInvoice extends Command
     private function sendRelanceFactureEmail(Factures $facture): void
     {
         $subject = 'Relance facture';
-        $content = 'La facture avec l\'ID : ' . $facture->getId() . ' .';
-        $recipient = $facture->getClient()->getEmail(); 
+        $template = 'email/relance_facture.html.twig';
+        $recipient = $facture->getClient()->getEmail();
+
+        $content = $this->twig->render($template, [
+            'facture' => $facture,
+        ]);
 
         $this->emailService->sendEmail($recipient, $subject, $content);
     }

@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Environment;
 
 #[Route('/factures')]
 class FacturesController extends AbstractController
@@ -25,10 +26,12 @@ class FacturesController extends AbstractController
     private $interractionService;
     private $emailService;
 
-    public function __construct(InterractionService $interractionService, EmailService $emailService)
+    private $twig;
+    public function __construct(InterractionService $interractionService, EmailService $emailService,Environment $twig)
     {
         $this->interractionService = $interractionService;
         $this->emailService = $emailService;
+        $this->twig = $twig;
     }
 
     #[Route('/', name: 'app_factures_index', methods: ['GET'])]
@@ -169,10 +172,13 @@ class FacturesController extends AbstractController
     private function sendPaymentEmail(Factures $facture, bool $isFullyPaid): void
     {
         $subject = 'Nouveau paiement effectué';
-        $content = $isFullyPaid
-            ? "Un nouveau paiement a été effectué pour la facture : {$facture->getId()}. La facture est totalement payée."
-            : "Un paiement partiel a été effectué pour la facture : {$facture->getId()}.";
+        $template = 'email/payment_notification.html.twig';
         $recipient = $facture->getClient()->getEmail();
+
+        $content = $this->twig->render($template, [
+            'facture' => $facture,
+            'isFullyPaid' => $isFullyPaid,
+        ]);
 
         $this->emailService->sendEmail($recipient, $subject, $content);
     }
