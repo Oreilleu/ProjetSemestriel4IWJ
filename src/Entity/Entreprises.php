@@ -70,10 +70,6 @@ class Entreprises
     #[ORM\Column(length: 100)]
     private ?string $numero_siret = null;
 
-
-    #[ORM\Column(length: 100)]
-    private ?string $rib = null;
-
     #[ORM\Column(options: ["default" => 7])]
     #[Assert\Range(min: 7, max: 30)]
     private ?int $interval_relance_devis = 7;
@@ -183,18 +179,6 @@ class Entreprises
     public function setNumeroSiret(string $numero_siret): static
     {
         $this->numero_siret = $numero_siret;
-
-        return $this;
-    }
-
-    public function getRib(): ?string
-    {
-        return $this->rib;
-    }
-
-    public function setRib(string $rib): static
-    {
-        $this->rib = $rib;
 
         return $this;
     }

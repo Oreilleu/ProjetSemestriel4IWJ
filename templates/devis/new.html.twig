@@ -8,7 +8,18 @@
     {{ include('devis/_form.html.twig') }}
 
     {{ include('components/_link.html.twig', {
+        content: 'Ajouter un lot',
+        path: 'app_lots_new'
+    }) }}
+
+    {{ include('components/_link.html.twig', {
+        content: 'Ajouter un client',
+        path: 'app_clients_new'
+    }) }}
+
+    {{ include('components/_link.html.twig', {
         content: 'Retour à la liste',
         path: 'app_devis_index'
     }) }}
+    
 {% endblock %}

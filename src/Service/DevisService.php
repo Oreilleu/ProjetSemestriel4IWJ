@@ -33,6 +33,7 @@ class DevisService
 
         $totalPrice = $this->calculateTotalPriceHT($listProduitArray);
         $devis->setTotalHt($totalPrice);
+        $devis->setCreatedAt(new DateTimeImmutable());
         
         $this->entityManager->persist($devis);
         $this->interractionService->createDevisInterraction($devis, 'Un devis a été créé (id : ' . $devis->getId() . '), son statut est : ' . $devis->getStatut());

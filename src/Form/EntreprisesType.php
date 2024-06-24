@@ -11,19 +11,29 @@ class EntreprisesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('nom')
-            ->add('adresse')
-            ->add('tel')
-            ->add('email')
-            ->add('numero_siret')
-        ;
+        if(!$options['onSettingsPage']) {
+            $builder
+                ->add('nom')
+                ->add('adresse')
+                ->add('tel')
+                ->add('email')
+                ->add('numero_siret');
+
+        }
+        
+        if ($options['onSettingsPage']) {
+            $builder
+                ->add('interval_relance_devis')
+                ->add('interval_relance_factures');
+        }
+    ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Entreprises::class,
+            'onSettingsPage' => false,
         ]);
     }
 }
