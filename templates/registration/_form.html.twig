@@ -1,8 +1,10 @@
 <div class="mt-4">
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
+{{ form_start(form) }}
 
     {{ form_label(form.email, 'Email :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.email) }}
+    </div>
     {{ form_widget(form.email, {
         'attr': {
             'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'
@@ -10,6 +12,9 @@
     }) }}
 
     {{ form_label(form.nom, 'Nom :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.nom) }}
+    </div>
     {{ form_widget(form.nom, {
         'attr': {
             'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'
@@ -17,6 +22,9 @@
     }) }}
 
     {{ form_label(form.adresse, 'Adresse :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.adresse) }}
+    </div>
     {{ form_widget(form.adresse, {
         'attr': {
             'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'
@@ -24,6 +32,9 @@
     }) }}
 
     {{ form_label(form.tel, 'Téléphone :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.tel) }}
+    </div>
     {{ form_widget(form.tel, {
         'attr': {
             'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'
@@ -31,14 +42,10 @@
     }) }}
 
     {{ form_label(form.numero_siret, 'Numéro SIRET :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.numero_siret) }}
+    </div>
     {{ form_widget(form.numero_siret, {
-        'attr': {
-            'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'
-        }
-    }) }}
-
-    {{ form_label(form.rib, 'RIB :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
-    {{ form_widget(form.rib, {
         'attr': {
             'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'
         }

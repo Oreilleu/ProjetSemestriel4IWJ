@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -36,7 +37,15 @@ class DevisType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('description')
+            ->add('description', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'La description est obligatoire.']),
+                    new Length([
+                        'max' => 40,
+                        'maxMessage' => 'La description ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                ],
+            ])
             ->add('taxe', null, [
                 'constraints' => [
                     new GreaterThanOrEqual([
@@ -75,6 +84,8 @@ class DevisType extends AbstractType
         $builder->add('list_produit', HiddenType::class, [
             'mapped' => false,
             'required' => true,
+            'help' => 'Les produits sélectionnés s\'afficheront dans la liste des produits ci-dessous.',
+            'error_bubbling'=> false,
             'constraints' => [
             new NotBlank([
                 'message' => 'La liste des produits ne peut pas être vide.',
@@ -83,11 +94,11 @@ class DevisType extends AbstractType
                 'callback' => function ($value, ExecutionContextInterface $context) {
                     if (is_array($value) && empty($value)) {
                         $context->buildViolation('La liste des produits ne peut pas être vide.')
-                        ->addViolation();
+                                ->addViolation();
                     }
                     if ($value == '[]') {
                         $context->buildViolation('La liste des produits ne peut pas être vide.')
-                        ->addViolation();
+                                ->addViolation();
                     }
                 },
             ]),

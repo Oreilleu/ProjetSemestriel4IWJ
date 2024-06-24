@@ -1,0 +1,20 @@
+# Messages génériques de validation
+This value should not be blank.: "Veuillez renseigner ce champ."
+This value should be a valid email address.: "Veuillez renseigner une adresse email valide."
+This value should be of type numeric.: "Cette valeur doit être numérique."
+This value should have exactly {{ limit }} characters.: "Cette valeur doit contenir exactement {{ limit }} caractères."
+This value is not valid.: "Cette valeur n'est pas valide."
+Please enter a number.: "Veuillez renseigner des chiffres."
+
+
+Nom_not_blank: "Le nom de l'entreprise ne doit pas être vide."
+Nom_length_min: "Le nom de l'entreprise doit contenir au moins {{ limit }} caractères."
+Nom_length_max: "Le nom de l'entreprise ne doit pas dépasser {{ limit }} caractères."
+Adresse_not_blank: "Veuillez renseigner une adresse."
+Tel_not_blank: "Veuillez renseigner le numéro de téléphone."
+Tel_invalid: "Veuillez renseigner un numéro de téléphone valide."
+Email_not_blank: "Veuillez renseigner une adresse email."
+Email_invalid: "Veuillez renseigner une adresse email valide."
+SIRET_not_blank: "Veuillez renseigner le numéro de SIRET."
+SIRET_invalid: "Veuillez renseigner un numéro de SIRET valide."
+SIRET_length: "Le numéro de SIRET doit contenir exactement {{ limit }} caractères."

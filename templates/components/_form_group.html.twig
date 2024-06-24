@@ -6,7 +6,9 @@
  #}
 <div class="mb-3">
     {{ form_label(field, label, {'label_attr': {'class': 'block text-gray-700 text-lg font-bold mb-2'}}) }}
-    {{ form_errors(field, { 'template': 'form/form_errors.html.twig' }) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(field) }}
+    </div>
     {{ form_widget(field, {'attr': {
         'class': 'w-2xl shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ',
         'placeholder': placeholder|default('')

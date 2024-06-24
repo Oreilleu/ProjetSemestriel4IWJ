@@ -34,8 +34,10 @@
     }) }}
 
     <div class="mb-3">
-        {{ form_label(form.list_produit, 'Liste des produits' , {'label_attr': {'class': 'block text-gray-700 text-lg font-bold mb-2'}}) }}
-        {{ form_errors(form.list_produit, { 'template': 'form/form_errors.html.twig' }) }}
+        {{ form_label(form.list_produit, 'Ajouter des produits au devis' , {'label_attr': {'class': 'block text-gray-700 text-lg font-bold mb-2'}}) }}
+        <div class="text-red-500 text-sm font-bold mb-3">
+            {{ form_errors(form.list_produit) }}
+        </div>
         {{ form_widget(form.list_produit, {'attr': {
             'class': 'w-2xl shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ',
             'placeholder': placeholder|default('')
@@ -46,7 +48,7 @@
                 <option value="{{ produit.id }}">{{ produit.nom }} - {{ produit.prix }} €</option>
             {% endfor %}
         </select>
-        {{ form_help(form.list_produit, {'help_attr': {'class': '' } }) }}
+        {{ form_help(form.list_produit, {'help_attr': {'class': 'text-sm text-gray-600' } }) }}
     </div>
 
     <p>Produit sélectionné : </p>
