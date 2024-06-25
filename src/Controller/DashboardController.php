@@ -27,38 +27,41 @@ class DashboardController extends AbstractController
 
         $numberFactures = $entreprise->getFactures()->count();
 
-        // $sumAllPaiement = $entreprise->getFactures()->map(function($facture) {
-        //     return $facture->getPaiements()->map(function($paiement) {
-        //         return $paiement->getMontant();
-        //     })->sum();
-        // });
+        $sumAllPaiement = array_sum($entreprise->getFactures()->map(function($facture) {
+            return array_sum($facture->getPaiements()->map(function($paiement) {
+                return $paiement->getMontant();
+            })->toArray());
+        })->toArray());
 
-        $sumAllPaiement = 1000;
+        $sumDevisAcceptHt = array_sum($entreprise->getDevis()->filter(function($devis) {
+            return $devis->getStatut() === 'Accepté';
+        })->map(function($devis) {
+            return $devis->getTotalHt();
+        })->toArray());
 
-        $sumDevisAccept = 550;
+        $quantites = $entreprise->getFactures()->filter(function($facture) {
+            return $facture->getStatut() === 'Payée';
+        })->map(function($facture) {
+            $lignesDevis = $facture->getLignesDevis();
+            if (!$lignesDevis->isInitialized()) {
+                $lignesDevis->initialize(); 
+            }
+            return $lignesDevis->map(function($ligneDevis) {
+                return $ligneDevis->getQuantite();
+            })->toArray();
+        })->toArray();
 
-        $turnOver = 1500;
+        $mergeQuantite = array_merge(...$quantites);
 
-
-
-        // dd($numberDevisAccept);
-
-        // Je veux renvoyer : 
-        // Nombre de devis de l'entreprise
-        // Nombre de devis accepté 
-        // Nombre de factures 
-
-        // Somme des paiement recu
-        // Somme des devis accepté
-        // Chiffre d'affaire
-
+        $numberProducts = array_sum($mergeQuantite);
+        
         return $this->render('dashboard/index.html.twig', [
             'numberDevis' => $numberDevis,
             'numberDevisAccept' => $numberDevisAccept,
             'numberFactures' => $numberFactures,
             'sumAllPaiement' => $sumAllPaiement,
-            'sumDevisAccept' => $sumDevisAccept,
-            'turnOver' => $turnOver
+            'sumDevisAcceptHt' => $sumDevisAcceptHt,
+            'numberProducts' => $numberProducts
         ]);
     }
 }

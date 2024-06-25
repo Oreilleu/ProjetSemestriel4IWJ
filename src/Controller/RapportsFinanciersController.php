@@ -40,7 +40,7 @@ class RapportsFinanciersController extends AbstractController
     #[Route('/{id}/rapport/pdf', name: 'app_rapports_pdf', methods: ['GET'])]
     public function generatePdf(RapportsFinanciers $rapportsFinanciers, PdfService $pdfService): Response
     {
-        $html = $this->renderView('rapports_financiers/rapport_financier.html.twig', [
+        $html = $this->renderView('pdf/rapport_financier.html.twig', [
             'rapports_financier' => $rapportsFinanciers,
             'entreprise' => $rapportsFinanciers->getIdEntreprise(),
             'lignes_factures' => $rapportsFinanciers->getLignesFactures()
@@ -58,7 +58,7 @@ class RapportsFinanciersController extends AbstractController
     #[Route('/{id}/download', name: 'app_download_rapport_pdf', methods: ['GET'])]
     public function downloadPdf(RapportsFinanciers $rapportsFinanciers, PdfService $pdfService): Response
     {
-        $html = $this->renderView('rapports_financiers/rapport_financier.html.twig', [
+        $html = $this->renderView('pdf/rapport_financier.html.twig', [
             'rapports_financier' => $rapportsFinanciers,
             'entreprise' => $rapportsFinanciers->getIdEntreprise(),
             'lignes_factures' => $rapportsFinanciers->getLignesFactures()
@@ -108,7 +108,7 @@ class RapportsFinanciersController extends AbstractController
             $entityManager->flush();
 
             foreach ($factures as $facture) {
-                if($facture->getCreatedAt() >= $start_date && $facture->getCreatedAt() <= $end_date) {
+                if($facture->getStatut() == 'Payée' && $facture->getCreatedAt() >= $start_date && $facture->getCreatedAt() <= $end_date) {
                     $ligneFacture = new LigneFacture();
                     $ligneFacture->setIdRapportFinancier($rapportsFinancier);
                     $ligneFacture->setIdStrFactures($facture->getId());
@@ -117,6 +117,7 @@ class RapportsFinanciersController extends AbstractController
                     $ligneFacture->setTotalHt($facture->getTotalHt());
                     $ligneFacture->setTotalTtc($facture->getTotalTtc());
                     $ligneFacture->setCreatedAtFacture($facture->getCreatedAt());
+                    $ligneFacture->setTaxe($facture->getTaxe());
 
                     $totalHt += $facture->getTotalHt();
                     $totalTtc += $facture->getTotalTtc();
@@ -200,6 +201,7 @@ class RapportsFinanciersController extends AbstractController
                     $ligneFacture->setTotalHt($facture->getTotalHt());
                     $ligneFacture->setTotalTtc($facture->getTotalTtc());
                     $ligneFacture->setCreatedAtFacture($facture->getCreatedAt());
+                    $ligneFacture->setTaxe($facture->getTaxe());
 
                     $totalHt += $facture->getTotalHt();
                     $totalTtc += $facture->getTotalTtc();
