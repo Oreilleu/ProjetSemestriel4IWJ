@@ -45,10 +45,19 @@
                                 {{ include('components/SVG/_eye_SVG.html.twig') }}
                             </button>
                         </a>
+
                         {% if is_granted('ROLE_COMPTABLE') %}
                             <a href="/rapports-financiers/{{ rapports_financier.id }}/edit">
                                 <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
                                     {{ include('components/SVG/_update_SVG.html.twig') }}
+                                </button>
+                            </a>
+                            <a href="{{ path('app_rapports_pdf', {id: rapports_financier.id}) }}" class="border-0 py-2 px-8 hover:bg-primary-600 rounded inline-block">
+                                {{ include('components/SVG/_generate_pdf_SVG.html.twig') }}
+                            </a>
+                            <a href="{{ path('app_download_rapport_pdf', {id: rapports_financier.id}) }}">
+                                <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                                    {{ include('components/SVG/_download_pdf_SVG.html.twig') }}
                                 </button>
                             </a>
                             {{ include('components/_delete_form.html.twig', {
@@ -60,6 +69,7 @@
                                 classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
                             }) }}
                         {% endif %}
+
                     </td>
                 </tr>
             {% endfor %}

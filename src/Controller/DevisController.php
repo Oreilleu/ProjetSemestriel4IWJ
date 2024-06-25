@@ -6,6 +6,7 @@ use App\Entity\Devis;
 use App\Entity\User;
 use App\Form\DevisType;
 use App\Service\DevisService;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +43,37 @@ class DevisController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/devis/pdf', name: 'app_devis_pdf', methods: ['GET'])]
+    public function generatePdf(Devis $devi, PdfService $pdfService): Response
+    {
+        $html = $this->renderView('pdf/devis.html.twig', [
+            'devi' => $devi,
+            'entreprise' => $devi->getIdEntreprise(),
+            'client' => $devi->getClient()
+        ]);
+
+        return new Response(
+            $pdfService->generatePdf($html),
+            Response::HTTP_OK,
+            ['Content-Type' => 'application/pdf']
+        );
+    }
+
+    #[Route('/{id}/download', name: 'app_devis_download_pdf', methods: ['GET'])]
+    public function downloadPdf(Devis $devi, PdfService $pdfService): Response
+    {
+        $html = $this->renderView('pdf/devis.html.twig', [
+            'devi' => $devi,
+            'entreprise' => $devi->getIdEntreprise(),
+            'client' => $devi->getClient()
+        ]);
+
+        $filename = 'devis-' . $devi->getId() . '-' . $devi->getClient()->getNom() . '-' . $devi->getClient()->getPrenom();
+
+        $pdfService->downloadPdf($html, $filename);
+
+        return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
+    }
     #[Route('/new', name: 'app_devis_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {

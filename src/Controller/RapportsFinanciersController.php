@@ -7,6 +7,7 @@ use App\Entity\RapportsFinanciers;
 use App\Entity\User;
 use App\Form\RapportsFinanciersType;
 use App\Repository\RapportsFinanciersRepository;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted as ConfigurationIsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,6 +37,39 @@ class RapportsFinanciersController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/rapport/pdf', name: 'app_rapports_pdf', methods: ['GET'])]
+    public function generatePdf(RapportsFinanciers $rapportsFinanciers, PdfService $pdfService): Response
+    {
+        $html = $this->renderView('pdf/rapport_financier.html.twig', [
+            'rapports_financier' => $rapportsFinanciers,
+            'entreprise' => $rapportsFinanciers->getIdEntreprise(),
+            'lignes_factures' => $rapportsFinanciers->getLignesFactures()
+        ]);
+
+        $pdfContent = $pdfService->generatePdf($html);
+
+        return new Response(
+            $pdfContent,
+            Response::HTTP_OK,
+            ['Content-Type' => 'application/pdf']
+        );
+    }
+
+    #[Route('/{id}/download', name: 'app_download_rapport_pdf', methods: ['GET'])]
+    public function downloadPdf(RapportsFinanciers $rapportsFinanciers, PdfService $pdfService): Response
+    {
+        $html = $this->renderView('pdf/rapport_financier.html.twig', [
+            'rapports_financier' => $rapportsFinanciers,
+            'entreprise' => $rapportsFinanciers->getIdEntreprise(),
+            'lignes_factures' => $rapportsFinanciers->getLignesFactures()
+        ]);
+
+        $filename = 'rapport_financier_'.$rapportsFinanciers->getId();
+
+        $pdfService->downloadPdf($html, $filename);
+
+        return $this->redirectToRoute('app_rapports_financiers_index', [], Response::HTTP_SEE_OTHER);
+    }
     #[IsGranted('ROLE_COMPTABLE')]
     #[Route('/new', name: 'app_rapports_financiers_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -74,7 +108,7 @@ class RapportsFinanciersController extends AbstractController
             $entityManager->flush();
 
             foreach ($factures as $facture) {
-                if($facture->getCreatedAt() >= $start_date && $facture->getCreatedAt() <= $end_date) {
+                if($facture->getStatut() == 'Payée' && $facture->getCreatedAt() >= $start_date && $facture->getCreatedAt() <= $end_date) {
                     $ligneFacture = new LigneFacture();
                     $ligneFacture->setIdRapportFinancier($rapportsFinancier);
                     $ligneFacture->setIdStrFactures($facture->getId());
@@ -83,6 +117,7 @@ class RapportsFinanciersController extends AbstractController
                     $ligneFacture->setTotalHt($facture->getTotalHt());
                     $ligneFacture->setTotalTtc($facture->getTotalTtc());
                     $ligneFacture->setCreatedAtFacture($facture->getCreatedAt());
+                    $ligneFacture->setTaxe($facture->getTaxe());
 
                     $totalHt += $facture->getTotalHt();
                     $totalTtc += $facture->getTotalTtc();
@@ -166,6 +201,7 @@ class RapportsFinanciersController extends AbstractController
                     $ligneFacture->setTotalHt($facture->getTotalHt());
                     $ligneFacture->setTotalTtc($facture->getTotalTtc());
                     $ligneFacture->setCreatedAtFacture($facture->getCreatedAt());
+                    $ligneFacture->setTaxe($facture->getTaxe());
 
                     $totalHt += $facture->getTotalHt();
                     $totalTtc += $facture->getTotalTtc();

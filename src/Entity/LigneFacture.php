@@ -26,6 +26,9 @@ class LigneFacture
     private ?string $lastname_client = null;
 
     #[ORM\Column(nullable: false)]
+    private ?string $taxe = null;
+
+    #[ORM\Column(nullable: false)]
     private ?float $total_ht = null;
     
     #[ORM\Column(nullable: false)]
@@ -127,6 +130,18 @@ class LigneFacture
     public function setTotalTtc(?float $total_ttc): static
     {
         $this->total_ttc = $total_ttc;
+
+        return $this;
+    }
+
+    public function getTaxe(): ?float
+    {
+        return $this->taxe;
+    }
+
+    public function setTaxe(?float $taxe): static
+    {
+        $this->taxe = $taxe;
 
         return $this;
     }
