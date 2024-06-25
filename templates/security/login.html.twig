@@ -4,9 +4,6 @@
 
 {% block body %}
     <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
 
         {% if app.user %}
             <div class="mb-3">
@@ -33,6 +30,9 @@
                         <!-- Email input -->
                         <div class="relative mb-6" data-twe-input-wrapper-init>
                             <label for="inputEmail" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                            {% if error %}
+                                <div class="text-red-500 text-sm font-bold mb-3">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
                             <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3"
                                    autocomplete="email" required autofocus>

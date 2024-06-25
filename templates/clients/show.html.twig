@@ -1,31 +1,238 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Clients{% endblock %}
+{% block title %}Détails du client{% endblock %}
 
 {% block body %}
-    <h2 class="text-3xl">Détails du client N° {{ client.id }}</h2>
-    <div class="flex flex-col col-span-2">
+    {{ include('components/_title.html.twig', { content: 'Détails du client N°' ~ client.id}) }}
 
-        <label class="block text-gray-700 text-sm font-bold mb-2">Nom</label>
-        <input type="text" value="{{ client.nom }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mx-auto my-4">
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                <svg class="w-4 h-4 text-gray-600 dark:text-gray-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                Informations Client
+            </h2>
+            <ul class="space-y-1">
+                <li class="flex">
+                    <span class="font-semibold text-gray-900 dark:text-white w-24">Id :</span> 
+                    <span>{{ client.id }}</span>
+                </li>
+                <li class="flex">
+                    <span class="font-semibold text-gray-900 dark:text-white w-24">Nom :</span> 
+                    <span>{{ client.nom }}</span>
+                    {# <span>{{ devi.date ? devi.date|date('d/m/Y') : '' }}</span> #}
+                </li>
+                <li class="flex">
+                    <span class="font-semibold text-gray-900 dark:text-white w-24">Prénom :</span> 
+                    <span>{{ client.prenom }}</span>
+                </li>
+                <li class="flex">
+                    <span class="font-semibold text-gray-900 dark:text-white w-24">Email :</span> 
+                    <span>{{ client.adresse }}</span>
+                </li>
+                <li class="flex">
+                    <span class="font-semibold text-gray-900 dark:text-white w-24">Telephone :</span> 
+                    <span>{{ client.tel }}</span>
+                </li>
+                <li class="flex">
+                    <span class="font-semibold text-gray-900 dark:text-white w-24">Adresse :</span> 
+                    <span>{{ client.adresse }}</span>
+                </li>
+                <li class="flex">
+                    <span class="font-semibold text-gray-900 dark:text-white w-24">Code postale :</span> 
+                    <span>{{ client.cp }}</span>
+                </li>
+                <li class="flex">
+                    <span class="font-semibold text-gray-900 dark:text-white w-24">Ville :</span> 
+                    <span>{{ client.ville }}</span>
+                </li>
+                <li class="flex">
+                    <span class="font-semibold text-gray-900 dark:text-white w-24">Pays :</span> 
+                    <span>{{ client.pays }}</span>
+                </li>
+                <li class="flex">
+                    <span class="font-semibold text-gray-900 dark:text-white w-24">Siret :</span> 
+                    <span>{{ client.numeroSiret ? client.numeroSiret : '' }}</span>
+                </li>
+            </ul>
+        </div>
 
-        <label class="block text-gray-700 text-sm font-bold mb-2">Prenom</label>
-        <input type="text" value="{{ client.prenom }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
+        <!-- Vérifier qu'il y a des lots -->
+        {% if client.getLots() is empty %}
+            {{ include('components/_empty_message.html.twig', { content: 'Aucun lot n\'a été trouvé.' }) }}
+        {% else %}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <svg class="w-4 h-4 text-gray-600 dark:text-gray-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h1l1-5h10l1 5h1m-6 4h.01M13 16H7m-2 0h1m10 0h1m-6 4H6m2 0h8"></path>
+                    </svg>
+                    Liste des Lots
+                </h2>
+                <table class="min-w-full bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Type</th>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Superficie</th>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Adresse</th>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                        Actions
+                    </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-gray-800">
+                        {% for lot in client.getLots() %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ lot.getType() }}</td>
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ lot.getSuperficie() }} m²</td>
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ lot.getAdresse() }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
+                            <a href="/lots/{{ lot.id }}/edit">
+                                <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                                    {{ include('components/SVG/_update_SVG.html.twig') }}
+                                </button>
+                            </a>
+                            {{ include('components/_delete_form.html.twig', {
+                                item_id: lot.id,
+                                path: 'lots',
+                                labelButton: include('components/SVG/_delete_SVG.html.twig'),
+                                title: "Suppression du lot n° : " ~ lot.id,
+                                content: "Êtes-vous sûr de vouloir supprimer ce lot ?",
+                                classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
+                            }) }}
+                        </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}    
 
-        <label class="block text-gray-700 text-sm font-bold mb-2">Adresse</label>
-        <input type="text" value="{{ client.adresse }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
+        {% if client.getDevis() is empty %}
+            {{ include('components/_empty_message.html.twig', { content: 'Aucun devis n\'a été trouvé.' }) }}
+        {% else %}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <svg class="w-4 h-4 text-gray-600 dark:text-gray-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h1l1-5h10l1 5h1m-6 4h.01M13 16H7m-2 0h1m10 0h1m-6 4H6m2 0h8"></path>
+                    </svg>
+                    Liste des Devis
+                </h2>
+                <table class="min-w-full bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Id</th>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Date</th>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Status</th>
+                            
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                            Actions
+                    </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-gray-800">
+                        {% for devis in client.getDevis() %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">Devis n°{{ devis.getId() }}</td>
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ devis.getDate() ? devis.getDate()|date('d/m/Y') : '' }}</td>
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ devis.getStatut() }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
+                            {% if devis.statut != 'Accepté' %}
+                                <a href="/devis/{{ devis.id }}/edit">
+                                    <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                                        {{ include('components/SVG/_update_SVG.html.twig') }}
+                                    </button>
+                                </a>
+                            {% endif %}
+                            {{ include('components/_delete_form.html.twig', {
+                                item_id: devis.id,
+                                path: 'devis',
+                                labelButton: include('components/SVG/_delete_SVG.html.twig'),
+                                title: "Suppression du devis : " ~ devis.id,
+                                content: "Êtes-vous sûr de vouloir supprimer ce devis ?",
+                                classButton: 'border-0 py-2 px-8 hover:bg-primary-600 rounded'
+                            }) }}
+                        </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
 
-        <label class="block text-gray-700 text-sm font-bold mb-2">Téléphone</label>
-        <input type="text" value="{{ client.tel }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
+        {% if client.getFacture() is empty %}
+            {{ include('components/_empty_message.html.twig', { content: 'Aucune facture n\'a été trouvée.' }) }}
+        {% else %}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <svg class="w-4 h-4 text-gray-600 dark:text-gray-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h1l1-5h10l1 5h1m-6 4h.01M13 16H7m-2 0h1m10 0h1m-6 4H6m2 0h8"></path>
+                    </svg>
+                    Liste des Factures
+                </h2>
+                <table class="min-w-full bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">ID</th>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Date</th>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-gray-800">
+                        {% for facture in client.getFacture() %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">Facture n°{{ facture.getId() }}</td>
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ facture.getCreatedAt() ? facture.getCreatedAt()|date('d/m/Y') : '' }}</td>
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ facture.getStatut() }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
 
-        <label class="block text-gray-700 text-sm font-bold mb-2">Adresse Email</label>
-        <input type="text" value="{{ client.email }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
+                {% if client.getInterraction() is empty %}
+            {{ include('components/_empty_message.html.twig', { content: 'Aucune interraction n\'a été trouvée.' }) }}
+        {% else %}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <svg class="w-4 h-4 text-gray-600 dark:text-gray-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h1l1-5h10l1 5h1m-6 4h.01M13 16H7m-2 0h1m10 0h1m-6 4H6m2 0h8"></path>
+                    </svg>
+                    Liste des Interractions
+                </h2>
+                <table class="min-w-full bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Commentaire</th>
+                            <th class="px-4 py-2 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">Date</th>
 
-        <label class="block text-gray-700 text-sm font-bold mb-2">Siret</label>
-        <input type="text" value="{{ client.numeroSiret }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3">
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-gray-800">
+                        {% for interraction in client.getInterraction() %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ interraction.getContent() }}</td>
+                                <td class="px-4 py-2 border-b border-gray-200 dark:border-gray-600">{{ interraction.getCreatedAt() ? interraction.getCreatedAt()|date('d/m/Y') : '' }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
     </div>
 
-    <!--<a href="path('app_clients_edit', {'id': client.id})">Ajouter un lot</a>-->
-    <a href="{{ path('app_lots_new') }}">Ajouter un lot</a>
-    <a href="{{ path('app_clients_index') }}">Retour a la liste des clients</a>
+        {{ include('components/_link.html.twig', {
+            content: 'Modifier le client',
+            path: 'app_clients_edit',
+            id: client.id
+        }) }}
+
+        {{ include('components/_link.html.twig', {
+            content: 'Retour à la liste des clients',
+            path: 'app_clients_index'
+        }) }}
+
 {% endblock %}
+
