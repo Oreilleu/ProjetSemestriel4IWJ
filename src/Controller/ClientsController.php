@@ -145,6 +145,14 @@ class ClientsController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: 'app_clients_show', methods: ['GET'])]
+    public function show(Clients $client): Response
+    {
+        return $this->render('clients/show.html.twig', [
+            'client' => $client,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_clients_delete', methods: ['POST'])]
     public function delete(Request $request, Clients $client, EntityManagerInterface $entityManager): Response
     {
