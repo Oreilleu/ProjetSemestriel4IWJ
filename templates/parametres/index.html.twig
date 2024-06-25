@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block body %}
+
+    {{ include('components/_title.html.twig', { content: 'Paramètres' }) }}
+
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Paramètres de Relance</h2>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Ajustez les délais de relance pour les devis et factures en attente de validation ou de paiement.</p> 
+
+    {{ include('parametres/_form.html.twig') }}
+{% endblock %}

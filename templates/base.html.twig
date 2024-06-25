@@ -20,7 +20,9 @@
   </head>
   
   <body class="bg-color4-100">
-     {% include 'partials/nav.html.twig' %}
+    {%if app.user %}
+     {% include 'components/_nav.html.twig' %}
+    {% endif %}
     <main class="p-4 sm:ml-64">
       <div class="p-4">
       {% block body %}

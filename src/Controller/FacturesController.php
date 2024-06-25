@@ -55,7 +55,7 @@ class FacturesController extends AbstractController
     #[Route('/{id}/facture/pdf', name: 'app_facture_pdf', methods: ['GET'])]
     public function generatePdf(Factures $factures, PdfService $pdfService): Response
     {
-        $html = $this->renderView('factures/facture.html.twig', [
+        $html = $this->renderView('pdf/facture.html.twig', [
             'factures' => $factures,
             'entreprise' => $factures->getIdEntreprise(),
             'client' => $factures->getClient()
@@ -71,7 +71,7 @@ class FacturesController extends AbstractController
     #[Route('/{id}/download', name: 'app_download_facture_pdf', methods: ['GET'])]
     public function downloadPdf(Factures $factures, PdfService $pdfService): Response
     {
-        $html = $this->renderView('factures/facture.html.twig', [
+        $html = $this->renderView('pdf/facture.html.twig', [
             'factures' => $factures,
             'entreprise' => $factures->getIdEntreprise(),
             'client' => $factures->getClient()

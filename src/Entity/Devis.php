@@ -14,21 +14,27 @@ class Devis
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTimeImmutable $date = null;
-
+    
     #[ORM\Column(length: 255)]
     private ?string $description = null;
-
+    
     #[ORM\Column]
     private ?string $statut = null;
-
+    
     #[ORM\Column]
     private ?float $taxe = null;
     
     #[ORM\Column(nullable: false)]
     private ?float $total_ht = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $last_relance = null;
+    
+    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $created_at = null;
+
+    #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $date = null;
     
     #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'devis')]
     #[ORM\JoinColumn(nullable: false)]
@@ -264,6 +270,30 @@ class Devis
     public function setClient(?Clients $id_client): self
     {
         $this->id_client = $id_client;
+
+        return $this;
+    }
+
+    public function getLastRelance(): ?\DateTimeImmutable
+    {
+        return $this->last_relance;
+    }
+
+    public function setLastRelance(?\DateTimeImmutable $last_relance): self
+    {
+        $this->last_relance = $last_relance;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }
