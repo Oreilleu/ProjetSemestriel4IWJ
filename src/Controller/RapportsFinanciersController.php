@@ -70,6 +70,7 @@ class RapportsFinanciersController extends AbstractController
 
         return $this->redirectToRoute('app_rapports_financiers_index', [], Response::HTTP_SEE_OTHER);
     }
+    
     #[IsGranted('ROLE_COMPTABLE')]
     #[Route('/new', name: 'app_rapports_financiers_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
