@@ -75,6 +75,7 @@ module.exports = {
         success: '#28A745',
         danger: '#DC3545',
         warning: '#FFC107',
+        customColor: '#312319',
       },
       fontFamily: {
         'title': ['"Open Sans"', 'sans-serif'],
@@ -82,6 +83,19 @@ module.exports = {
         'body': ['"Istok Web"', 'sans-serif'],
       },
     },
-    plugins: [],
-  }
+  },
+  variants: {
+    extend: {
+      borderColor: ['hover', 'active', 'slide_active'],  // Ajout des variantes
+    },
+  },
+  plugins: [
+    function ({ addVariant, e }) {
+      addVariant('slide_active', ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.swiper-slide.swiper-slide-active .${e(`slide_active${separator}${className}`)}`
+        })
+      })
+    },
+  ],
 }
