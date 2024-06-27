@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" {% if app.user.getThemecolor() == 'dark' %}class="dark"{% endif %} {% if app.user.getThemecolor() == 'blue' %}class="bleu"{% endif %}>
+<html lang="fr" {% if app.user and app.user.getThemecolor() == 'dark' %}class="dark"{% endif %} {% if app.user and app.user.getThemecolor() == 'blue' %}class="bleu"{% endif %}>
   <head>
     <meta charset="UTF-8"/>
     <title>
