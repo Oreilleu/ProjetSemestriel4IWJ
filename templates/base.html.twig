@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <title>
@@ -18,57 +18,57 @@
     {% endblock %}
 
   </head>
-  
   <body class="bg-color4-100 dark:bg-background-dark-mode-950 dark:text-text-dark-mode-200">
-    {%if app.user %}
-     {% include 'components/_nav.html.twig' %}
-    {% endif %}
-    <main class="p-4 sm:ml-64">
-      <div class="p-4">
-      {% block body %}
-        
-      {% endblock %}
-        </div>
-    </main>
-    <script src="{{ asset('build/main.js') }}"></script>
-     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Sélectionne tous les boutons qui ont l'attribut data-collapse-toggle
-            const dropdownButtons = document.querySelectorAll('[data-collapse-toggle]');
-
-            dropdownButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    // Récupère l'ID de l'élément à toggler
-                    const targetId = button.getAttribute('aria-controls');
-                    const targetElement = document.getElementById(targetId);
-
-                    // Toggle la classe hidden
-                    if (targetElement.classList.contains('hidden')) {
-                        targetElement.classList.remove('hidden');
-                    } else {
-                        targetElement.classList.add('hidden');
-                    }
-                });
-            });
-        });
-
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const sidebar = document.querySelector('aside');
-            const toggleButton = document.getElementById('sidebar-toggle');
-
-            toggleButton.addEventListener('click', function () {
-                sidebar.classList.toggle('-translate-x-full');
-
-                // Change the icon based on sidebar state
-                if (sidebar.classList.contains('-translate-x-full')) {
-                    toggleButton.textContent = '☰'; // Icon for closed sidebar
-                } else {
-                    toggleButton.textContent = '✕'; // Icon for opened sidebar
-                }
-            });
-        });
-    </script>
+      {%if app.user %}
+      {% include 'components/_nav.html.twig' %}
+      {% endif %}
+      <main class="p-4 sm:ml-64">
+        <div class="p-4">
+        {% block body %}
+          
+        {% endblock %}
+          </div>
+      </main>
   </body>
 </html>
+
+<script src="{{ asset('build/main.js') }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Sélectionne tous les boutons qui ont l'attribut data-collapse-toggle
+      const dropdownButtons = document.querySelectorAll('[data-collapse-toggle]');
+
+      dropdownButtons.forEach(button => {
+          button.addEventListener('click', function () {
+              // Récupère l'ID de l'élément à toggler
+              const targetId = button.getAttribute('aria-controls');
+              const targetElement = document.getElementById(targetId);
+
+              // Toggle la classe hidden
+              if (targetElement.classList.contains('hidden')) {
+                  targetElement.classList.remove('hidden');
+              } else {
+                  targetElement.classList.add('hidden');
+              }
+          });
+      });
+  });
+
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const sidebar = document.querySelector('aside');
+      const toggleButton = document.getElementById('sidebar-toggle');
+
+      toggleButton.addEventListener('click', function () {
+          sidebar.classList.toggle('-translate-x-full');
+
+          // Change the icon based on sidebar state
+          if (sidebar.classList.contains('-translate-x-full')) {
+              toggleButton.textContent = '☰'; // Icon for closed sidebar
+          } else {
+              toggleButton.textContent = '✕'; // Icon for opened sidebar
+          }
+      });
+  });
+</script>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Entreprises;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -26,7 +27,12 @@ class UsersController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+
+        $entreprises = $entityManager->getRepository(Entreprises::class)->findAll();
+
+        $form = $this->createForm(UserType::class, $user, [
+            'id_entreprises' => $entreprises,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -34,21 +34,21 @@
     }) }}
 
     <div class="mb-3">
-        {{ form_label(form.list_produit, 'Ajouter des produits au devis' , {'label_attr': {'class': 'block text-gray-700 text-lg font-bold mb-2'}}) }}
+        {{ form_label(form.list_produit, 'Ajouter des produits au devis' , {'label_attr': {'class': 'block text-sm font-bold mb-2 text-color4-900 dark:text-text-dark-mode-200'}}) }}
         <div class="text-red-500 text-sm font-bold mb-3">
             {{ form_errors(form.list_produit) }}
         </div>
         {{ form_widget(form.list_produit, {'attr': {
-            'class': 'w-2xl shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ',
+            'class': 'text-color4-900 dark:text-text-dark-mode-200 dark:bg-element-dark-mode-600 dark:border-element-dark-mode-400 w-2xl shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:shadow-outline',
             'placeholder': placeholder|default('')
         } }) }}
-        <select id="select_product" class="w-2xl shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <select id="select_product" class="text-color4-900 dark:text-text-dark-mode-200 dark:bg-element-dark-mode-600 dark:border-element-dark-mode-400 w-2xl shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:shadow-outline">
             <option value="" disabled selected>Sélectionnez un produit</option>
             {% for produit in produits %}
                 <option value="{{ produit.id }}">{{ produit.nom }} - {{ produit.prix }} €</option>
             {% endfor %}
         </select>
-        {{ form_help(form.list_produit, {'help_attr': {'class': 'text-sm text-gray-600' } }) }}
+        {{ form_help(form.list_produit, {'help_attr': {'class': 'text-sm text-gray-600 dark:text-text-dark-mode-200' } }) }}
     </div>
 
     <p>Produit sélectionné : </p>
@@ -60,7 +60,7 @@
                     <span data-cross>{{ include('components/SVG/_cross_SVG.html.twig') }}</span>
                     <span data-product-id={{ existingProduct.getIdStrProduit() }}>{{ existingProduct.getNameProduct() }} - {{ existingProduct.getPrixProduct() }} €</span>
                     <input 
-                        class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                        class="shadow appearance-none border rounded py-2 px-3 text-gray-700 dark:text-text-dark-mode-200 dark:bg-element-dark-mode-600 dark:border-element-dark-mode-400 leading-tight focus:outline-none focus:shadow-outline" 
                         type="number" 
                         placeholder="Quantité" 
                         value={{ existingProduct.getQuantite() }}
@@ -172,7 +172,7 @@
         input.max = 99;
         input.value = 1;
         input.setAttribute('data-product-id-input-quantity', productId);
-        input.classList.add('shadow', 'appearance-none', 'border', 'rounded', 'py-2', 'px-3', 'text-gray-700', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline');
+        input.classList.add('shadow', 'appearance-none', 'border', 'rounded', 'py-2', 'px-3', 'text-gray-700', 'dark:text-text-dark-mode-200', 'dark:bg-element-dark-mode-600', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline');
         input.addEventListener('change', () => {
             input.value = Math.max(1, Math.min(99, input.value));
         });
@@ -217,7 +217,6 @@
         removeProduct(listItem);
         });
     })
-
 
     // Get lots by client
     document.getElementById('devis_client').addEventListener('change', function() {

@@ -7,19 +7,19 @@
         <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
             <!-- Left column -->
             <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-                <h1 class="font-title sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
+                <h1 class="font-title sm:text-4xl text-3xl mb-4 font-medium text-gray-900 dark:text-text-dark-mode-200">
                     <br class="hidden lg:inline-block">Inscrivez-vous dès maintenant et profitez de nos services:
                 </h1>
-                <p class="mb-8 leading-relaxed font-subtitle">pour bénéficier de devis personnalisés, d'une gestion de facturation dédiée aux PME et de la liberté totale pour votre entreprise.</p>
+                <p class="mb-8 leading-relaxed font-subtitle dark:text-text-dark-mode-200">pour bénéficier de devis personnalisés, d'une gestion de facturation dédiée aux PME et de la liberté totale pour votre entreprise.</p>
             </div>
             <!-- Right column -->
             <div class="w-full p-8 lg:w-1/2">
 
-                <h2 class="text-2xl font-title text-gray-700 text-center">Enregistrer votre entreprise</h2>
+                <h2 class="text-2xl font-title text-gray-700 text-center dark:text-text-dark-mode-200">Enregistrer votre entreprise</h2>
                 {{ include('registration/_form.html.twig', { button_label: "Enregistrer son entreprise" }) }}
                 <div class="mt-4 flex items-center justify-between">
                     <span class="border-b w-1/5 md:w-1/4"></span>
-                    <a href="{{ path('app_login') }}" class="text-xs text-gray-500 uppercase">Ou se connecter</a>
+                    <a href="{{ path('app_login') }}" class="text-xs text-gray-500 uppercase dark:text-text-dark-mode-200">Ou se connecter</a>
                     <span class="border-b w-1/5 md:w-1/4"></span>
                 </div>
             </div>
