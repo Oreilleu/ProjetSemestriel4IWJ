@@ -58,8 +58,6 @@ class UserType extends AbstractType
                     'choices' => [
                         'Classique' => 'classique',
                         'Dark' => 'dark',
-                        'Light' => 'light',
-                        'Marron' => 'marron',
                         'Bleu' => 'blue',
                     ],
                     'label' => 'Thème',

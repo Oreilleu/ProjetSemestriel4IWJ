@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" {% if app.user and app.user.getThemecolor() == 'dark' %}class="dark"{% endif %} {% if app.user and app.user.getThemecolor() == 'blue' %}class="bleu"{% endif %}>
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>
       {% block title %}
         Welcome!
