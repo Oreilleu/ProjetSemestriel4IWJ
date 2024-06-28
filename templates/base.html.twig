@@ -22,14 +22,14 @@
 
   </head>
   <body class="bg-color4-100 dark:bg-background-dark-mode-950 dark:text-text-dark-mode-200">
-      {%if app.user %}
-      {% include 'components/_nav.html.twig' %}
+      {% if app.user %}
+        {% include 'components/_nav.html.twig' %}
       {% endif %}
       <main class="{%if app.user %}p-4 sm:ml-64{% endif %}">
         <div class="{%if app.user %}p-4{% endif %}">
-        {% block body %}
-          
-        {% endblock %}
+          {% block body %}
+            
+          {% endblock %}
           </div>
       </main>
   </body>
