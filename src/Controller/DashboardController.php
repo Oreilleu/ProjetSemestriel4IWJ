@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Controller;
-
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +18,7 @@ class DashboardController extends AbstractController
         $this->clientsRepository = $clientsRepository;
     }
     #[Route('/dashboard', name: 'app_dashboard_index')]
-    public function index()
+    public function index(EntityManagerInterface $entityManager, ClientsRepository $clientsRepository): Response
     {
         $user = $this->getUser();
 
@@ -36,6 +37,12 @@ class DashboardController extends AbstractController
         })->count();
 
         $numberFactures = $entreprise->getFactures()->count();
+
+
+
+        $entityManager->initializeObject($entreprise);
+
+        $totalClients = $clientsRepository->countClientsByEntreprise($entreprise);
 
 
         // Récupérer les trois derniers clients
@@ -68,6 +75,7 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/index.html.twig', [
             'numberDevis' => $numberDevis,
             'numberClients' => $numberClients,
+            'totalClients' => $totalClients,
             'recentClients' => $recentClients,
             'numberDevisAccept' => $numberDevisAccept,
             'numberFactures' => $numberFactures,

@@ -42,6 +42,17 @@ class ClientsRepository extends ServiceEntityRepository
          ->getResult();
  }
 
+
+ public function countClientsByEntreprise($entreprise)
+{
+    return $this->createQueryBuilder('c')
+        ->select('count(c.id)')
+        ->where('c.id_entreprise = :entreprise')
+        ->setParameter('entreprise', $entreprise)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+
 //    /**
 //     * @return Clients[] Returns an array of Clients objects
 //     */
