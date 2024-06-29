@@ -7,8 +7,7 @@
 
     <!-- main content -->
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-semibold">Bonjour {{user.email}}, Bienvenue sur votre compte 
-</h1>
+        <h1 class="text-2xl font-semibold">Tableau de Bord</h1>
     </div>
 
     <form class="w-full max-w-md mb-6">
@@ -18,17 +17,17 @@
                 <i class="fa fa-search w-4 h-4 text-gray-500"></i>
             </div>
             <input type="search"
-                class="block w-full outline-none p-4 ps-10 text-sm text-gray-900 rounded-lg bg-gray-50 border-2 border-transparent focus:ring-4 focus:ring-[#C79364]/60 focus:border-white"
-                placeholder="Rechercher des produits, factures..." required />
+                   class="block w-full outline-none p-4 ps-10 text-sm text-gray-900 rounded-lg bg-gray-50 border-2 border-transparent focus:ring-4 focus:ring-[#C79364]/60 focus:border-white"
+                   placeholder="Rechercher des produits, factures..." required/>
             <button type="submit"
-                class="text-white absolute end-2.5 bottom-2.5 bg-[#C79364] hover:bg-[#af8057] focus:ring-4 focus:outline-none focus:ring-[#C79364]/60 font-medium rounded-lg text-sm px-4 py-2">
+                    class="text-white absolute end-2.5 bottom-2.5 bg-[#C79364] hover:bg-[#af8057] focus:ring-4 focus:outline-none focus:ring-[#C79364]/60 font-medium rounded-lg text-sm px-4 py-2">
                 Rechercher
             </button>
         </div>
     </form>
 
     <!-- Wrapper to contain all three blocks -->
-    <div class="flex flex-wrap -mx-2 mb-5">
+    <div class="flex flex-wrap -mx-2">
         <!-- Nombre Devis Accepté -->
         <div class="w-full md:w-1/3 px-2 mb-4 md:mb-0">
             <div class="bg-white shadow rounded-lg p-4 h-full">
@@ -45,9 +44,9 @@
                         </h2>
                     </div>
                     <div
-                    class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
-                    <i class="fas fa-copy text-2xl"></i>
-                </div>
+                            class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
+                        <i class="fas fa-copy text-2xl"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,18 +55,18 @@
             <div class="bg-white shadow rounded-lg p-4 h-full">
                 <div class="flex items-center justify-between">
                     <div class="flex mb-4 items-start justify-center flex-col">
-                         <h2 class="text-2xl font-semibold text-gray-800">
-                        {% if sumDevisAccept == 0 %}
-                            <strong>0</strong> € de Devis accepté
-                        {% else %}
-                            <strong>{{ sumDevisAccept }} €</strong> de Devis acceptés
-                        {% endif %}
+                        <h2 class="text-2xl font-semibold text-gray-800">
+                            {% if sumDevisAccept == 0 %}
+                                <strong>0</strong> € de Devis accepté
+                            {% else %}
+                                <strong>{{ sumDevisAccept }} €</strong> de Devis acceptés
+                            {% endif %}
                         </h2>
                     </div>
                     <div
-                    class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
-                    <i class="fas fa-copy text-2xl"></i>
-                </div>
+                            class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
+                        <i class="fas fa-copy text-2xl"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,23 +75,23 @@
             <div class="bg-white shadow rounded-lg p-4 h-full">
                 <div class="flex items-center justify-between">
                     <div class="flex mb-4 items-start justify-center flex-col">
-                         <h2 class="text-2xl font-semibold text-gray-800">
-                        {% if sumAllPaiement == 0 %}
-                            <strong>0</strong> Facture payé
-                        {% else %}
-                            <strong>{{ sumAllPaiement }} €</strong> de Factures payées
-                        {% endif %}
+                        <h2 class="text-2xl font-semibold text-gray-800">
+                            {% if sumAllPaiement == 0 %}
+                                <strong>0</strong> Facture payé
+                            {% else %}
+                                <strong>{{ sumAllPaiement }} €</strong> de Factures payées
+                            {% endif %}
                         </h2>
                     </div>
                     <div class="flex items-center h-12 w-12 justify-center bg-green-100 text-green-600 p-2 rounded-full">
-                    <i class="fa fa-file-invoice-dollar text-2xl"></i>
-                </div>
+                        <i class="fa fa-file-invoice-dollar text-2xl"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="flex flex-col md:grid md:grid-cols-2 gap-4 pb-5">
+    <div class="flex flex-col md:grid md:grid-cols-2 gap-4 pb-5 mt-4">
         <!-- Factures -->
         <div class="bg-white shadow rounded-lg p-4">
 
@@ -100,16 +99,16 @@
             <div class="flex items-center justify-between">
                 <div class="flex mb-4 items-start justify-center flex-col">
                     <h2 class="text-2xl font-semibold text-gray-800">Factures</h2>
-                    <p class="text-2xl font-bold text-gray-800">{{numberFactures}} Factures</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ numberFactures }} Factures</p>
                 </div>
                 <div
-                    class="flex items-center h-12 w-12 justify-center bg-green-100 text-green-600 p-2 rounded-full">
+                        class="flex items-center h-12 w-12 justify-center bg-green-100 text-green-600 p-2 rounded-full">
                     <i class="fa fa-file-invoice-dollar text-2xl"></i>
                 </div>
             </div>
             <canvas id="facturesChart" width="400" height="200"></canvas>
             <a href="{{ path('app_factures_index') }}"
-                class="block w-fit mt-4 text-green-600 hover:text-green-700 focus:ring-4 focus:outline-none focus:ring-green-700/30 font-medium rounded-lg text-sm px-4 py-3">
+               class="block w-fit mt-4 text-green-600 hover:text-green-700 focus:ring-4 focus:outline-none focus:ring-green-700/30 font-medium rounded-lg text-sm px-4 py-3">
                 <i class="fa fa-eye mr-1"></i>
                 Voir toutes les factures
             </a>
@@ -123,13 +122,13 @@
                     <p class="text-2xl font-bold text-gray-800"> {{ numberDevis }} Devis</p>
                 </div>
                 <div
-                    class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
+                        class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
                     <i class="fas fa-copy text-2xl"></i>
                 </div>
             </div>
             <canvas id="devisChart" width="400" height="200"></canvas>
             <a href="{{ path('app_devis_index') }}"
-                class=" block w-fit mt-4 text-blue-600 hover:text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-700/30 font-medium rounded-lg text-sm px-4 py-3">
+               class=" block w-fit mt-4 text-blue-600 hover:text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-700/30 font-medium rounded-lg text-sm px-4 py-3">
                 <i class="fa fa-eye mr-1"></i>
                 Voir toutes les devis
             </a>
@@ -143,44 +142,44 @@
                     <p class="text-2xl font-bold text-gray-800">130 Produits vendus</p>
                 </div>
                 <div
-                    class="flex items-center h-12 w-12 justify-center bg-yellow-100 text-yellow-600 p-2 rounded-full">
+                        class="flex items-center h-12 w-12 justify-center bg-yellow-100 text-yellow-600 p-2 rounded-full">
                     <i class="fab fa-product-hunt text-2xl"></i>
                 </div>
             </div>
             <div class="overflow-x-scroll w-full">
                 <table class="min-w-full bg-white text-left whitespace-nowrap">
                     <thead>
-                        <tr class="border-b">
-                            <th class="p-2">Nom du Produit</th>
-                            <th class="p-2">Prix</th>
-                            <th class="p-2">Catégorie</th>
-                            <th class="p-2">Stock</th>
-                        </tr>
+                    <tr class="border-b">
+                        <th class="p-2">Nom du Produit</th>
+                        <th class="p-2">Prix</th>
+                        <th class="p-2">Catégorie</th>
+                        <th class="p-2">Stock</th>
+                    </tr>
                     </thead>
                     <tbody class="text-gray-700">
-                        <tr class="border-b">
-                            <td class="p-2">Produit A</td>
-                            <td class="p-2">20€</td>
-                            <td class="p-2">Catégorie 1</td>
-                            <td class="p-2">En stock</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="p-2">Produit B</td>
-                            <td class="p-2">15€</td>
-                            <td class="p-2">Catégorie 2</td>
-                            <td class="p-2">En stock</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="p-2">Produit C</td>
-                            <td class="p-2">30€</td>
-                            <td class="p-2">Catégorie 1</td>
-                            <td class="p-2">Rupture de stock</td>
-                        </tr>
+                    <tr class="border-b">
+                        <td class="p-2">Produit A</td>
+                        <td class="p-2">20€</td>
+                        <td class="p-2">Catégorie 1</td>
+                        <td class="p-2">En stock</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="p-2">Produit B</td>
+                        <td class="p-2">15€</td>
+                        <td class="p-2">Catégorie 2</td>
+                        <td class="p-2">En stock</td>
+                    </tr>
+                    <tr class="border-b">
+                        <td class="p-2">Produit C</td>
+                        <td class="p-2">30€</td>
+                        <td class="p-2">Catégorie 1</td>
+                        <td class="p-2">Rupture de stock</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
             <a href="{{ path('app_produits_index') }}"
-                class="block w-fit mt-4 text-yellow-600 hover:text-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-700/30 font-medium rounded-lg text-sm pr-4 py-3">
+               class="block w-fit mt-4 text-yellow-600 hover:text-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-700/30 font-medium rounded-lg text-sm pr-4 py-3">
                 <i class="fa fa-eye mr-1"></i>
                 Voir tout les produits
             </a>
@@ -188,60 +187,60 @@
 
         <!-- Clients -->
         <div class="bg-white shadow rounded-lg p-4">
-    <div class="flex items-center justify-between">
-        <div class="flex mb-4 items-start justify-center flex-col">
-            {% if totalClients == 0 %}
-                <h2 class="text-2xl font-semibold text-gray-800"> 0  Client au total </h2>
-            {% elseif totalClients == 1 %}
-                <h2 class="text-2xl font-semibold text-gray-800">{{ totalClients }} Client au total</h2>
-            {% else %}
-                <h2 class="text-2xl font-semibold text-gray-800">{{ totalClients }} Clients au total</h2>
-            {% endif %}
-            <p class="text-2xl font-bold text-gray-800">Les clients Récents</p>
+            <div class="flex items-center justify-between">
+                <div class="flex mb-4 items-start justify-center flex-col">
+                    {% if totalClients == 0 %}
+                        <h2 class="text-2xl font-semibold text-gray-800"> 0 Client au total </h2>
+                    {% elseif totalClients == 1 %}
+                        <h2 class="text-2xl font-semibold text-gray-800">{{ totalClients }} Client au total</h2>
+                    {% else %}
+                        <h2 class="text-2xl font-semibold text-gray-800">{{ totalClients }} Clients au total</h2>
+                    {% endif %}
+                    <p class="text-2xl font-bold text-gray-800">Les clients Récents</p>
+                </div>
+                <div class="flex items-center h-12 w-12 justify-center bg-red-100 text-red-600 p-2 rounded-full">
+                    <i class="fa fa-users text-2xl"></i>
+                </div>
+            </div>
+            <div class="overflow-x-scroll w-full">
+                <table class="min-w-full bg-white text-left whitespace-nowrap">
+                    <thead>
+                    <tr class="border-b">
+                        <th class="p-2">Id</th>
+                        <th class="p-2">Nom</th>
+                        <th class="p-2">Prénom</th>
+                        <th class="p-2">Email</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                    {% if recentClients is empty %}
+                        <tr class="border-b">
+                            <td class="p-2" colspan="4">Il n'y a pas de clients pour le moment</td>
+                        </tr>
+                    {% else %}
+                        {% for client in recentClients %}
+                            <tr class="border-b">
+                                <td class="p-2">{{ client.id }}</td>
+                                <td class="p-2">{{ client.nom }}</td>
+                                <td class="p-2">{{ client.prenom }}</td>
+                                <td class="p-2">{{ client.email }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{{ path('app_clients_index') }}"
+               class="block w-fit mt-4 text-red-600 hover:text-red-700 focus:ring-4 focus:outline-none focus:ring-red-700/30 font-medium rounded-lg text-sm pr-4 py-3">
+                <i class="fa fa-eye mr-1"></i>
+                Voir tout les clients
+            </a>
         </div>
-        <div class="flex items-center h-12 w-12 justify-center bg-red-100 text-red-600 p-2 rounded-full">
-            <i class="fa fa-users text-2xl"></i>
-        </div>
-    </div>
-    <div class="overflow-x-scroll w-full">
-        <table class="min-w-full bg-white text-left whitespace-nowrap">
-            <thead>
-                <tr class="border-b">
-                    <th class="p-2">Id</th>
-                    <th class="p-2">Nom</th>
-                    <th class="p-2">Prénom</th>
-                    <th class="p-2">Email</th>
-                </tr>
-            </thead>
-            <tbody class="text-gray-700">
-                {% if recentClients is empty %}
-                <tr class="border-b">
-                    <td class="p-2" colspan="4">Il n'y a pas de clients pour le moment</td>
-                </tr>
-                {% else %}
-                {% for client in recentClients %}
-                <tr class="border-b">
-                    <td class="p-2">{{ client.id }}</td>
-                    <td class="p-2">{{ client.nom }}</td>
-                    <td class="p-2">{{ client.prenom }}</td>
-                    <td class="p-2">{{ client.email }}</td>
-                </tr>
-                {% endfor %}
-                {% endif %}
-            </tbody>
-        </table>
-    </div>
-    <a href="{{ path('app_clients_index') }}"
-       class="block w-fit mt-4 text-red-600 hover:text-red-700 focus:ring-4 focus:outline-none focus:ring-red-700/30 font-medium rounded-lg text-sm pr-4 py-3">
-        <i class="fa fa-eye mr-1"></i>
-        Voir tout les clients
-    </a>
-</div>
 
     </div>
 
 
- <script>
+    <script>
         tailwind.config = {
             darkMode: false,
             theme: {
@@ -251,18 +250,20 @@
             }
         }
     </script>
-   
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <!-- Chart factures -->
+    <!-- Chart factures -->
     <script>
         var ctx = document.getElementById('facturesChart').getContext('2d');
+        var facturesData = {{ facturesData|raw }}; // Données passées depuis le contrôleur
+
         var facturesChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Janv', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sept', 'Oct', 'Nov', 'Dec'],
+                labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
                 datasets: [{
                     label: 'Nombres de Factures',
-                    data: [5, 15, 20, 35, 10, 5, 3, 12, 97, 0, 0, 12], // mettre une variable FacturesData dans le controlleur
+                    data: facturesData,
                     borderColor: '#55FFAA', // Couleur de la ligne
                     backgroundColor: '#55FFAA20', // Couleur de fond sous la ligne (avec transparence)
                     borderWidth: 2,
@@ -281,17 +282,18 @@
 
     <!-- Chart Devis -->
     <script>
-        // Graphique des Devis
         var ctxDevis = document.getElementById('devisChart').getContext('2d');
+        var devisData = JSON.parse('{{ devisData|raw }}'); // Parser les données JSON
+
         var devisChart = new Chart(ctxDevis, {
             type: 'line',
             data: {
-                labels: ['Janv', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Aout', 'Sept', 'Oct', 'Nov', 'Dec'],
+                labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
                 datasets: [{
                     label: 'Nombre de Devis',
-                    data: [40, 30, 20, 50, 60, 20, 3, 12, 97, 0, 0, 12], // mettre une variable DataDevis par exemple dans le controller pour chaque mois
-                    borderColor: '#3357FF', // Couleur de la ligne
-                    backgroundColor: '#3357FF30', // Couleur de fond sous la ligne (avec transparence)
+                    data: devisData,
+                    borderColor: '#3357FF',
+                    backgroundColor: '#3357FF30',
                     borderWidth: 2,
                     fill: true
                 }]

@@ -4,6 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Devis;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,9 +19,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class DevisRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Devis::class);
+        $this->entityManager = $entityManager;
     }
 
 //    /**
@@ -45,4 +50,22 @@ class DevisRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function countByMonthAndEntreprise(int $entrepriseId): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('month', 'month');
+        $rsm->addScalarResult('count', 'count');
+
+        $query = $this->entityManager->createNativeQuery(
+            'SELECT DATE_PART(\'month\', d.date) as month, 
+                    COUNT(d.id) as count
+             FROM devis d
+             WHERE d.id_entreprise_id = :entrepriseId
+             GROUP BY DATE_PART(\'month\', d.date)
+             ORDER BY DATE_PART(\'month\', d.date)',
+            $rsm
+        )->setParameter('entrepriseId', $entrepriseId);
+
+        return $query->getResult();
+    }
 }

@@ -45,4 +45,22 @@ class FacturesRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function countByMonthAndEntreprise(int $entrepriseId): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT 
+                TO_CHAR(f.created_at, \'MM\') as month, 
+                COUNT(f.id) as count
+            FROM factures f
+            WHERE f.id_entreprise_id = :entrepriseId
+            GROUP BY month
+            ORDER BY month
+        ';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(['entrepriseId' => $entrepriseId]);
+
+        return $resultSet->fetchAllAssociative();
+    }
 }
