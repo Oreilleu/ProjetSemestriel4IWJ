@@ -5,9 +5,17 @@ namespace App\Controller;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ClientsRepository;
 
 class DashboardController extends AbstractController
 {
+
+    private $clientsRepository;
+
+    public function __construct(ClientsRepository $clientsRepository)
+    {
+        $this->clientsRepository = $clientsRepository;
+    }
     #[Route('/dashboard', name: 'app_dashboard_index')]
     public function index()
     {
@@ -21,11 +29,17 @@ class DashboardController extends AbstractController
 
         $numberDevis = $entreprise->getDevis()->count();
 
+        $numberClients = $entreprise->getClients()->count();
+
         $numberDevisAccept = $entreprise->getDevis()->filter(function($devis) {
             return $devis->getStatut() === 'Accepté';
         })->count();
 
         $numberFactures = $entreprise->getFactures()->count();
+
+
+        // Récupérer les trois derniers clients
+        $recentClients = $this->clientsRepository->findLatestClients();
 
         // $sumAllPaiement = $entreprise->getFactures()->map(function($facture) {
         //     return $facture->getPaiements()->map(function($paiement) {
@@ -38,7 +52,6 @@ class DashboardController extends AbstractController
         $sumDevisAccept = 550;
 
         $turnOver = 1500;
-
 
 
         // dd($numberDevisAccept);
@@ -54,6 +67,8 @@ class DashboardController extends AbstractController
 
         return $this->render('dashboard/index.html.twig', [
             'numberDevis' => $numberDevis,
+            'numberClients' => $numberClients,
+            'recentClients' => $recentClients,
             'numberDevisAccept' => $numberDevisAccept,
             'numberFactures' => $numberFactures,
             'sumAllPaiement' => $sumAllPaiement,

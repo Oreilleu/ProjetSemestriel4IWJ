@@ -33,7 +33,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex mb-4 items-start justify-center flex-col">
                     <h2 class="text-2xl font-semibold text-gray-800">Factures</h2>
-                    <p class="text-2xl font-bold text-gray-800">90 Factures</p>
+                    <p class="text-2xl font-bold text-gray-800">{{numberFactures}} Factures</p>
                 </div>
                 <div
                     class="flex items-center h-12 w-12 justify-center bg-green-100 text-green-600 p-2 rounded-full">
@@ -53,7 +53,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex mb-4 items-start justify-center flex-col">
                     <h2 class="text-2xl font-semibold text-gray-800">Devis</h2>
-                    <p class="text-2xl font-bold text-gray-800">220 Devis</p>
+                    <p class="text-2xl font-bold text-gray-800"> {{ numberDevis }} Devis</p>
                 </div>
                 <div
                     class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
@@ -72,7 +72,7 @@
         <div class="bg-white shadow rounded-lg p-4">
             <div class="flex items-center justify-between">
                 <div class="flex mb-4 items-start justify-center flex-col">
-                    <h2 class="text-2xl font-semibold text-gray-800">Produits Récentes</h2>
+                    <h2 class="text-2xl font-semibold text-gray-800">Produits Récents</h2>
                     <p class="text-2xl font-bold text-gray-800">130 Produits vendus</p>
                 </div>
                 <div
@@ -119,15 +119,19 @@
             </a>
         </div>
 
-        <!-- Client -->
+    <!-- Clients Récentes -->
         <div class="bg-white shadow rounded-lg p-4">
             <div class="flex items-center justify-between">
                 <div class="flex mb-4 items-start justify-center flex-col">
-                    <h2 class="text-2xl font-semibold text-gray-800">Clients Récentes</h2>
-                    <p class="text-2xl font-bold text-gray-800">40 Clients</p>
+                    {% set totalClients = numberClients|length %}
+                        {% if totalClients == 1 %}
+                            <h2 class="text-2xl font-semibold text-gray-800">{{ totalClients }} Client au total</h2>
+                        {% else %}
+                            <h2 class="text-2xl font-semibold text-gray-800">{{ totalClients }} Clients au total</h2>
+                        {% endif %}                    
+                        <p class="text-2xl font-bold text-gray-800">Les clients Récents</p>
                 </div>
-                <div
-                    class="flex items-center h-12 w-12 justify-center bg-red-100 text-red-600 p-2 rounded-full">
+                <div class="flex items-center h-12 w-12 justify-center bg-red-100 text-red-600 p-2 rounded-full">
                     <i class="fa fa-users text-2xl"></i>
                 </div>
             </div>
@@ -135,27 +139,21 @@
                 <table class="min-w-full bg-white text-left whitespace-nowrap">
                     <thead>
                         <tr class="border-b">
+                            <th class="p-2">Id</th>
                             <th class="p-2">Nom</th>
+                            <th class="p-2">Prénom</th>
                             <th class="p-2">Email</th>
-                            <th class="p-2">Téléphone</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-700">
+                        {% for client in recentClients %}
                         <tr class="border-b">
-                            <td class="p-2">Entreprise A</td>
-                            <td class="p-2">contact@entreprisea.com</td>
-                            <td class="p-2">01 23 45 67 89</td>
+                            <td class="p-2">{{ client.id  }}</td>
+                            <td class="p-2">{{ client.nom }}</td>
+                            <td class="p-2">{{ client.prenom }}</td>
+                            <td class="p-2">{{ client.email }}</td>
                         </tr>
-                        <tr class="border-b">
-                            <td class="p-2">Entreprise B</td>
-                            <td class="p-2">contact@entrepriseb.com</td>
-                            <td class="p-2">01 98 76 54 32</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="p-2">Entreprise C</td>
-                            <td class="p-2">contact@entreprisec.com</td>
-                            <td class="p-2">02 34 56 78 90</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -165,7 +163,7 @@
                 Voir tout les clients
             </a>
         </div>
-
+    </div>
     </div>
 
  <script>
@@ -189,7 +187,7 @@
                 labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin'],
                 datasets: [{
                     label: 'Nombres de Factures',
-                    data: [5, 15, 20, 35, 10, 5],
+                    data: [5, 15, 20, 35, 10, 5], // mettre une variable FacturesData dans le controlleur
                     borderColor: '#55FFAA', // Couleur de la ligne
                     backgroundColor: '#55FFAA20', // Couleur de fond sous la ligne (avec transparence)
                     borderWidth: 2,
@@ -216,7 +214,7 @@
                 labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin'],
                 datasets: [{
                     label: 'Nombre de Devis',
-                    data: [40, 30, 20, 50, 60, 20],
+                    data: [40, 30, 20, 50, 60, 20], // mettre une variable DataDevis par exemple dans le controller pour chaque mois
                     borderColor: '#3357FF', // Couleur de la ligne
                     backgroundColor: '#3357FF30', // Couleur de fond sous la ligne (avec transparence)
                     borderWidth: 2,
