@@ -138,8 +138,13 @@
         <div class="bg-white shadow rounded-lg p-4">
             <div class="flex items-center justify-between">
                 <div class="flex mb-4 items-start justify-center flex-col">
-                    <h2 class="text-2xl font-semibold text-gray-800">Produits Récents</h2>
-                    <p class="text-2xl font-bold text-gray-800">130 Produits vendus</p>
+                    {% if numberProduits <= 1%}
+                        <h2 class="text-2xl font-semibold text-gray-800">{{ numberProduits }} Produit au total </h2>
+                    {% else %}
+                        <h2 class="text-2xl font-semibold text-gray-800">{{ numberProduits }} Produits au total</h2>
+                    {% endif %}
+                <h2 class="text-2xl font-semibold text-gray-800">Les produits Récents</h2>
+
                 </div>
                 <div
                         class="flex items-center h-12 w-12 justify-center bg-yellow-100 text-yellow-600 p-2 rounded-full">
@@ -150,31 +155,25 @@
                 <table class="min-w-full bg-white text-left whitespace-nowrap">
                     <thead>
                     <tr class="border-b">
-                        <th class="p-2">Nom du Produit</th>
+                        <th class="p-2">Nom du produit</th>
                         <th class="p-2">Prix</th>
-                        <th class="p-2">Catégorie</th>
-                        <th class="p-2">Stock</th>
+                        <th class="p-2">Categorie</th>
                     </tr>
                     </thead>
                     <tbody class="text-gray-700">
-                    <tr class="border-b">
-                        <td class="p-2">Produit A</td>
-                        <td class="p-2">20€</td>
-                        <td class="p-2">Catégorie 1</td>
-                        <td class="p-2">En stock</td>
-                    </tr>
-                    <tr class="border-b">
-                        <td class="p-2">Produit B</td>
-                        <td class="p-2">15€</td>
-                        <td class="p-2">Catégorie 2</td>
-                        <td class="p-2">En stock</td>
-                    </tr>
-                    <tr class="border-b">
-                        <td class="p-2">Produit C</td>
-                        <td class="p-2">30€</td>
-                        <td class="p-2">Catégorie 1</td>
-                        <td class="p-2">Rupture de stock</td>
-                    </tr>
+                    {% if recentProduits is empty %}
+                        <tr class="border-b">
+                            <td class="p-2" colspan="4">Il n'y a pas de produits pour le moment</td>
+                        </tr>
+                    {% else %}
+                        {% for produit in recentProduits %}
+                            <tr class="border-b">
+                                <td class="p-2">{{ produit.nom }}</td>
+                                <td class="p-2">{{ produit.prix }} € </td>
+                                <td class="p-2">{{ produit.idCategorieProduits ? produit.idCategorieProduits.nom : 'Sans catégorie' }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -189,12 +188,10 @@
         <div class="bg-white shadow rounded-lg p-4">
             <div class="flex items-center justify-between">
                 <div class="flex mb-4 items-start justify-center flex-col">
-                    {% if totalClients == 0 %}
-                        <h2 class="text-2xl font-semibold text-gray-800"> 0 Client au total </h2>
-                    {% elseif totalClients == 1 %}
-                        <h2 class="text-2xl font-semibold text-gray-800">{{ totalClients }} Client au total</h2>
+                    {% if numberClients <= 1%}
+                        <h2 class="text-2xl font-semibold text-gray-800">{{ numberClients }} Client au total </h2>
                     {% else %}
-                        <h2 class="text-2xl font-semibold text-gray-800">{{ totalClients }} Clients au total</h2>
+                        <h2 class="text-2xl font-semibold text-gray-800">{{ numberClients }} Clients au total</h2>
                     {% endif %}
                     <p class="text-2xl font-bold text-gray-800">Les clients Récents</p>
                 </div>

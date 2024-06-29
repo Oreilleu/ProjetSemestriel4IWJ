@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\DevisRepository;
 use App\Repository\FacturesRepository;
+use App\Repository\ProduitsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\User;
@@ -39,7 +40,9 @@ class DashboardController extends AbstractController
 
         $numberDevis = $entreprise->getDevis()->count();
 
-        $numberClients = $entreprise->getClients()->count();
+        $clients = $entreprise->getClients();
+
+        $produits = $entreprise->getProduits();
 
         $numberDevisAccept = $entreprise->getDevis()->filter(function ($devis) {
             return $devis->getStatut() === 'Accepté';
@@ -47,14 +50,13 @@ class DashboardController extends AbstractController
 
         $numberFactures = $entreprise->getFactures()->count();
 
+        $numberClients = $clients->count();
 
-        $entityManager->initializeObject($entreprise);
+        $numberProduits = $produits->count();
 
-        $totalClients = $clientsRepository->countClientsByEntreprise($entreprise);
+        $recentClients = $clients->slice(-3);
 
-
-        // Récupérer les trois derniers clients
-        $recentClients = $entreprise->getClients()->slice(-3);
+        $recentProduits = $produits->slice(-3);
 
         // $sumAllPaiement = $entreprise->getFactures()->map(function($facture) {
         //     return $facture->getPaiements()->map(function($paiement) {
@@ -68,7 +70,6 @@ class DashboardController extends AbstractController
                 $sumAllPaiement += $paiement->getMontant();
             }
         }
-//        $sumAllPaiement = 1000;
 
         $sumDevisAccept = 550;
 
@@ -104,11 +105,12 @@ class DashboardController extends AbstractController
 
         return $this->render('dashboard/index.html.twig', [
             'numberDevis' => $numberDevis,
+            'numberProduits' => $numberProduits,
             'numberClients' => $numberClients,
-            'totalClients' => $totalClients,
-            'recentClients' => $recentClients,
             'numberDevisAccept' => $numberDevisAccept,
             'numberFactures' => $numberFactures,
+            'recentClients' => $recentClients,
+            'recentProduits' => $recentProduits,
             'sumAllPaiement' => $sumAllPaiement,
             'sumDevisAccept' => $sumDevisAccept,
             'turnOver' => $turnOver,
