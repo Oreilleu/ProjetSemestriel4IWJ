@@ -2,67 +2,56 @@
 
 {% block title %}Factures{% endblock %}
 
+{% set mappedData = factures|map(facture => [
+    {
+        values: [    
+            facture.getCreatedAt()|date('d/m/Y'),
+            facture.statut,
+            facture.getClient().nom,
+            facture.getTotalTtc() ~ ' €',
+        ]
+    },
+    {
+        actions: [
+            {
+                content: include('components/SVG/_eye_SVG.html.twig'),
+                link: path('app_factures_show', {'id': facture.id})
+            },
+            {
+                content: include('components/SVG/_update_SVG.html.twig'),
+                link: path('app_factures_edit', {'id': facture.id}),
+                constraint: is_granted('ROLE_COMPTABLE')
+            },
+            {
+                content: include('components/SVG/_generate_pdf_SVG.html.twig'),
+                link: path('app_facture_pdf', {'id': facture.id})
+            },
+            {
+                content: include('components/SVG/_download_pdf_SVG.html.twig'),
+                link: path('app_download_facture_pdf', {'id': facture.id})
+            },
+        ]
+    },
+    {
+        actionDelete: {
+            button: null,
+        } 
+    }
+]) %}
+
+
 {% block body %}
     {{ include('components/_title.html.twig', { content: 'Liste des Factures'}) }}
 
     {% if factures is empty %}
         {{ include('components/_empty_message.html.twig', { content: 'Aucune facture n\'a été trouvé.' }) }}
     {% else %}
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-primary-100 font-title">
-            <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Statut
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Client
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Prix TTC
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                </th>
-            </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200 bg-color3-50 font-subtitle">
-            {% for facture in factures %}
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.getCreatedAt() ? facture.getCreatedAt()|date('d/m/Y') : '' }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.statut }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.getClient().nom }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ facture.getTotalTtc() }} €</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
-                        <a href="/factures/{{ facture.id }}">
-                            <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
-                                {{ include('components/SVG/_eye_SVG.html.twig') }}
-                            </button>
-                        </a>
-                        {% if is_granted('ROLE_COMPTABLE') %}
-                            <a href="/factures/{{ facture.id }}/edit">
-                                <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
-                                    {{ include('components/SVG/_update_SVG.html.twig') }}
-                                </button>
-                            </a>
-                        {% endif %}
-                        <a href="{{ path('app_facture_pdf', {id: facture.id}) }}">
-                            <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
-                                {{ include('components/SVG/_generate_pdf_SVG.html.twig') }}
-                            </button>
-                        </a>
-                        <a href="{{ path('app_download_facture_pdf', {id: facture.id}) }}">
-                            <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
-                                {{ include('components/SVG/_download_pdf_SVG.html.twig') }}
-                            </button>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {{ include('components/_array.html.twig', {
+            data: {
+                label: ['Date', 'Statut', 'Client', 'Prix TTC', 'Actions'],
+                value: mappedData,
+            },
+        }) }}
     {% endif %}
 
 {% endblock %}

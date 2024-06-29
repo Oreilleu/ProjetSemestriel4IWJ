@@ -83,6 +83,7 @@ class FacturesController extends AbstractController
 
         return $this->redirectToRoute('app_factures_index', [], Response::HTTP_SEE_OTHER);
     }
+    
     #[Route('/new', name: 'app_factures_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
