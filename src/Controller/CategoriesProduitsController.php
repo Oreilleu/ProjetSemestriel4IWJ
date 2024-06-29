@@ -80,6 +80,7 @@ class CategoriesProduitsController extends AbstractController
 
             $entityManager->persist($categoriesProduit);
             $entityManager->flush();
+            $this->addFlash('success', 'La catégorie a été ajoutée avec succès !');
 
             return $this->redirectToRoute('app_categories_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -109,6 +110,7 @@ class CategoriesProduitsController extends AbstractController
             }
             
             $entityManager->flush();
+            $this->addFlash('success', 'La catégorie a été modifiée avec succès !');
 
             return $this->redirectToRoute('app_categories_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -137,6 +139,7 @@ class CategoriesProduitsController extends AbstractController
             }
             $entityManager->remove($categoriesProduit);
             $entityManager->flush();
+            $this->addFlash('success', 'La catégorie a été supprimée avec succès !');
         }
         
         return $this->redirectToRoute('app_categories_index', [], Response::HTTP_SEE_OTHER);

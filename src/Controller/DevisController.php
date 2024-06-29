@@ -98,6 +98,7 @@ class DevisController extends AbstractController
             $requestData = $request->request->all();
 
             $this->devisService->handleDevisCreation($devis, $requestData['devis'], $entreprise);
+            $this->addFlash('success', 'Un devis a été créé avec succès et un email a été envoyé au client !');
 
             return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -146,6 +147,7 @@ class DevisController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $result = $this->devisService->handleFormSubmission($devi, $requestData['devis']);
+            $this->addFlash('success', 'Un devis a été modifié avec succès et un email a été envoyé au client !');
 
             if ($result === 'facture') {
                 return $this->redirectToRoute('app_factures_index', [], Response::HTTP_SEE_OTHER);
@@ -177,6 +179,7 @@ class DevisController extends AbstractController
 
             $entityManager->remove($devi);
             $entityManager->flush();
+            $this->addFlash('success', 'Devis supprimé avec succès !');
         }
 
         return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);

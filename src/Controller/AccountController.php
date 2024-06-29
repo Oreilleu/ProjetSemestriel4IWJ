@@ -132,6 +132,7 @@ class AccountController extends AbstractController
 
             $entityManager->remove($user);
             $entityManager->flush();
+            $this->addFlash('success', 'Votre compte a été supprimé avec succès.');
         }
     
         return $this->redirectToRoute('app_register', [], Response::HTTP_SEE_OTHER);

@@ -3,6 +3,7 @@
 {% block title %}Se connecter{% endblock %}
 
 {% block body %}
+    {{ include('components/_flash_messages.html.twig')}}
     <form method="post">
 
         {% if app.user %}

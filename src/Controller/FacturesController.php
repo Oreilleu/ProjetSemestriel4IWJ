@@ -135,6 +135,7 @@ class FacturesController extends AbstractController
 
             $entityManager->persist($paiement);
             $entityManager->flush();
+            $this->addFlash('success', 'Un paiement a été effectué avec succès et un email a été envoyé au client !');
 
             return $this->redirectToRoute('app_factures_index', [], Response::HTTP_SEE_OTHER);
         }
