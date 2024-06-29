@@ -37,7 +37,9 @@ class EntreprisesType extends AbstractType
                     'constraints' => [
                         new NotBlank(['message' => 'La ville est obligatoire.']),
                         new Length([
+                            'min' => 2,
                             'max' => 100,
+                            'minMessage' => 'Le nom de la ville doit contenir au moins {{ limit }} caractères.',
                             'maxMessage' => 'Le nom de la ville ne doit pas dépasser {{ limit }} caractères.',
                         ]),
                         new Regex([
