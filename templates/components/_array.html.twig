@@ -18,36 +18,38 @@
                     {% endfor %}
 
                     {# Colonne pour les actions et le bouton de suppression #}
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4 dark:text-text-dark-mode-200">
-                        {# Affichage des actions #}
-                        {% for action in data[1].actions %}
-                            {% if action.constraint is defined %}
-                                {% if action.constraint %}
+                    {% if data[1].actions is defined %}
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4 dark:text-text-dark-mode-200">
+                            {# Affichage des actions #}
+                            {% for action in data[1].actions %}
+                                {% if action.constraint is defined %}
+                                    {% if action.constraint %}
+                                        <a href="{{ action.link }}">
+                                            <button class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4 hover:bg-primary-600 dark:hover:bg-element-dark-mode-700">
+                                                {{ action.content|raw }}
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                {% else %}
                                     <a href="{{ action.link }}">
-                                        <button class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4 dark:hover:bg-element-dark-mode-700">
+                                        <button class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4 hover:bg-primary-600 dark:hover:bg-element-dark-mode-700">
                                             {{ action.content|raw }}
                                         </button>
                                     </a>
                                 {% endif %}
-                            {% else %}
-                                <a href="{{ action.link }}">
-                                    <button class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4 dark:hover:bg-element-dark-mode-700">
-                                        {{ action.content|raw }}
-                                    </button>
-                                </a>
-                            {% endif %}
 
-                        {% endfor %}
-                        
-                        {# Affichage du bouton de suppression #}
-                        {% if data[2].actionDelete.constraint is defined %}
-                            {% if data[2].actionDelete.constraint %}
+                            {% endfor %}
+                            
+                            {# Affichage du bouton de suppression #}
+                            {% if data[2].actionDelete.constraint is defined %}
+                                {% if data[2].actionDelete.constraint %}
+                                    {{ data[2].actionDelete.button|raw }}
+                                {% endif %}
+                            {% else %}
                                 {{ data[2].actionDelete.button|raw }}
                             {% endif %}
-                        {% else %}
-                            {{ data[2].actionDelete.button|raw }}
-                        {% endif %}
-                    </td>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </tbody>
