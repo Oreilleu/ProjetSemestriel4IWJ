@@ -9,6 +9,7 @@
 
   {# {{ include('clients/_search_client_form.html.twig', { search_Nom: '' }) }} #}
 
+{% include 'clients/_search_client_form.html.twig' with {'search_Nom': '' } %}
   {% if clients is empty %}
         {{ include('components/_empty_message.html.twig', { content: 'Aucun client n\'a été trouvé.' }) }}
     {% else %}
