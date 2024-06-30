@@ -80,10 +80,10 @@ class Clients
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $cp = null;
     
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $ville = null;
     
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $pays = null;
     
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]

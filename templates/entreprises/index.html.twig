@@ -40,6 +40,7 @@
 
 
 {% block body %}
+    {{ include('components/_flash_messages.html.twig')}}
     {{ include('components/_title.html.twig', { content: 'Liste des entreprises'}) }}
 
     {{ include('components/_array.html.twig', {

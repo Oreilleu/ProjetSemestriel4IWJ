@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+  {{ include('components/_flash_messages.html.twig')}}
   {{ include('components/_title.html.twig', { content: 'Liste des produits'}) }}
 
   {% if app.request.get('idCategorie') and paginate_produits|length < 1  %}

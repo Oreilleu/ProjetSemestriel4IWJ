@@ -36,6 +36,7 @@ class EntreprisesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($entreprise);
             $entityManager->flush();
+            $this->addFlash('success', 'Entreprise ajoutée avec succès !');
 
             return $this->redirectToRoute('app_entreprises_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -62,6 +63,7 @@ class EntreprisesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+            $this->addFlash('success', 'Entreprise modifiée avec succès !');
 
             return $this->redirectToRoute('app_entreprises_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -78,6 +80,7 @@ class EntreprisesController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$entreprise->getId(), $request->request->get('_token'))) {
             $entityManager->remove($entreprise);
             $entityManager->flush();
+            $this->addFlash('success', 'Entreprise supprimée avec succès !');
         }
 
         return $this->redirectToRoute('app_entreprises_index', [], Response::HTTP_SEE_OTHER);

@@ -11,6 +11,23 @@
     }) }}
 
     {{ include('components/_form_group.html.twig', {
+        field: form.cp,
+        label: 'Code postal',
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.ville,
+        label: 'Ville',
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.pays,
+        label: 'Pays',
+    }) }}
+
+
+
+    {{ include('components/_form_group.html.twig', {
         field: form.tel,
         label: 'Téléphone',
     }) }}
