@@ -1,33 +1,58 @@
 {{ form_start(form) }}
 
-    {{ include('components/_form_group.html.twig', {
-        field: form.email,
-        label: 'Email * :'
-    }) }}
-
-    {{ include('components/_form_group.html.twig', {
-        field: form.nom,
-        label: 'Nom * :'
-    }) }}
-
-    {{ include('components/_form_group.html.twig', {
-        field: form.adresse,
-        label: 'Nom de l\'entreprise * :'
-    }) }}
-
-    {{ include('components/_form_group.html.twig', {
-        field: form.tel,
-        label: 'Téléphone * :'
-    }) }}
-
-    {{ include('components/_form_group.html.twig', {
-        field: form.numero_siret,
-        label: 'Numéro SIRET * :'
-    }) }}
-
-    <div class="mt-8">
-        {{ include('components/_submit_button.html.twig', {
-            content: 'Enregistrer mon entreprise'
-        }) }}
+    {{ form_label(form.email, 'Email :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.email) }}
     </div>
-{{ form_end(form) }}
+    {{ form_widget(form.email, {
+        'attr': {
+            'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 outline-none focus:ring-[#C79364] mb-3'
+        }
+    }) }}
+
+    {{ form_label(form.nom, 'Nom :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.nom) }}
+    </div>
+    {{ form_widget(form.nom, {
+        'attr': {
+            'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 outline-none focus:ring-[#C79364] mb-3'
+        }
+    }) }}
+
+    {{ form_label(form.adresse, 'Adresse :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.adresse) }}
+    </div>
+    {{ form_widget(form.adresse, {
+        'attr': {
+            'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 outline-none focus:ring-[#C79364] mb-3'
+        }
+    }) }}
+
+    {{ form_label(form.tel, 'Téléphone :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.tel) }}
+    </div>
+    {{ form_widget(form.tel, {
+        'attr': {
+            'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 outline-none focus:ring-[#C79364] mb-3'
+        }
+    }) }}
+
+    {{ form_label(form.numero_siret, 'Numéro SIRET :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+    <div class="text-red-500 text-sm font-bold mb-3">
+        {{ form_errors(form.numero_siret) }}
+    </div>
+    {{ form_widget(form.numero_siret, {
+        'attr': {
+            'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 outline-none focus:ring-[#C79364] mb-3'
+        }
+    }) }}
+
+</div>
+<!-- Submit button -->
+<div class="mt-8">
+    <button type="submit" class="bg-primary-500 text-white font-bold py-2 px-4 w-full rounded hover:bg-primary-600">Enregistrer son entreprise</button>
+    {{ form_end(form) }}
+</div>

@@ -1,0 +1,67 @@
+ <div class="mt-16">
+            <!-- main content -->
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-semibold">Factures</h1>
+            </div>
+
+            <form class="w-full max-w-md mb-6">
+                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <i class="fa fa-search w-4 h-4 text-gray-500"></i>
+                    </div>
+                    <input type="search"
+                        class="block w-full outline-none p-4 ps-10 text-sm text-gray-900 rounded-lg bg-gray-50 border-2 border-transparent focus:ring-4 focus:ring-[#C79364]/60 focus:border-white"
+                        placeholder="Rechercher des produits, factures..." required />
+                    <button type="submit"
+                        class="text-white absolute end-2.5 bottom-2.5 bg-[#C79364] hover:bg-[#af8057] focus:ring-4 focus:outline-none focus:ring-[#C79364]/60 font-medium rounded-lg text-sm px-4 py-2">
+                        Rechercher
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-8 bg-white shadow rounded-lg p-6 overflow-x-scroll">
+                <div class="grid w-full md:grid-cols-2 justify-between items-center mb-6 gap-2">
+                    <h2 class="text-2xl font-semibold text-gray-800">Liste de Factures</h2>
+                    <button
+                        class="text-white items-end bg-[#C79364] hover:bg-[#af8057] focus:ring-4 focus:outline-none focus:ring-[#C79364]/60 font-medium rounded-lg text-sm px-4 py-3">
+                        Ajouter une facture
+                    </button>
+                </div>
+                <table class="min-w-full bg-white text-left whitespace-nowrap">
+                    <thead>
+                        <tr class="p-2 border-b">
+                            <th class="p-2">ID de Facture</th>
+                            <th class="p-2">Client</th>
+                            <th class="p-2">Montant</th>
+                            <th class="p-2">Statut</th>
+                            <th class="p-2">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        <tr class="p-2 border-b">
+                            <td class="p-2">FAC-001</td>
+                            <td class="p-2">Entreprise A</td>
+                            <td class="p-2">1500,00 €</td>
+                            <td class="py-2 text-green-600">Payée</td>
+                            <td class="p-2">2024-06-20</td>
+                        </tr>
+                        <tr class="p-2 border-b">
+                            <td class="p-2">FAC-002</td>
+                            <td class="p-2">Entreprise B</td>
+                            <td class="p-2">1200,00 €</td>
+                            <td class="py-2 text-yellow-600">En Attente</td>
+                            <td class="p-2">2024-06-21</td>
+                        </tr>
+                        <tr class="p-2 border-b">
+                            <td class="p-2">FAC-003</td>
+                            <td class="p-2">Entreprise C</td>
+                            <td class="p-2">900,00 €</td>
+                            <td class="py-2 text-red-600">En Retard</td>
+                            <td class="p-2">2024-06-18</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
