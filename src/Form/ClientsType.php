@@ -19,8 +19,36 @@ class ClientsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
+            ->add('nom', TextType::class, [
+                'constraints' => [
+                    new NotBlank(['message' => 'La nom est obligatoire.']),
+                    new Length([
+                        'min' => 2,
+                        'max' => 100,
+                        'minMessage' => 'Le nom doit contenir au moins {{ limit }} caractères.',
+                        'maxMessage' => 'Le nom ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\s\'\-]+$/u',
+                        'message' => 'Le nom ne doit contenir que des lettres, des espaces, des tirets ou des apostrophes.',
+                    ]),
+                ],
+            ])
+            ->add('prenom', TextType::class, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Le prénom est obligatoire.']),
+                    new Length([
+                        'min' => 2,
+                        'max' => 100,
+                        'minMessage' => 'Le prénom doit contenir au moins {{ limit }} caractères.',
+                        'maxMessage' => 'Le prénom ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\s\'\-]+$/u',
+                        'message' => 'Le prénom ne doit contenir que des lettres, des espaces, des tirets ou des apostrophes.',
+                    ]),
+                ],
+            ])
             ->add('tel', TextType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Le numéro de téléphone est obligatoire.']),
@@ -37,7 +65,9 @@ class ClientsType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'La ville est obligatoire.']),
                     new Length([
+                        'min' => 2,
                         'max' => 100,
+                        'minMessage' => 'Le nom de la ville doit contenir au moins {{ limit }} caractères.',
                         'maxMessage' => 'Le nom de la ville ne doit pas dépasser {{ limit }} caractères.',
                     ]),
                     new Regex([
