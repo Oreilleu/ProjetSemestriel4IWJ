@@ -61,7 +61,7 @@
                 <ul id="dropdown-produits" class="hidden py-2 space-y-2">
                     <li>
                         <a href="{{ path('app_produits_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Tous les produits
+                            Mes Produits
                         </a>
                     </li>
                     <li>
@@ -71,7 +71,7 @@
                     </li>
                     <li>
                         <a href="{{ path('app_categories_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Catégorie
+                            Mes Catégories
                         </a>
                     </li>
                     <li>
@@ -94,18 +94,23 @@
             <li>
                 <button type="button" class="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900" aria-controls="dropdown-client" data-collapse-toggle="dropdown-client">
                     {{ include('components/SVG/_client_SVG.html.twig') }}
-                    <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Client</span>
+                    <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Clients</span>
                     {{ include('components/SVG/_chevron_down_SVG.html.twig') }}
                 </button>
                 <ul id="dropdown-client" class="hidden py-2 space-y-2">
                     <li>
                         <a href="{{ path('app_clients_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                        Mes clients
+                            Mes clients
                         </a>
                     </li>
                     <li>
                         <a href="{{ path('app_clients_new') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                        Ajouter un client
+                            Ajouter un client
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_lots_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                            Mes lots
                         </a>
                     </li>
                     <li>

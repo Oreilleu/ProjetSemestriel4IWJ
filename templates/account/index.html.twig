@@ -35,14 +35,23 @@
 
         {% if is_granted('ROLE_ADMIN') %}
             {{ include('components/_link.html.twig', {
-            path: 'app_admin_user_add',
-            content: 'Ajouter un utilisateur'
+                path: 'app_admin_user_add',
+                content: 'Ajouter un utilisateur'
+            }) }}
+            {{ include('components/_link.html.twig', {
+                path: 'app_admin_users_index',
+                content: 'Liste des utilisateurs'
             }) }}
         {% else %}
             {{ include('components/_link.html.twig', {
-            path: 'app_user_add',
-            content: 'Ajouter un utilisateur'
+                path: 'app_user_add',
+                content: 'Ajouter un utilisateur'
             }) }}
+            {{ include('components/_link.html.twig', {
+                path: 'app_users_index',
+                content: 'Liste des utilisateurs'
+            }) }}
+            
         {% endif %}
     {% endif %}
 {% endblock %}
