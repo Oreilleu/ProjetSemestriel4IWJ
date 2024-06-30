@@ -74,6 +74,10 @@ class Clients
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[Assert\Type(
+        type: 'numeric',
+        message: 'Veuillez renseigner un numéro de siret valide.'
+    )]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $numero_siret = null;
 
