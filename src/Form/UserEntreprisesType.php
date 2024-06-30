@@ -34,7 +34,6 @@ class UserEntreprisesType extends AbstractType
             ]);
             if ($options['data']->getId() === null) {
                 $builder->add('password', PasswordType::class, [
-                    'mapped' => false,
                     'constraints' => [
                         new NotBlank([
                             'message' => 'Veuillez entrer un mot de passe',
