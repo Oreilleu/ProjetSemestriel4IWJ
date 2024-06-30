@@ -117,7 +117,7 @@ class ClientsController extends AbstractController
 
             $entityManager->persist($client);
             $entityManager->flush();
-
+            $this->addFlash('success', 'Client ajouté avec succès !');
             return $this->redirectToRoute('app_clients_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -135,7 +135,7 @@ class ClientsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success', 'Client modifié avec succès !');
             return $this->redirectToRoute('app_clients_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -159,6 +159,7 @@ class ClientsController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
             $entityManager->remove($client);
             $entityManager->flush();
+            $this->addFlash('success', 'Client supprimé avec succès !');
         }
 
         return $this->redirectToRoute('app_clients_index', [], Response::HTTP_SEE_OTHER);
