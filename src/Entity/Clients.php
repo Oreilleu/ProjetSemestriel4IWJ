@@ -5,12 +5,14 @@ namespace App\Entity;
 use App\Repository\ClientsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 //Validate form
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[UniqueEntity(fields: ['email'], message: 'Il y a déjà un client avec cet email.')]
 #[ORM\Entity(repositoryClass: ClientsRepository::class)]
 class Clients
 {
@@ -71,7 +73,7 @@ class Clients
     #[Assert\Email(
         message: 'Veuillez renseigner une adresse email valide.'
     )]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
 
     #[Assert\Type(
