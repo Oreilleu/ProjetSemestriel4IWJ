@@ -48,6 +48,12 @@ class DashboardController extends AbstractController
             return $devis->getStatut() === 'Accepté';
         })->count();
 
+        $sumDevisAcceptHt = array_sum($entreprise->getDevis()->filter(function($devis) {
+            return $devis->getStatut() === 'Accepté';
+        })->map(function($devis) {
+            return $devis->getTotalHt();
+        })->toArray());
+
         $numberFactures = $entreprise->getFactures()->count();
 
         $numberClients = $clients->count();
@@ -70,10 +76,6 @@ class DashboardController extends AbstractController
                 $sumAllPaiement += $paiement->getMontant();
             }
         }
-
-        $sumDevisAccept = 550;
-
-        $turnOver = 1500;
 
         $devisData = $this->devisRepository->countByMonthAndEntreprise($entreprise->getId());
 
@@ -112,8 +114,7 @@ class DashboardController extends AbstractController
             'recentClients' => $recentClients,
             'recentProduits' => $recentProduits,
             'sumAllPaiement' => $sumAllPaiement,
-            'sumDevisAccept' => $sumDevisAccept,
-            'turnOver' => $turnOver,
+            'sumDevisAcceptHt' => $sumDevisAcceptHt,
             'facturesData' => json_encode(array_values($facturesDataFormatted)),
             'devisData' => json_encode(array_values($devisDataFormatted)),
         ]);
