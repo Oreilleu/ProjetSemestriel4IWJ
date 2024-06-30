@@ -132,5 +132,12 @@ module.exports = {
         })
       })
     },
+    function ({ addVariant, e }) {
+      addVariant('bleu', ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.bleu .${e(`bleu${separator}${className}`)}`
+        })
+      })
+    },
   ],
 }
