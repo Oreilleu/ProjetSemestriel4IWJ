@@ -1,0 +1,26 @@
+<div class="container mx-auto mt-4">
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ type }} p-4 mb-4 rounded-lg {{
+            type == 'success' ? 'bg-success text-white' :
+            type == 'danger' ? 'bg-danger text-white' : ''
+            }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+            let flashMessages = document.querySelectorAll('.flash-success, .flash-danger');
+            flashMessages.forEach(function(message) {
+                message.style.transition = "opacity 1s ease-out";
+                message.style.opacity = "0";
+                setTimeout(function() {
+                    message.remove();
+                }, 1000);
+            });
+        }, 5000);
+    });
+</script>

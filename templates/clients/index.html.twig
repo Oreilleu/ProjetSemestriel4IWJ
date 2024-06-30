@@ -4,6 +4,7 @@
 
 
 {% block body %}
+  {{ include('components/_flash_messages.html.twig')}}
   {{ include('components/_title.html.twig', { content: 'Liste des Clients'}) }}
 
   {# {{ include('clients/_search_client_form.html.twig', { search_Nom: '' }) }} #}
@@ -35,6 +36,10 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ client.nom }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ client.prenom }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">
+                        <a href="/clients/{{client.id}}">
+                          <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
+                            Voir
+                          </button>
                         <a href="/clients/{{client.id}}/edit">
                           <button class="border-0 py-2 px-8 hover:bg-primary-600 rounded">
                             {{ include('components/SVG/_update_SVG.html.twig') }}

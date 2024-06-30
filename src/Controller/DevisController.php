@@ -6,6 +6,7 @@ use App\Entity\Devis;
 use App\Entity\User;
 use App\Form\DevisType;
 use App\Service\DevisService;
+use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +46,7 @@ class DevisController extends AbstractController
     #[Route('/{id}/devis/pdf', name: 'app_devis_pdf', methods: ['GET'])]
     public function generatePdf(Devis $devi, PdfService $pdfService): Response
     {
-        $html = $this->renderView('devis/devis.html.twig', [
+        $html = $this->renderView('pdf/devis.html.twig', [
             'devi' => $devi,
             'entreprise' => $devi->getIdEntreprise(),
             'client' => $devi->getClient()
@@ -61,7 +62,7 @@ class DevisController extends AbstractController
     #[Route('/{id}/download', name: 'app_devis_download_pdf', methods: ['GET'])]
     public function downloadPdf(Devis $devi, PdfService $pdfService): Response
     {
-        $html = $this->renderView('devis/devis.html.twig', [
+        $html = $this->renderView('pdf/devis.html.twig', [
             'devi' => $devi,
             'entreprise' => $devi->getIdEntreprise(),
             'client' => $devi->getClient()
@@ -97,6 +98,7 @@ class DevisController extends AbstractController
             $requestData = $request->request->all();
 
             $this->devisService->handleDevisCreation($devis, $requestData['devis'], $entreprise);
+            $this->addFlash('success', 'Un devis a été créé avec succès et un email a été envoyé au client !');
 
             return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -145,6 +147,7 @@ class DevisController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $result = $this->devisService->handleFormSubmission($devi, $requestData['devis']);
+            $this->addFlash('success', 'Un devis a été modifié avec succès et un email a été envoyé au client !');
 
             if ($result === 'facture') {
                 return $this->redirectToRoute('app_factures_index', [], Response::HTTP_SEE_OTHER);
@@ -176,6 +179,7 @@ class DevisController extends AbstractController
 
             $entityManager->remove($devi);
             $entityManager->flush();
+            $this->addFlash('success', 'Devis supprimé avec succès !');
         }
 
         return $this->redirectToRoute('app_devis_index', [], Response::HTTP_SEE_OTHER);

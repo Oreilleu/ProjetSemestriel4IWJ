@@ -1,20 +1,19 @@
 {{ form_start(form, {'attr' : {'class': 'initialDisplay'}}) }}
 
-    {{ form_label(form.nom, 'Nom du produit * :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
-    <div class="text-red-500 text-sm font-bold mb-3">
-        {{ form_errors(form.nom) }}
-    </div>
-    {{ form_widget(form.nom, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'} }) }}
-    {{ form_label(form.prix, 'Prix * :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
-    <div class="text-red-500 text-sm font-bold mb-3">
-        {{ form_errors(form.prix) }}
-    </div>
-    {{ form_widget(form.prix, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
-    {{ form_label(form.id_categorie_produits, 'Catégorie :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold'}}) }}
-    <div class="text-red-500 text-sm font-bold mb-3">
-        {{ form_errors(form.id_categorie_produits, {'attr': {'class': 'text-red-500 text-sm font-bold mb-3'}}) }}
-    </div>   
-    {{ form_widget(form.id_categorie_produits, {'attr': {'class': 'shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }} 
+    {{ include('components/_form_group.html.twig', {
+        field: form.nom,
+        label: 'Nom du produit * :'
+    }) }}    
+    
+    {{ include('components/_form_group.html.twig', {
+        field: form.prix,
+        label: 'Prix * :'
+    }) }}    
+    
+    {{ include('components/_form_group.html.twig', {
+        field: form.id_categorie_produits,
+        label: 'Catégorie :'
+    }) }}    
     
     {{ include('components/_submit_button.html.twig', {
       content: button_label|default('')

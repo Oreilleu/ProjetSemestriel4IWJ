@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Twig\Environment;
 
 class DailyCheckDevis extends Command
 {
@@ -20,13 +21,16 @@ class DailyCheckDevis extends Command
     private $interractionService;
     private $entityManager;
 
-    public function __construct(DevisRepository $devisRepository, EmailService $emailService, InterractionService $interractionService, EntityManagerInterface $entityManager)
+    private $twig;
+
+    public function __construct(DevisRepository $devisRepository, EmailService $emailService, InterractionService $interractionService, EntityManagerInterface $entityManager, Environment $twig)
     {
         parent::__construct();
         $this->devisRepository = $devisRepository;
         $this->emailService = $emailService;
         $this->interractionService = $interractionService;
         $this->entityManager = $entityManager;
+        $this->twig = $twig;
     }
 
     protected function configure(): void
@@ -39,10 +43,15 @@ class DailyCheckDevis extends Command
     private function sendRelanceDevisEmail(Devis $devis): void
     {
         $subject = 'Relance devis';
-        $content = 'Le devis avec l\'ID : ' . $devis->getId() . ' .';
-        $recipient = $devis->getClient()->getEmail(); 
+        $template = 'email/relance_devis.html.twig';
+        $recipient = $devis->getClient()->getEmail();
+
+        $content = $this->twig->render($template, [
+            'devis' => $devis,
+        ]);
 
         $this->emailService->sendEmail($recipient, $subject, $content);
+
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -58,6 +67,7 @@ class DailyCheckDevis extends Command
             $days = (int)$diff->format('%a');
 
             if ($devi->getStatut() != 'Accepté' && $days > $interValRelance) {
+                $output->writeln('Relance envoyée pour le devis ' . $devi->getId());
                 $this->sendRelanceDevisEmail($devi);
                 $this->interractionService->createDevisInterraction($devi, 'Relance envoyée pour le devis' . $devi->getId());
                 $devi->setLastRelance(new \DateTimeImmutable());

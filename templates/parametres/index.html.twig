@@ -10,4 +10,12 @@
     <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Ajustez les délais de relance pour les devis et factures en attente de validation ou de paiement.</p> 
 
     {{ include('parametres/_form.html.twig') }}
+
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Changer le thème de couleurs</h2>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Personnalisez l'apparence de votre espace de travail en choisissant un thème de couleurs.</p> 
+
+    {{ include('parametres/_form_colors_theme.html.twig', {
+        form: formUser
+    }) }}
+
 {% endblock %}

@@ -74,28 +74,16 @@ class Clients
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[Assert\NotBlank(
-        message: 'Veuillez renseigner ce champ.'    
-    )]
-    #[Assert\Length(min: 14,
-    max: 14,
-    minMessage: 'Le numéro de SIRET doit contenir {{ limit }} caractères.',
-    maxMessage: 'Le numéro de SIRET doit contenir {{ limit }} caractères.'
-    )]
-    #[Assert\Type(
-        type: 'numeric',
-        message: 'Veuillez renseigner un numéro de téléphone valide.'
-    )]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $numero_siret = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $cp = null;
     
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $ville = null;
     
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $pays = null;
     
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]

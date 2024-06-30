@@ -117,7 +117,7 @@ class ClientsController extends AbstractController
 
             $entityManager->persist($client);
             $entityManager->flush();
-
+            $this->addFlash('success', 'Client ajouté avec succès !');
             return $this->redirectToRoute('app_clients_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -135,7 +135,7 @@ class ClientsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success', 'Client modifié avec succès !');
             return $this->redirectToRoute('app_clients_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -145,12 +145,21 @@ class ClientsController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: 'app_clients_show', methods: ['GET'])]
+    public function show(Clients $client): Response
+    {
+        return $this->render('clients/show.html.twig', [
+            'client' => $client,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_clients_delete', methods: ['POST'])]
     public function delete(Request $request, Clients $client, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
             $entityManager->remove($client);
             $entityManager->flush();
+            $this->addFlash('success', 'Client supprimé avec succès !');
         }
 
         return $this->redirectToRoute('app_clients_index', [], Response::HTTP_SEE_OTHER);
