@@ -61,6 +61,10 @@
         <!-- Vérifier qu'il y a des lots -->
         {% if client.getLots() is empty %}
             {{ include('components/_empty_message.html.twig', { content: 'Aucun lot n\'a été trouvé.' }) }}
+            {{ include('components/_link.html.twig', {
+                content: 'Ajouter un lot',
+                path: 'app_lots_new'
+            }) }}
         {% else %}
             <div class="mb-8">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
@@ -110,6 +114,10 @@
 
         {% if client.getDevis() is empty %}
             {{ include('components/_empty_message.html.twig', { content: 'Aucun devis n\'a été trouvé.' }) }}
+            {{ include('components/_link.html.twig', {
+                content: 'Ajouter un devis',
+                path: 'app_devis_new'
+            }) }}
         {% else %}
             <div class="mb-8">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
