@@ -59,7 +59,21 @@ class ClientsType extends AbstractType
                 ],
             ])
             ->add('email')
-            ->add('adresse')
+            ->add('adresse', TextType::class, [
+                'constraints' => [
+                    new NotBlank(['message' => 'L\'adresse est obligatoire.']),
+                    new Length([
+                        'min' => 7,
+                        'max' => 255,
+                        'minMessage' => 'L\'adresse doit contenir au moins {{ limit }} caractères.',
+                        'maxMessage' => 'L\'adresse ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[a-zA-ZàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ0-9\s,.\'\/\-]+$/u',
+                        'message' => 'L\'adresse n\'est pas valide.',
+                    ]),
+                ]
+            ])
             ->add('cp')
             ->add('ville', TextType::class, [
                 'constraints' => [
