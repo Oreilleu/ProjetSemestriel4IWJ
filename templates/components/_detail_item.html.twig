@@ -15,72 +15,121 @@
         </ul>
     </div>
 
-    {% set mappedData = data.listLots %}
+    {% if data.listLots is defined %}
 
-    {% if mappedData is not defined %}
-        {{ include('components/_empty_message.html.twig', { content: 'Aucun lot n\'a été trouvé.' }) }}
-    {% else %}
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-3 mt-5">
-            {{ include('components/SVG/_eye_SVG.html.twig') }}
-            Liste des Lots
-        </h2>
-        {{ include('components/_array.html.twig', {
-            data: {
-                label: ['Type', 'Superficie', 'Adresse', 'Actions'],
-                values: mappedData
-            }
-        }) }}
+        {% set mappedData = data.listLots %}
+
+        {% if mappedData is empty %}
+            {{ include('components/_empty_message.html.twig', { content: 'Aucun lot n\'a été trouvé.' }) }}
+        {% else %}
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-3 mt-5">
+                {{ include('components/SVG/_eye_SVG.html.twig') }}
+                Liste des Lots
+            </h2>
+            {{ include('components/_array.html.twig', {
+                data: {
+                    label: ['Type', 'Superficie', 'Adresse', 'Actions'],
+                    values: mappedData
+                }
+            }) }}
+        {% endif %}
+    
     {% endif %}
 
-    {% set mappedData = data.listDevis %}
+    {% if data.listDevis is defined %}
 
-    {% if mappedData is not defined %}
-        {{ include('components/_empty_message.html.twig', { content: 'Aucun lot n\'a été trouvé.' }) }}
-    {% else %}
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-3 mt-5">
-            {{ include('components/SVG/_eye_SVG.html.twig') }}
-            Liste des Devis
-        </h2>
-        {{ include('components/_array.html.twig', {
-            data: {
-                label: ['Id', 'Date', 'Status', 'Actions'],
-                values: mappedData,
-            }
-        }) }}
+        {% set mappedData = data.listDevis %}
+
+        {% if mappedData is empty %}
+            {{ include('components/_empty_message.html.twig', { content: 'Aucun devis n\'a été trouvé.' }) }}
+        {% else %}
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-3 mt-5">
+                {{ include('components/SVG/_eye_SVG.html.twig') }}
+                Liste des Devis
+            </h2>
+            {{ include('components/_array.html.twig', {
+                data: {
+                    label: ['Id', 'Date', 'Status', 'Actions'],
+                    values: mappedData,
+                }
+            }) }}
+        {% endif %}
     {% endif %}
 
-    {% set mappedData = data.listFacture %}
+    {% if data.listFacture is defined %}
+        {% set mappedData = data.listFacture %}
 
-    <!-- Vérifier qu'il y a des factures -->
-    {% if mappedData is not defined %}
-        {{ include('components/_empty_message.html.twig', { content: 'Aucune facture n\'a été trouvée.' }) }}
-    {% else %}
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-3 mt-5">
-            {{ include('components/SVG/_eye_SVG.html.twig') }}
-            Liste des Factures
-        </h2>
-        {{ include('components/_array.html.twig', {
-            data: {
-                label: ['ID', 'Date', 'Status'],
-                values: mappedData
-            }
-        }) }}
+        <!-- Vérifier qu'il y a des factures -->
+        {% if mappedData is empty %}
+            {{ include('components/_empty_message.html.twig', { content: 'Aucune facture n\'a été trouvée.' }) }}
+        {% else %}
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-3 mt-5">
+                {{ include('components/SVG/_eye_SVG.html.twig') }}
+                Liste des Factures
+            </h2>
+            {{ include('components/_array.html.twig', {
+                data: {
+                    label: ['ID', 'Date', 'Status'],
+                    values: mappedData
+                }
+            }) }}
+        {% endif %}
     {% endif %}
 
-    {% set mappedData = data.listInterraction %}
+    {% if data.listInterraction is defined %}
+        {% set mappedData = data.listInterraction %}
 
-    {% if mappedData is not defined %}
-        {{ include('components/_empty_message.html.twig', { content: 'Aucune interraction n\'a été trouvée.' }) }}
-    {% else %}
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-3 mt-5">
-            {{ include('components/SVG/_eye_SVG.html.twig') }}
-            Liste des Interractions
-        </h2>
-        {{ include('components/_array.html.twig', {
-            data: {
-                label: ['Commentaire', 'Date'],
-                values: mappedData
-            }
-        }) }}
+        {% if mappedData is empty %}
+            {{ include('components/_empty_message.html.twig', { content: 'Aucune interraction n\'a été trouvée.' }) }}
+        {% else %}
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-3 mt-5">
+                {{ include('components/SVG/_eye_SVG.html.twig') }}
+                Liste des Interractions
+            </h2>
+            {{ include('components/_array.html.twig', {
+                data: {
+                    label: ['Commentaire', 'Date'],
+                    values: mappedData
+                }
+            }) }}
+        {% endif %}
+    {% endif %}
+
+    {% if data.listProducts is defined %}
+        {% set mappedData = data.listProducts %}
+
+        {% if mappedData is empty %}
+            {{ include('components/_empty_message.html.twig', { content: 'Aucune Produit n\'a été trouvée.' }) }}
+        {% else %}
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-3 mt-5">
+                {{ include('components/SVG/_eye_SVG.html.twig') }}
+                Liste des Produits
+            </h2>
+            {{ include('components/_array.html.twig', {
+                data: {
+                    label: ['Nom', 'Quantité', 'Prix'],
+                    values: mappedData
+                }
+            }) }}
+        {% endif %}
+    {% endif %}
+
+    {% if data.listPayments is defined %}
+        {% set mappedData = data.listPayments %}
+
+        {% if mappedData is empty %}
+            {{ include('components/_empty_message.html.twig', { content: 'Aucune paiement n\'a été trouvée.' }) }}
+        {% else %}
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-3 mt-5">
+                {{ include('components/SVG/_eye_SVG.html.twig') }}
+                Liste des Paiements Reçus 
+            </h2>
+            {{ include('components/_array.html.twig', {
+                data: {
+                    label: ['Date', 'Montant', 'Méthode'],
+                    values: mappedData
+                }
+            }) }}
+        {% endif %}
     {% endif %}
 </div>
