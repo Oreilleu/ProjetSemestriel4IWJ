@@ -11,8 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class DevisVoter extends Voter
 {
     public const CREATE = 'CREATE';
-    public const EDIT = 'EDIT';
 
+    public const EDIT = 'EDIT';
     public const VIEW = 'VIEW';
     public const DELETE = 'DELETE';
 
@@ -33,6 +33,10 @@ class DevisVoter extends Voter
         }
 
         $devis = $subject;
+
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            return true;
+        }
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::CREATE:

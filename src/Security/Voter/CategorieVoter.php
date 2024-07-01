@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class CategorieVoter extends Voter
 {
     public const CREATE = 'CREATE';
+
     public const EDIT = 'EDIT';
     public const VIEW = 'VIEW';
     public const DELETE = 'DELETE';
@@ -32,6 +33,10 @@ class CategorieVoter extends Voter
         }
 
         $categoriesProduit = $subject;
+
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            return true;
+        }
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {

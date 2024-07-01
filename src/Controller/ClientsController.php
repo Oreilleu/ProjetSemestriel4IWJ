@@ -131,6 +131,8 @@ class ClientsController extends AbstractController
     #[Route('/{id}/edit', name: 'app_clients_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Clients $client, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted(ClientVoter::EDIT, $client);
+
         $form = $this->createForm(ClientsType::class, $client);
         $form->handleRequest($request);
 
