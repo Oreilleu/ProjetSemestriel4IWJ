@@ -13,12 +13,14 @@
         }) }}
     {% endif %}
 
-    {{ include('components/_form_group.html.twig', {
-        field: form.roles,
-        label: 'Roles :'
-    }) }}
+    {% if form.roles is defined %}
+        {{ include('components/_form_group.html.twig', {
+            field: form.roles,
+            label: 'Roles :'
+        }) }}
+    {% endif %}
 
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_ADMIN')%}
         {% if form.id_entreprise is defined %}
             {{ include('components/_form_group.html.twig', {
                 field: form.id_entreprise,
