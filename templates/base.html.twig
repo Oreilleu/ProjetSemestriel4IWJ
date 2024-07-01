@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <title>
       {% block title %}
         Welcome!
@@ -18,16 +17,15 @@
   {% endblock %}
 
   </head>
-
-  <body class="bg-color4-100 dark:bg-background-dark-mode-950 dark:text-text-dark-mode-200">
-      {%if app.user %}
-      {% include 'components/_nav.html.twig' %}
+  <body class="bg-color4-100 dark:bg-background-dark-mode-950 dark:text-text-dark-mode-200 bleu:bg-bleu-theme-100">
+      {% if app.user %}
+        {% include 'components/_nav.html.twig' %}
       {% endif %}
       <main class="{%if app.user %}p-4 sm:ml-64{% endif %}">
         <div class="{%if app.user %}p-4{% endif %}">
-        {% block body %}
-          
-        {% endblock %}
+          {% block body %}
+            
+          {% endblock %}
           </div>
       </main>
   </body>
@@ -71,5 +69,23 @@
               toggleButton.textContent = '✕'; // Icon for opened sidebar
           }
       });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (prefersDark) {
+      document.documentElement.classList.add('dark');
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      if (event.matches) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    });
   });
 </script>

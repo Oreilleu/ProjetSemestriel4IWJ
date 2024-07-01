@@ -6,6 +6,7 @@ use App\Entity\Entreprises;
 use App\Form\EntreprisesType;
 use App\Repository\EntreprisesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/entreprises')]
 class EntreprisesController extends AbstractController
 {
-
-    public function __construct()
-    {
-    }
+    #[IsGranted('ROLE_COMPTABLE')]
     #[Route('/', name: 'app_entreprises_index', methods: ['GET'])]
     public function index(EntreprisesRepository $entreprisesRepository): Response
     {
@@ -27,6 +25,7 @@ class EntreprisesController extends AbstractController
             'entreprises' => $entreprises,
         ]);
     }
+
     #[Route('/new', name: 'app_entreprises_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\EntreprisesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[UniqueEntity(fields: ['email'], message: 'Il y a déjà une entreprise avec cet email.')]
 #[ORM\Entity(repositoryClass: EntreprisesRepository::class)]
 class Entreprises
 {
@@ -51,7 +53,8 @@ class Entreprises
     #[Assert\Email(
         message: 'Email_invalid'
     )]
-    #[ORM\Column(length: 100)]
+
+    #[ORM\Column(length: 100, unique: true)]
     private ?string $email = null;
 
     #[Assert\NotBlank(

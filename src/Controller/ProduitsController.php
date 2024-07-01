@@ -6,6 +6,7 @@ use App\Entity\Produits;
 use App\Entity\User;
 use App\Form\ProduitsType;
 use App\Repository\ProduitsRepository;
+use App\Security\Voter\ProduitVoter;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,7 +33,7 @@ class ProduitsController extends AbstractController
 
         $produits = $entreprise->getProduits();
 
-        $ITEM_BY_PAGE = 2;
+        $ITEM_BY_PAGE = 6;
         $LENGTH_PRODUITS = count($produits);
 
         $paginate_produits = $paginator->paginate(
@@ -68,11 +69,18 @@ class ProduitsController extends AbstractController
 
         $form->handleRequest($request);
 
-        if(!$user instanceof User) {
-            return $this->redirectToRoute('app_register');
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['filePath']->getData();
+            
+            if ($file) {
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $fileName
+                );
+                $produit->setFilePath('/uploads/'.$fileName);
+            }
+
             $entreprise = $user->getIdEntreprise();
             $produit->setIdEntreprise($entreprise);
 
@@ -93,7 +101,7 @@ class ProduitsController extends AbstractController
     public function categorie(ProduitsRepository $produitsRepository, PaginatorInterface $paginator, $idCategorie, Request $request): Response
     {
 
-        $ITEM_BY_PAGE = 2;
+        $ITEM_BY_PAGE = 6;
         $LENGTH_PRODUITS = count($produitsRepository->findProduitsByCategorie($idCategorie));
 
         $query = $produitsRepository->findProduitsByCategorie($idCategorie);
@@ -124,6 +132,9 @@ class ProduitsController extends AbstractController
     #[Route('/{id}/edit', name: 'app_produits_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Produits $product, EntityManagerInterface $entityManager): Response
     {
+
+        $this->denyAccessUnlessGranted(ProduitVoter::EDIT, $product);
+
         $user = $this->getUser();
 
         if (!$user instanceof User)  {
@@ -139,6 +150,17 @@ class ProduitsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['filePath']->getData();
+
+            if ($file) {
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $fileName
+                );
+                $product->setFilePath('/uploads/'.$fileName);
+            }
+
             $entityManager->flush();
             $this->addFlash('success', 'Produit modifié avec succès !');
 

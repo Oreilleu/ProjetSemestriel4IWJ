@@ -6,6 +6,7 @@ use App\Entity\Lots;
 use App\Entity\User;
 use App\Form\LotsType;
 use App\Repository\ClientsRepository;
+use App\Security\Voter\LotsVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -115,6 +116,8 @@ class LotsController extends AbstractController
     #[Route('/{id}/edit', name: 'app_lots_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Lots $lot, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted(LotsVoter::EDIT, $lot);
+
         $user = $this->getUser();
 
         if (!$user instanceof User || !$user) {

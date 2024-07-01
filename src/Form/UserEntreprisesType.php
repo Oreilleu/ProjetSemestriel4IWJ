@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserEntreprisesType extends AbstractType
 {
@@ -31,7 +34,21 @@ class UserEntreprisesType extends AbstractType
             ]);
             if ($options['data']->getId() === null) {
                 $builder->add('password', PasswordType::class, [
-                    'required' => true,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Veuillez entrer un mot de passe',
+                        ]),
+                        new Length([
+                            'min' => 12,
+                            'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères',
+                        ]),
+                        new Regex(
+                            [
+                                'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/',
+                                'message' => 'Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial',
+                            ]
+                        )
+                    ],
                 ]);
             }
             $builder->get('roles')

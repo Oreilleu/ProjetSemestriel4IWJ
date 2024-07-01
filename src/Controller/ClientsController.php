@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\ClientsType;
 use App\Repository\ClientsRepository;
 use App\Repository\LotsRepository;
+use App\Security\Voter\ClientVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -130,6 +131,8 @@ class ClientsController extends AbstractController
     #[Route('/{id}/edit', name: 'app_clients_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Clients $client, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted(ClientVoter::EDIT, $client);
+
         $form = $this->createForm(ClientsType::class, $client);
         $form->handleRequest($request);
 
@@ -148,6 +151,9 @@ class ClientsController extends AbstractController
     #[Route('/{id}', name: 'app_clients_show', methods: ['GET'])]
     public function show(Clients $client): Response
     {
+
+        $this->denyAccessUnlessGranted(ClientVoter::VIEW, $client);
+
         return $this->render('clients/show.html.twig', [
             'client' => $client,
         ]);

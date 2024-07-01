@@ -1,11 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Factures{% endblock %}
+{% block title %}Détails d'une facture{% endblock %}
+
+
+{% set data = {
+        mainContent: {
+            title: {
+                icon: include('components/SVG/_facturation_SVG.html.twig'),
+                content: 'Information Facture'
+            },
+            content: [
+                { label: 'Id :', value: facture.id },
+                { label: 'Date :', value: facture.getCreatedAt() ? facture.getCreatedAt()|date('d/m/Y') : '' },
+                { label: 'Statut :', value: facture.statut },
+                { label: 'Taxe :', value: facture.taxe ~ '%' },
+                { label: 'Total HT :', value: facture.totalHt ~ ' €' },
+                { label: 'Total TTC :', value: facture.totalHt * (1 + facture.taxe / 100) ~ ' €' },
+                { label: 'Client :', value: facture.getClient().nom }
+            ]
+        },
+        listProducts : facture.getLignesDevis()|map(ligneDevis => [
+            { 
+                values: [
+                    ligneDevis.getNameProduct(),
+                    ligneDevis.getQuantite(),
+                    ligneDevis.getPrixProduct ~ ' €'
+                ] 
+            },
+            {
+                actionDelete: {
+                    button: null
+                }
+            }
+
+        ]),
+        listPayments: facture.getPaiements()|map(paiement => [
+            {
+                values: [
+                    paiement.getCreatedAt()|date('d/m/Y'),
+                    paiement.getMontant() ~ ' €',
+                    paiement.getMethod()
+                ]
+            },
+            {
+                actionDelete: {
+                    button: null
+                }
+            }
+        ])
+    }
+%}
 
 {% block body %}
     {{ include('components/_title.html.twig', { content: 'Facture ' ~ facture.id}) }}
 
-    {{ include('factures/_show_components.html.twig') }}
+    {{ include('components/_detail_item.html.twig', {
+        data: data
+    }) }}
 
     {% if is_granted('ROLE_COMPTABLE') %}
         {{ include('components/_link.html.twig', {

@@ -40,3 +40,12 @@
     padding: 2px;
     box-shadow: inset 0 0 4px rgba(0, 0, 0, .5);
 }
+
+.overflow-x-auto {
+    min-width: 320px;
+    scrollbar-width: thin;
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+    height: 8px; 
+}

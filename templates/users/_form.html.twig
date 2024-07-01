@@ -5,17 +5,6 @@
         label: 'Email * :'
     }) }}
 
-{% if form.password is defined %}
-<label class="flex flex-col">
-    {{ form_label(form.password, 'Mot de passe', {'label_attr': {'class': 'block text-gray-700 text-sm
-    font-bold mb-2'}}) }}
-    <div class="text-red-500 text-sm font-bold mb-3">
-        {{ form_errors(form.password) }}
-    </div>
-    {{ form_widget(form.password, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3
-    text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3'}}) }}
-</label>
-{% endif %}
     {% if form.password is defined %}
         {{ include('components/_form_group.html.twig', {
             field: form.password,
@@ -23,12 +12,14 @@
         }) }}
     {% endif %}
 
-    {{ include('components/_form_group.html.twig', {
-        field: form.roles,
-        label: 'Roles :'
-    }) }}
+    {% if form.roles is defined %}
+        {{ include('components/_form_group.html.twig', {
+            field: form.roles,
+            label: 'Roles :'
+        }) }}
+    {% endif %}
 
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_ADMIN')%}
         {% if form.id_entreprise is defined %}
             {{ include('components/_form_group.html.twig', {
                 field: form.id_entreprise,

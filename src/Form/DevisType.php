@@ -39,10 +39,10 @@ class DevisType extends AbstractType
             ])
             ->add('description', null, [
                 'constraints' => [
-                    new NotBlank(['message' => 'La description est obligatoire.']),
+                    new NotBlank(['message' => 'Le titre est obligatoire.']),
                     new Length([
                         'max' => 40,
-                        'maxMessage' => 'La description ne doit pas dépasser {{ limit }} caractères.',
+                        'maxMessage' => 'La titre ne doit pas dépasser {{ limit }} caractères.',
                     ]),
                 ],
             ])
