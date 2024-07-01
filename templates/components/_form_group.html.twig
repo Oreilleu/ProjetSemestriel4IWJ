@@ -10,7 +10,7 @@
         {{ form_errors(field) }}
     </div>
     {{ form_widget(field, {'attr': {
-        'class': 'text-color4-900 dark:text-text-dark-mode-200 dark:bg-element-dark-mode-600 dark:border-element-dark-mode-400 w-2xl shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:shadow-outline',
+        'class': 'text-color4-900 dark:text-text-dark-mode-200 dark:bg-element-dark-mode-600 dark:border-element-dark-mode-400 w-2xl shadow appearance-none border rounded w-full py-2 px-3 leading-tight outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-element-dark-mode-400',
         'placeholder': placeholder|default('')
     } }) }}
     {{ form_help(field, {'help_attr': {'class': '' } }) }}
