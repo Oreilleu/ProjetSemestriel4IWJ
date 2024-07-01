@@ -233,7 +233,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <!-- Chart factures -->
     <script>
-        let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches || document.querySelector('html').classList.contains('dark');
         var ctx = document.getElementById('facturesChart').getContext('2d');
         var facturesData = {{ facturesData|raw }}; // Données passées depuis le contrôleur
 
@@ -269,6 +269,13 @@
                             color:  isDarkMode ? '#e0e0e0' : 'black'
                         }
                     }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDarkMode ? '#e0e0e0' : 'black'
+                        }
+                    }
                 }
             }
         });
@@ -297,18 +304,25 @@
                     y: {
                         beginAtZero: true,
                         grid: {
-                            color: 'black' 
+                            color:  isDarkMode ? '#e0e0e0' : 'black'
                         },
                         ticks: {
-                            color: 'white' // Change la couleur des labels de l'axe Y en blanc
+                            color: isDarkMode ? '#e0e0e0' : 'black'
                         }
                     },
                     x: {
                         grid: {
-                            color: '#e0e0e0'
+                            color: isDarkMode ? '#e0e0e0' : 'black' 
                         },
                         ticks: {
-                            color: 'white' // Change la couleur des labels de l'axe Y en blanc
+                            color:  isDarkMode ? '#e0e0e0' : 'black'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDarkMode ? '#e0e0e0' : 'black'
                         }
                     }
                 }

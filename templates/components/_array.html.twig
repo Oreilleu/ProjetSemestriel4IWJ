@@ -1,6 +1,6 @@
-<div class="overflow-x-auto ">
+<div class="overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200 dark:text-text-dark-mode-200">
-        <thead class="bg-primary-100 dark:bg-element-dark-mode-900 font-title">
+        <thead class="bg-primary-100 dark:bg-element-dark-mode-900 bleu:bg-bleu-theme-500 font-title">
             <tr>
                 {% for label in data.label %}
                     <th scope="col" class="px-6 py-3 text-left text-xs font-mediumuppercase tracking-wider">
@@ -9,7 +9,7 @@
                 {% endfor %}
             </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 bg-color3-50 dark:bg-element-dark-mode-600 font-subtitle">
+        <tbody class="divide-y divide-gray-200 bg-color3-50 dark:bg-element-dark-mode-600 bleu:bg-white font-subtitle">
             {% for data in mappedData %}
                 <tr>
                     {# Affichage des valeurs #}
@@ -25,14 +25,14 @@
                                 {% if action.constraint is defined %}
                                     {% if action.constraint %}
                                         <a href="{{ action.link }}">
-                                            <button class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4 hover:bg-primary-600 dark:hover:bg-element-dark-mode-700">
+                                            <button class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4 hover:bg-primary-600 dark:hover:bg-element-dark-mode-700 bleu:hover:bg-bleu-theme-400">
                                                 {{ action.content|raw }}
                                             </button>
                                         </a>
                                     {% endif %}
                                 {% else %}
                                     <a href="{{ action.link }}">
-                                        <button class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4 hover:bg-primary-600 dark:hover:bg-element-dark-mode-700">
+                                        <button class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4 hover:bg-primary-600 dark:hover:bg-element-dark-mode-700 bleu:hover:bg-bleu-theme-400">
                                             {{ action.content|raw }}
                                         </button>
                                     </a>

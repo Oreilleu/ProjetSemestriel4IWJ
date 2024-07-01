@@ -5,12 +5,12 @@
     - placeholder : le placeholder de l'input (optionnel)
  #}
 <div class="mb-3">
-    {{ form_label(field, label, {'label_attr': {'class': 'block text-sm font-bold mb-2 text-color4-900 dark:text-text-dark-mode-200'}}) }}
+    {{ form_label(field, label, {'label_attr': {'class': 'block text-sm font-bold mb-2 text-color4-900 dark:text-text-dark-mode-200 bleu:text-black'}}) }}
     <div class="text-danger text-sm font-bold mb-3">
         {{ form_errors(field) }}
     </div>
     {{ form_widget(field, {'attr': {
-        'class': 'text-color4-900 dark:text-text-dark-mode-200 dark:bg-element-dark-mode-600 dark:border-element-dark-mode-400 w-2xl shadow appearance-none border rounded w-full py-2 px-3 leading-tight outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-element-dark-mode-400',
+        'class': 'text-color4-900 dark:text-text-dark-mode-200 dark:bg-element-dark-mode-600 dark:border-element-dark-mode-400 w-2xl shadow appearance-none border rounded w-full py-2 px-3 leading-tight outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-element-dark-mode-400 bleu:text-black bleu:focus:ring-bleu-theme-500',
         'placeholder': placeholder|default('')
     } }) }}
     {{ form_help(field, {'help_attr': {'class': '' } }) }}

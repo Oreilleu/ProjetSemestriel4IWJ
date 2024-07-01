@@ -16,13 +16,13 @@
 			<div class="flex justify-center mt-4">
 				{% if item_path == 'produits' %}
 					<a href="{{ path('app_' ~ item_path ~ '_edit', { id: item_id }) }}" tabindex="-1" class="mr-3" >
-						<button class="bg-primary-300 dark:bg-background-dark-mode-600 dark:hover:bg-element-dark-mode-700 border-0 py-2 px-8 rounded ">
+						<button class="bg-primary-300 dark:bg-background-dark-mode-600 dark:hover:bg-element-dark-mode-700 border-0 py-2 px-8 rounded bleu:hover:bg-bleu-theme-400 bleu:bg-bleu-theme-600">
 							{{ include('components/SVG/_update_SVG.html.twig') }}
 						</button>
 					</a>
 				{% elseif item_path == 'categories' %}
 					<a href="{{ path('app_produits_categorie', { idCategorie: item_id }) }}" tabindex="-1" class="mr-3" >
-						<button class="bg-primary-300 dark:bg-background-dark-mode-600 dark:hover:bg-element-dark-mode-700 border-0 py-2 px-8 rounded ">
+						<button class="bg-primary-300 dark:bg-background-dark-mode-600 dark:hover:bg-element-dark-mode-700 border-0 py-2 px-8 rounded bleu:hover:bg-bleu-theme-400 bleu:bg-bleu-theme-600">
 							{{ include('components/SVG/_eye_SVG.html.twig') }}
 						</button>
 					</a>
@@ -32,7 +32,7 @@
 					item_id,
 					path: item_path,
 					labelButton: include('components/SVG/_delete_SVG.html.twig'),
-					classButton: "bg-primary-300 dark:bg-background-dark-mode-600 dark:hover:bg-element-dark-mode-700 border-0 py-2 px-8 rounded",
+					classButton: "bg-primary-300 dark:bg-background-dark-mode-600 dark:hover:bg-element-dark-mode-700 border-0 py-2 px-8 rounded bleu:hover:bg-bleu-theme-400 bleu:bg-bleu-theme-600",
 					classForm: "inline-block",
 					title: "Suppression du " ~ item_type ~ " : " ~ item_nom,
 					content: delete_content  
@@ -40,7 +40,7 @@
 				}}
 				{% else %}
 					<a href="{{ path('app_' ~ item_path ~ '_edit', { id: item_id }) }}" tabindex="-1" class="mr-3" >
-						<button class="bg-primary-300 dark:bg-background-dark-mode-600 dark:hover:bg-element-dark-mode-700 border-0 py-2 px-8 rounded ">
+						<button class="bg-primary-300 dark:bg-background-dark-mode-600 dark:hover:bg-element-dark-mode-700 border-0 py-2 px-8 rounded bleu:hover:bg-bleu-theme-400 bleu:bg-bleu-theme-600">
 							{{ include('components/SVG/_update_SVG.html.twig') }}
 						</button>
 					</a>

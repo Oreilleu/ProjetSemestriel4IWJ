@@ -18,6 +18,10 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(Request $request): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_dashboard_index');
+        }
+        
         $entreprise = new Entreprises();
 
         $form = $this->createForm(EntreprisesType::class, $entreprise);
