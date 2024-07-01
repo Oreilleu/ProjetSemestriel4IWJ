@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Devis;
 use App\Entity\User;
 use App\Form\DevisType;
+use App\Security\Voter\DevisVoter;
 use App\Service\DevisService;
 use App\Service\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,7 +23,7 @@ class DevisController extends AbstractController
     {
         $this->devisService = $devisService;
     }
-    
+
     #[Route('/', name: 'app_devis_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -113,6 +114,8 @@ class DevisController extends AbstractController
     #[Route('/{id}', name: 'app_devis_show', methods: ['GET'])]
     public function show(Devis $devi): Response
     {
+        $this->denyAccessUnlessGranted(DevisVoter::VIEW, $devi);
+
         return $this->render('devis/show.html.twig', [
             'devi' => $devi,
         ]);

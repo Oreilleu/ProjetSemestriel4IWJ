@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CategoriesProduits;
 use App\Entity\User;
 use App\Form\CategoriesProduitsType;
+use App\Security\Voter\CategorieVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,6 +94,8 @@ class CategoriesProduitsController extends AbstractController
     #[Route('/{id}/edit', name: 'app_categories_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, CategoriesProduits $categoriesProduit, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted(CategorieVoter::EDIT, $categoriesProduit);
+
         $form = $this->createForm(CategoriesProduitsType::class, $categoriesProduit);
         $form->handleRequest($request);
 

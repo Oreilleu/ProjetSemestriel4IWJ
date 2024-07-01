@@ -6,6 +6,7 @@ use App\Entity\Produits;
 use App\Entity\User;
 use App\Form\ProduitsType;
 use App\Repository\ProduitsRepository;
+use App\Security\Voter\ProduitVoter;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -124,6 +125,9 @@ class ProduitsController extends AbstractController
     #[Route('/{id}/edit', name: 'app_produits_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Produits $product, EntityManagerInterface $entityManager): Response
     {
+
+        $this->denyAccessUnlessGranted(ProduitVoter::EDIT, $product);
+
         $user = $this->getUser();
 
         if (!$user instanceof User)  {
