@@ -88,7 +88,7 @@ class UsersEntreprisesController extends AbstractController
 
             $this->addFlash('success', 'L\'utilisateur a été ajouté avec succès.');
 
-            return $this->redirectToRoute('app_account');
+            return $this->redirectToRoute('app_users_index');
         }
 
         return $this->render('usersEntreprises/new.html.twig', [

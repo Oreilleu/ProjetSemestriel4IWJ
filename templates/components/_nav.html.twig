@@ -51,37 +51,39 @@
                 </a>
             </li>
 
-            <li>
-                <button type="button" class="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900" aria-controls="dropdown-produits" data-collapse-toggle="dropdown-produits">
-                    {{ include('components/SVG/_catalogue_produit_SVG.html.twig') }}
-                    <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">
-                        Catalogue produits
-                    </span>
-                    {{ include('components/SVG/_chevron_down_SVG.html.twig') }}
-                </button>
-                <ul id="dropdown-produits" class="hidden py-2 space-y-2">
-                    <li>
-                        <a href="{{ path('app_produits_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Mes Produits
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_produits_new') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Créer un produit
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_categories_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Mes Catégories
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_categories_new') }}" class="flex items-center w-full p-2transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Créer une catégorie
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            {% if not is_granted('ROLE_COMPTABLE') %}
+                <li>
+                    <button type="button" class="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900" aria-controls="dropdown-produits" data-collapse-toggle="dropdown-produits">
+                        {{ include('components/SVG/_catalogue_produit_SVG.html.twig') }}
+                        <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">
+                            Catalogue produits
+                        </span>
+                        {{ include('components/SVG/_chevron_down_SVG.html.twig') }}
+                    </button>
+                    <ul id="dropdown-produits" class="hidden py-2 space-y-2">
+                        <li>
+                            <a href="{{ path('app_produits_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Mes Produits
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_produits_new') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Créer un produit
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_categories_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Mes Catégories
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_categories_new') }}" class="flex items-center w-full p-2transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Créer une catégorie
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
 
             {% if is_granted('ROLE_ADMIN') %}
                 <li>
@@ -92,40 +94,43 @@
                 </li>
             {% endif %}
 
-            <li>
-                <button type="button" class="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900" aria-controls="dropdown-client" data-collapse-toggle="dropdown-client">
-                    {{ include('components/SVG/_client_SVG.html.twig') }}
-                    <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Clients</span>
-                    {{ include('components/SVG/_chevron_down_SVG.html.twig') }}
-                </button>
-                <ul id="dropdown-client" class="hidden py-2 space-y-2">
-                    <li>
-                        <a href="{{ path('app_clients_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Mes clients
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_clients_new') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Ajouter un client
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_lots_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Mes lots
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_lots_new') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Ajouter un lot
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_interractions_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Mes interractions
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            {% if not is_granted('ROLE_COMPTABLE') %}
+                <li>
+                    <button type="button" class="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900" aria-controls="dropdown-client" data-collapse-toggle="dropdown-client">
+                        {{ include('components/SVG/_client_SVG.html.twig') }}
+                        <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Clients</span>
+                        {{ include('components/SVG/_chevron_down_SVG.html.twig') }}
+                    </button>
+                    <ul id="dropdown-client" class="hidden py-2 space-y-2">
+                        <li>
+                            <a href="{{ path('app_clients_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Mes clients
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_clients_new') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Ajouter un client
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_lots_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Mes lots
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_lots_new') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Ajouter un lot
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_interractions_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Mes interractions
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+
 
             <li>
                 <button type="button" class="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900" aria-controls="dropdown-facturation" data-collapse-toggle="dropdown-facturation">
@@ -134,11 +139,13 @@
                     {{ include('components/SVG/_chevron_down_SVG.html.twig') }}
                 </button>
                 <ul id="dropdown-facturation" class="hidden py-2 space-y-2">
-                    <li>
-                        <a href="{{ path('app_devis_index') }}" class="flex items-center w-full p-2transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
-                            Mes devis
-                        </a>
-                    </li>
+                    {% if not is_granted('ROLE_COMPTABLE') %}
+                        <li>
+                            <a href="{{ path('app_devis_index') }}" class="flex items-center w-full p-2transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Mes devis
+                            </a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a href="{{ path('app_factures_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
                             Mes factures
@@ -151,6 +158,7 @@
                     </li>
                 </ul>
             </li>
+
             {% if is_granted('ROLE_COMPTABLE') %}
                 <li>
                     <button type="button" class="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900" aria-controls="dropdown-rapport-financier" data-collapse-toggle="dropdown-rapport-financer">
@@ -172,12 +180,14 @@
                     </ul>
                 </li>
             {% else %}
-                <li>
-                    <a href="{{ path('app_rapports_financiers_index') }}" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-element-dark-mode-900 rounded-lg group group">
-                        {{ include('components/SVG/_rapport_financier_SVG.html.twig') }}
-                        <span class="ms-3">Mes rapports financier</span>
-                    </a>
-                </li>
+                {% if not is_granted('ROLE_ENTREPRISE') %}
+                    <li>
+                        <a href="{{ path('app_rapports_financiers_index') }}" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-element-dark-mode-900 rounded-lg group group">
+                            {{ include('components/SVG/_rapport_financier_SVG.html.twig') }}
+                            <span class="ms-3">Mes rapports financier</span>
+                        </a>
+                    </li>
+                {% endif %}
             {% endif %}
             <li>
                 <a href="/account" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-element-dark-mode-900 group">

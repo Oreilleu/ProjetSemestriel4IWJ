@@ -33,7 +33,7 @@ class ProduitsController extends AbstractController
 
         $produits = $entreprise->getProduits();
 
-        $ITEM_BY_PAGE = 2;
+        $ITEM_BY_PAGE = 6;
         $LENGTH_PRODUITS = count($produits);
 
         $paginate_produits = $paginator->paginate(
@@ -101,7 +101,7 @@ class ProduitsController extends AbstractController
     public function categorie(ProduitsRepository $produitsRepository, PaginatorInterface $paginator, $idCategorie, Request $request): Response
     {
 
-        $ITEM_BY_PAGE = 2;
+        $ITEM_BY_PAGE = 6;
         $LENGTH_PRODUITS = count($produitsRepository->findProduitsByCategorie($idCategorie));
 
         $query = $produitsRepository->findProduitsByCategorie($idCategorie);
