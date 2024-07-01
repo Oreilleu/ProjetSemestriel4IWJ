@@ -18,8 +18,22 @@ class UsersController extends AbstractController
     #[Route('/users', name: 'app_admin_users_index', methods: ['GET'])]
     public function index(UserRepository $usersRepository): Response
     {
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $users = $usersRepository->findAll();
+
+        // exclude current user from the list
+
+        $users = array_filter($users, function ($u) use ($user) {
+            return $u->getId() !== $user->getId();
+        });
+
         return $this->render('users/index.html.twig', [
-            'users' => $usersRepository->findAll(),
+            'users' => $users,
         ]);
     }
 
