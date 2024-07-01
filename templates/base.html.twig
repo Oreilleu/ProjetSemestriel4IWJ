@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <!-- Your custom CSS (optional) -->
     <style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
         .swiper-container {
             padding-left: 1.5rem;
             padding-right: 1.5rem;
@@ -18,9 +21,6 @@
             /* Equivalent to 72px */
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>
       {% block title %}
         Welcome!
@@ -36,7 +36,7 @@
     {% endblock %}
 
   </head>
-  <body class="bg-color4-100 dark:bg-background-dark-mode-950 dark:text-text-dark-mode-200">
+  <body class="bg-color4-100 dark:bg-background-dark-mode-950 dark:text-text-dark-mode-200 bleu:bg-bleu-theme-100">
       {% if app.user %}
         {% include 'components/_nav.html.twig' %}
       {% endif %}
