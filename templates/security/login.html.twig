@@ -3,72 +3,71 @@
 {% block title %}Se connecter{% endblock %}
 
 {% block body %}
+    {{ include('components/_flash_messages.html.twig')}}
     <form method="post">
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    {% if app.user %}
+    <div class="mb-3">
+        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    </div>
+    {% endif %}
+
+    <section class="h-screen flex justify-center items-center">
+        <div class="bg-white flex flex-col md:grid md:grid-cols-2 gap-3 max-w-4xl md:border px-5 py-10 md:shadow-md rounded-lg">
+            {# Left column #}
+            <div class="border-r p-4 rounded-md">
+                <h1 class="text-3xl sm:text-4xl font-bold mb-4 text-gray-900">
+                    <span class="text-[#C79364] ">
+                        Connectez-vous
+                    </span>
+                    dès maintenant pour accéder à :
+                </h1>
+                <p class="mb-8 leading-relaxed text-gray-700">Des devis personnalisés, une gestion de facturation
+                    adaptée aux PME, et une liberté totale pour votre entreprise.</p>
             </div>
-        {% endif %}
 
-        <section class="h-screen">
-            <div class="container h-full px-6 py-24">
-                <div
-                        class="flex h-full flex-wrap items-center justify-center lg:justify-between">
-                    <!-- Left column -->
-                    <div class="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
-                        <h1 class="title-font sm:text-4xl text-3xl mb-4 font-title text-gray-900">
-                            <br class="hidden lg:inline-block">Connectez-vous dès maintenant pour accéder à :
-                        </h1>
-                        <p class="mb-8 leading-relaxed font-subtitle">Des devis personnalisés, une gestion de
-                            facturation adaptée aux
-                            PME, et une liberté totale pour votre entreprise.</p>
-                    </div>
+            {# Right column container with form #}
+            <div class="p-4">
+                {# Email input #}
+                <div class="relative mb-3">
+                    <label for="inputEmail" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                        {% if error %}
+                            <div class="text-red-500 text-sm font-bold mb-3">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                        class="bg-gray-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 outline-none focus:ring-[#C79364] mb-3"
+                        autocomplete="email" required autofocus>
+                </div>
 
-                    <!-- Right column container with form -->
-                    <div class="md:w-8/12 lg:ms-6 lg:w-5/12 ">
-                        <!-- Email input -->
-                        <div class="relative mb-6" data-twe-input-wrapper-init>
-                            <label for="inputEmail" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                            {% if error %}
-                                <div class="text-red-500 text-sm font-bold mb-3">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                            {% endif %}
-                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
-                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3"
-                                   autocomplete="email" required autofocus>
-                        </div>
+                {# Password input #}
+                <div class="relative mb-3">
+                    <label for="inputPassword" class="block text-gray-700 text-sm font-bold mb-2">Mot de
+                        passe</label>
+                    <input type="password" name="password" id="inputPassword"
+                        class="bg-gray-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-2 outline-none focus:ring-[#C79364] mb-3"
+                        autocomplete="current-password" required>
+                </div>
 
-                        <!-- Password input -->
-                        <div class="relative mb-6" data-twe-input-wrapper-init>
-                            <label for="inputPassword"
-                                   class="block text-gray-700 text-sm font-bold mb-2">Mot de passe</label>
-                            <input type="password" name="password" id="inputPassword"
-                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3"
-                                   autocomplete="current-password" required>
-                        </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div class="mb-6 flex items-center justify-between">
+                    <a href="#!" class="text-primary-500 hover:underline">Mot de passe oublié ?</a>
+                </div>
 
-                        <div class="mb-6 flex items-center justify-between">
-                            <!-- Forgot password link -->
-                            <a href="#!" class="text-primary focus:outline-none dark:text-primary-400">Mot de passe oublié ?</a>
-                        </div>
+                {# Submit button #}
+                <button
+                    class="bg-primary-500 w-full hover:bg-gradient-to-l transition-all text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="submit">
+                    Se connecter
+                </button>
 
-                        <!-- Submit button -->
-                        <button class="bg-primary-500 text-white font-bold py-2 px-4 w-full rounded hover:bg-primary-600"
-                                type="submit">
-                            Se connecter
-                        </button>
-
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="border-b w-1/5 md:w-1/4"></span>
-                            <a href="{{ path('app_register') }}" class="text-xs text-gray-500 uppercase">Ou s'inscrire</a>
-                            <span class="border-b w-1/5 md:w-1/4"></span>
-                        </div>
-
-                    </div>
+                <div class="mt-4 flex items-center justify-between">
+                    <span class="border-b w-1/5 md:w-1/4"></span>
+                    <a href="{{ path('app_register') }}" class="text-xs text-gray-500 uppercase">Ou s'inscrire</a>
+                    <span class="border-b w-1/5 md:w-1/4"></span>
                 </div>
             </div>
-        </section>
-    </form>
+        </div>
+    </section>
+</form>
 {% endblock %}

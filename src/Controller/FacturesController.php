@@ -83,6 +83,7 @@ class FacturesController extends AbstractController
 
         return $this->redirectToRoute('app_factures_index', [], Response::HTTP_SEE_OTHER);
     }
+    
     #[Route('/new', name: 'app_factures_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -135,6 +136,7 @@ class FacturesController extends AbstractController
 
             $entityManager->persist($paiement);
             $entityManager->flush();
+            $this->addFlash('success', 'Un paiement a été effectué avec succès et un email a été envoyé au client !');
 
             return $this->redirectToRoute('app_factures_index', [], Response::HTTP_SEE_OTHER);
         }

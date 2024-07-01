@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\EntreprisesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[UniqueEntity(fields: ['email'], message: 'Il y a déjà une entreprise avec cet email.')]
 #[ORM\Entity(repositoryClass: EntreprisesRepository::class)]
 class Entreprises
 {
@@ -51,7 +53,8 @@ class Entreprises
     #[Assert\Email(
         message: 'Email_invalid'
     )]
-    #[ORM\Column(length: 100)]
+
+    #[ORM\Column(length: 100, unique: true)]
     private ?string $email = null;
 
     #[Assert\NotBlank(
@@ -69,6 +72,19 @@ class Entreprises
     )]
     #[ORM\Column(length: 100)]
     private ?string $numero_siret = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cp = null;
+    
+    #[ORM\Column(length: 255)]
+    private ?string $ville = null;
+    
+
+    #[Assert\NotBlank(
+        message: 'Pays_not_blank'    
+    )]
+    #[ORM\Column(length: 255)]
+    private ?string $pays = null;
 
     #[ORM\Column(options: ["default" => 7])]
     #[Assert\Range(min: 7, max: 30)]
@@ -179,6 +195,42 @@ class Entreprises
     public function setNumeroSiret(string $numero_siret): static
     {
         $this->numero_siret = $numero_siret;
+
+        return $this;
+    }
+
+    public function getCp(): ?string
+    {
+        return $this->cp;
+    }
+
+    public function setCp(string $cp): static
+    {
+        $this->cp = $cp;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): static
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(string $pays): static
+    {
+        $this->pays = $pays;
 
         return $this;
     }

@@ -3,11 +3,11 @@
 {% block title %}Mon compte{% endblock %}
 
 {% block body %}
-
+    {{ include('components/_flash_messages.html.twig')}}
     {{ include('components/_title.html.twig', { content: 'Mon compte' }) }}
 
     <h2 class="text-2xl font-bold dark:text-white mb-5" >Mes identifiants :</h2>
-    
+
     {{ include('account/_form_user_account.html.twig', {
         form: formUser
     }) }}
@@ -35,14 +35,23 @@
 
         {% if is_granted('ROLE_ADMIN') %}
             {{ include('components/_link.html.twig', {
-            path: 'app_admin_user_add',
-            content: 'Ajouter un utilisateur'
+                path: 'app_admin_user_add',
+                content: 'Ajouter un utilisateur'
+            }) }}
+            {{ include('components/_link.html.twig', {
+                path: 'app_admin_users_index',
+                content: 'Liste des utilisateurs'
             }) }}
         {% else %}
             {{ include('components/_link.html.twig', {
-            path: 'app_user_add',
-            content: 'Ajouter un utilisateur'
+                path: 'app_user_add',
+                content: 'Ajouter un utilisateur'
             }) }}
+            {{ include('components/_link.html.twig', {
+                path: 'app_users_index',
+                content: 'Liste des utilisateurs'
+            }) }}
+            
         {% endif %}
     {% endif %}
 {% endblock %}

@@ -16,20 +16,20 @@
 
 <div id="confirmationModal-{{ item_id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ title }}</h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" id="closeModalButton">
+        <div class="relative bg-white rounded-lg shadow dark:bg-element-dark-mode-950">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:bg-element-dark-mode-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-text-dark-mode-200">{{ title }}</h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-element-dark-mode-600 dark:hover:text-text-dark-mode-200" id="closeModalButton">
                     {{ include('components/SVG/_cross_SVG.html.twig') }}
                     <span class="sr-only">Fermer la modal</span>
                 </button>
             </div>
             <div class="p-4 md:p-5 space-y-4">
-                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">{{ content }}</p>
+                <p class="text-base leading-relaxed text-gray-500 dark:text-text-dark-mode-200 dark:hover:bg-element-dark-mode400">{{ content }}</p>
             </div>
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button type="button" class="mr-3 py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none bg-white rounded-lg border border-color3-200 hover:bg-color3-100 hover:text-color3-700 focus:z-10 focus:ring-4 focus:ring-color3-100 dark:focus:ring-color3-700 dark:bg-color3-800 dark:text-color3-400 dark:border-color3-600 dark:hover:text-white dark:hover:bg-gray-700" id="cancelButton">Annuler</button>
-                <button type="submit" class="text-white bg-color3-700 hover:bg-color3-800 focus:ring-4 focus:outline-none focus:ring-color3-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-color3-600 dark:hover:bg-color3-700 dark:focus:ring-color3-800" id="confirmButton">Accepter</button>
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-element-dark-mode-600">
+                <button type="button" class="mr-3 py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none bg-white rounded-lg border border-color3-200 focus:z-10 focus:ring-4 focus:ring-color3-100 hover:bg-color3-100 hover:text-color3-700 dark:text-text-dark-mode-200 dark:border-element-dark-mode-500 dark:bg-element-dark-mode-700 dark:hover:bg-element-dark-mode-500 bleu:border-bleu-theme-500 bleu:hover:bg-bleu-theme-500" id="cancelButton">Annuler</button>
+                <button type="submit" class="text-white focus:ring-4 focus:outline-none focus:ring-color3-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-danger hover:bg-red-500" id="confirmButton">Accepter</button>
             </div>
         </div>
     </div>

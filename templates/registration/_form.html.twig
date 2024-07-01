@@ -2,32 +2,47 @@
 
     {{ include('components/_form_group.html.twig', {
         field: form.email,
-        label: 'Email * :'
-    }) }}
-
+        label: 'Email *:'
+    }) }} 
+    
     {{ include('components/_form_group.html.twig', {
         field: form.nom,
-        label: 'Nom * :'
+        label: 'Nom *:'
+    }) }}
+    
+    {{ include('components/_form_group.html.twig', {
+        field: form.adresse,
+        label: 'Adresse *:'
     }) }}
 
     {{ include('components/_form_group.html.twig', {
-        field: form.adresse,
-        label: 'Nom de l\'entreprise * :'
+        field: form.cp,
+        label: 'Code postal :'
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.ville,
+        label: 'Ville * :'
+    }) }}
+    
+    {{ include('components/_form_group.html.twig', {
+        field: form.pays,
+        label: 'Pays *:'
     }) }}
 
     {{ include('components/_form_group.html.twig', {
         field: form.tel,
-        label: 'Téléphone * :'
+        label: 'Téléphone *:'
     }) }}
 
     {{ include('components/_form_group.html.twig', {
         field: form.numero_siret,
-        label: 'Numéro SIRET * :'
+        label: 'Numéro SIRET *:'
     }) }}
 
-    <div class="mt-8">
-        {{ include('components/_submit_button.html.twig', {
-            content: 'Enregistrer mon entreprise'
-        }) }}
-    </div>
-{{ form_end(form) }}
+</div>
+<div class="mt-8">
+    {{ include('components/_submit_button.html.twig', {
+        content: 'Enregistrer son entreprise'
+    }) }}
+</div>

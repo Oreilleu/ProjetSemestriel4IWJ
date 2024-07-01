@@ -1,14 +1,333 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Tableau de Bord{% endblock %}
 
 {% block body %}
     {{ include('components/_title.html.twig', { content: 'Dashboard'}) }}
 
-    <p>Nombre de devis : {{ numberDevis }}</p>
-    <p>Nombre de devis accepté : {{ numberDevisAccept }}</p>
-    <p>Nombre de facture : {{ numberFactures }}</p>
-    <p>Somme de tout les paiement : {{ sumAllPaiement }}</p>
-    <p>Somme des devis accepté : {{ sumDevisAcceptHt }}</p>
-    <p>Nombre de produit :  : {{ numberProducts }}</p>
+    <!-- main content -->
+    <div class="flex justify-between items-center mb-6 ">
+        <h1 class="text-2xl font-semibold">Tableau de Bord</h1>
+    </div>
+
+    <form class="w-full max-w-md mb-6">
+        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <i class="fa fa-search w-4 h-4 text-gray-500"></i>
+            </div>
+            <input type="search" class="block w-full outline-none p-4 ps-10 text-sm text-gray-900 dark:text-text-dark-mode-200 rounded-lg bg-gray-50 border-2 border-transparent focus:ring-4 focus:ring-primary-500 dark:focus:ring-element-dark-mode-400 focus:border-white dark:focus:border-element-dark-mode-400 dark:bg-element-dark-mode-900" placeholder="Rechercher des produits, factures..." required/>
+            <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-primary-500 dark:bg-element-dark-mode-700 hover:bg-primary-500 dark:hover:bg-element-dark-mode-400 focus:ring-4 focus:outline-none focus:ring-primary-800 dark:focus:ring-element-dark-mode-700 font-medium rounded-lg text-sm px-4 py-2">
+                Rechercher
+            </button>
+        </div>
+    </form>
+
+    <!-- Wrapper to contain all three blocks -->
+    <div class="flex flex-wrap -mx-2 text-gray-800 dark:text-text-dark-mode-200">
+        <!-- Nombre Devis Accepté -->
+        <div class="w-full md:w-1/3 px-2 mb-4 md:mb-0">
+            <div class="bg-white shadow rounded-lg p-4 h-full dark:bg-element-dark-mode-900">
+                <div class="flex items-center justify-between">
+                    <div class="flex mb-4 items-start justify-center flex-col">
+                        <h2 class="text-2xl font-semibold ">
+                            {% if numberDevisAccept == 0 %}
+                                <strong>0</strong> Devis accepté
+                            {% elseif numberDevisAccept == 1 %}
+                                <strong>1</strong> Devis accepté
+                            {% else %}
+                                <strong>{{ numberDevisAccept }}</strong> Devis acceptés
+                            {% endif %}
+                        </h2>
+                    </div>
+                    <div class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
+                        <i class="fas fa-copy text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Somme Devis Accepté -->
+        <div class="w-full md:w-1/3 px-2 mb-4 md:mb-0">
+            <div class="bg-white shadow rounded-lg p-4 h-full dark:bg-element-dark-mode-900">
+                <div class="flex items-center justify-between">
+                    <div class="flex mb-4 items-start justify-center flex-col">
+                        <h2 class="text-2xl font-semibold">
+                            {% if sumDevisAcceptHt == 0 %}
+                                <strong>0</strong> € de Devis accepté
+                            {% else %}
+                                <strong>{{ sumDevisAcceptHt }} €</strong> de Devis acceptés
+                            {% endif %}
+                        </h2>
+                    </div>
+                    <div
+                            class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
+                        <i class="fas fa-copy text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Somme Facture Payée -->
+        <div class="w-full md:w-1/3 px-2">
+            <div class="bg-white shadow rounded-lg p-4 h-full dark:bg-element-dark-mode-900">
+                <div class="flex items-center justify-between">
+                    <div class="flex mb-4 items-start justify-center flex-col">
+                        <h2 class="text-2xl font-semibold">
+                            {% if sumAllPaiement == 0 %}
+                                <strong>0</strong> Facture payé
+                            {% else %}
+                                <strong>{{ sumAllPaiement }} €</strong> de Factures payées
+                            {% endif %}
+                        </h2>
+                    </div>
+                    <div class="flex items-center h-12 w-12 justify-center bg-green-100 text-green-600 p-2 rounded-full">
+                        <i class="fa fa-file-invoice-dollar text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col md:grid md:grid-cols-2 gap-4 pb-5 mt-4">
+        <!-- Factures -->
+        <div class="bg-white shadow rounded-lg p-4 dark:bg-element-dark-mode-900">
+            <div class="flex items-center justify-between">
+                <div class="flex mb-4 items-start justify-center flex-col">
+                    <h2 class="text-2xl font-semibold">Factures</h2>
+                    <p class="text-2xl font-bold">{{ numberFactures }} Factures</p>
+                </div>
+                <div
+                        class="flex items-center h-12 w-12 justify-center bg-green-100 text-green-600 p-2 rounded-full">
+                    <i class="fa fa-file-invoice-dollar text-2xl"></i>
+                </div>
+            </div>
+            <canvas id="facturesChart" width="400" height="200"></canvas>
+            <a href="{{ path('app_factures_index') }}"
+               class="block w-fit mt-4 text-green-600 hover:text-green-700 focus:ring-4 focus:outline-none focus:ring-green-700/30 font-medium rounded-lg text-sm px-4 py-3">
+                <i class="fa fa-eye mr-1"></i>
+                Voir toutes les factures
+            </a>
+        </div>
+
+        <!-- Devis -->
+        <div class="bg-white shadow rounded-lg p-4 dark:bg-element-dark-mode-900">
+            <div class="flex items-center justify-between">
+                <div class="flex mb-4 items-start justify-center flex-col">
+                    <h2 class="text-2xl font-semibold">Devis</h2>
+                    <p class="text-2xl font-bold"> {{ numberDevis }} Devis</p>
+                </div>
+                <div
+                        class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
+                    <i class="fas fa-copy text-2xl"></i>
+                </div>
+            </div>
+            <canvas id="devisChart" width="400" height="200"></canvas>
+            <a href="{{ path('app_devis_index') }}"
+               class=" block w-fit mt-4 text-blue-600 hover:text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-700/30 font-medium rounded-lg text-sm px-4 py-3">
+                <i class="fa fa-eye mr-1"></i>
+                Voir toutes les devis
+            </a>
+        </div>
+
+        <!-- Produits -->
+        <div class="bg-white shadow rounded-lg p-4 dark:bg-element-dark-mode-900">
+            <div class="flex items-center justify-between">
+                <div class="flex mb-4 items-start justify-center flex-col">
+                    {% if numberProduits <= 1%}
+                        <h2 class="text-2xl font-semibold text-gray-800 dark:text-text-dark-mode-200">{{ numberProduits }} Produit au total </h2>
+                    {% else %}
+                        <h2 class="text-2xl font-semibold text-gray-800 dark:text-text-dark-mode-200">{{ numberProduits }} Produits au total</h2>
+                    {% endif %}
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-text-dark-mode-200">Les produits Récents</h2>
+
+                </div>
+                <div
+                        class="flex items-center h-12 w-12 justify-center bg-yellow-100 text-yellow-600 p-2 rounded-full">
+                    <i class="fab fa-product-hunt text-2xl"></i>
+                </div>
+            </div>
+            <div class="overflow-x-scroll w-full">
+                <table class="min-w-full bg-white text-left whitespace-nowrap dark:bg-element-dark-mode-700">
+                    <thead>
+                    <tr class="border-b">
+                        <th class="p-2">Nom du produit</th>
+                        <th class="p-2">Prix</th>
+                        <th class="p-2">Categorie</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-gray-700 dark:bg-element-dark-mode-600 dark:text-text-dark-mode-200">
+                    {% if recentProduits is empty %}
+                        <tr class="border-b dark:border-b-element-dark-mode-700">
+                            <td class="p-2" colspan="4">Il n'y a pas de produits pour le moment</td>
+                        </tr>
+                    {% else %}
+                        {% for produit in recentProduits %}
+                            <tr class="border-b">
+                                <td class="p-2">{{ produit.nom }}</td>
+                                <td class="p-2">{{ produit.prix }} € </td>
+                                <td class="p-2">{{ produit.idCategorieProduits ? produit.idCategorieProduits.nom : 'Sans catégorie' }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{{ path('app_produits_index') }}"
+               class="block w-fit mt-4 text-yellow-600 hover:text-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-700/30 font-medium rounded-lg text-sm pr-4 py-3">
+                <i class="fa fa-eye mr-1"></i>
+                Voir tout les produits
+            </a>
+        </div>
+
+        <!-- Clients -->
+        <div class="bg-white shadow rounded-lg p-4 dark:bg-element-dark-mode-900">
+            <div class="flex items-center justify-between">
+                <div class="flex mb-4 items-start justify-center flex-col">
+                    {% if numberClients <= 1%}
+                        <h2 class="text-2xl font-semibold text-gray-800 dark:text-text-dark-mode-200">{{ numberClients }} Client au total </h2>
+                    {% else %}
+                        <h2 class="text-2xl font-semibold text-gray-800 dark:text-text-dark-mode-200">{{ numberClients }} Clients au total</h2>
+                    {% endif %}
+                    <p class="text-2xl font-bold text-gray-800 dark:text-text-dark-mode-200">Les clients Récents</p>
+                </div>
+                <div class="flex items-center h-12 w-12 justify-center bg-red-100 text-red-600 p-2 rounded-full">
+                    <i class="fa fa-users text-2xl"></i>
+                </div>
+            </div>
+            <div class="overflow-x-scroll w-full">
+                <table class="min-w-full bg-white text-left whitespace-nowrap">
+                    <thead class="dark:bg-element-dark-mode-700">
+                        <tr class="border-b">
+                            <th class="p-2">Id</th>
+                            <th class="p-2">Nom</th>
+                            <th class="p-2">Prénom</th>
+                            <th class="p-2">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 dark:bg-element-dark-mode-600 dark:text-text-dark-mode-200">
+                    {% if recentClients is empty %}
+                        <tr class="border-b dark:border-b-element-dark-mode-700">
+                            <td class="p-2" colspan="4">Il n'y a pas de clients pour le moment</td>
+                        </tr>
+                    {% else %}
+                        {% for client in recentClients %}
+                            <tr class="border-b">
+                                <td class="p-2">{{ client.id }}</td>
+                                <td class="p-2">{{ client.nom }}</td>
+                                <td class="p-2">{{ client.prenom }}</td>
+                                <td class="p-2">{{ client.email }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{{ path('app_clients_index') }}"
+               class="block w-fit mt-4 text-red-600 hover:text-red-700 focus:ring-4 focus:outline-none focus:ring-red-700/30 font-medium rounded-lg text-sm pr-4 py-3">
+                <i class="fa fa-eye mr-1"></i>
+                Voir tout les clients
+            </a>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- Chart factures -->
+    <script>
+        let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches || document.querySelector('html').classList.contains('dark');
+        var ctx = document.getElementById('facturesChart').getContext('2d');
+        var facturesData = {{ facturesData|raw }}; // Données passées depuis le contrôleur
+
+        var facturesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                datasets: [{
+                    label: 'Nombres de Factures',
+                    data: facturesData,
+                    borderColor: '#55FFAA', // Couleur de la ligne
+                    backgroundColor: '#55FFAA20', // Couleur de fond sous la ligne (avec transparence)
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                     y: {
+                        beginAtZero: true,
+                        grid: {
+                            color:  isDarkMode ? '#e0e0e0' : 'black'
+                        },
+                        ticks: {
+                            color: isDarkMode ? '#e0e0e0' : 'black'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: isDarkMode ? '#e0e0e0' : 'black' 
+                        },
+                        ticks: {
+                            color:  isDarkMode ? '#e0e0e0' : 'black'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDarkMode ? '#e0e0e0' : 'black'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+        <!-- Chart Devis -->
+    <script>
+        var ctxDevis = document.getElementById('devisChart').getContext('2d');
+        var devisData = JSON.parse('{{ devisData|raw }}'); // Parser les données JSON
+
+        var devisChart = new Chart(ctxDevis, {
+            type: 'line',
+            data: {
+                labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                datasets: [{
+                    label: 'Nombre de Devis',
+                    data: devisData,
+                    borderColor: '#3357FF',
+                    backgroundColor: '#3357FF30',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color:  isDarkMode ? '#e0e0e0' : 'black'
+                        },
+                        ticks: {
+                            color: isDarkMode ? '#e0e0e0' : 'black'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: isDarkMode ? '#e0e0e0' : 'black' 
+                        },
+                        ticks: {
+                            color:  isDarkMode ? '#e0e0e0' : 'black'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDarkMode ? '#e0e0e0' : 'black'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
 {% endblock %}

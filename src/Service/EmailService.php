@@ -18,7 +18,7 @@ class EmailService
     {
         // TODO : Mettre une adresse noreply
         $email = (new Email())
-            ->from('apicard18@myges.fr')
+            ->from('noreplynessiefact@gmail.com')
             ->to($to)
             ->subject($subject)
             ->html($content);

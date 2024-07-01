@@ -32,6 +32,27 @@ class ClientsRepository extends ServiceEntityRepository
         ->execute();
 }
 
+ // Nouvelle méthode pour récupérer les trois derniers clients
+ public function findLatestClients(): array
+ {
+     return $this->createQueryBuilder('c')
+         ->orderBy('c.id', 'DESC') // ou par date de création si disponible, par ex. 'c.createdAt'
+         ->setMaxResults(3)
+         ->getQuery()
+         ->getResult();
+ }
+
+
+ public function countClientsByEntreprise($entreprise)
+{
+    return $this->createQueryBuilder('c')
+        ->select('count(c.id)')
+        ->where('c.id_entreprise = :entreprise')
+        ->setParameter('entreprise', $entreprise)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+
 //    /**
 //     * @return Clients[] Returns an array of Clients objects
 //     */

@@ -101,6 +101,7 @@ class LotsController extends AbstractController
 
             $entityManager->persist($lot);
             $entityManager->flush();
+            $this->addFlash('success', 'Lot ajouté avec succès !');
 
             return $this->redirectToRoute('app_lots_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -130,6 +131,7 @@ class LotsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+            $this->addFlash('success', 'Lot modifié avec succès !');
 
             return $this->redirectToRoute('app_lots_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -146,6 +148,7 @@ class LotsController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$lot->getId(), $request->request->get('_token'))) {
             $entityManager->remove($lot);
             $entityManager->flush();
+            $this->addFlash('success', 'Lot supprimé avec succès !');
         }
 
         return $this->redirectToRoute('app_lots_index', [], Response::HTTP_SEE_OTHER);

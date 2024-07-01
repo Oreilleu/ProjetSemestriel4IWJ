@@ -9,3 +9,12 @@
 .initialDisplay {
     display: initial!important;
 }
+
+.overflow-x-auto {
+    min-width: 320px;
+    scrollbar-width: thin; 
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+    height: 8px; 
+}

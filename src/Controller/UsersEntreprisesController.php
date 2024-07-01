@@ -37,7 +37,7 @@ class UsersEntreprisesController extends AbstractController
     }
 
     #[Route('/', name: 'app_users_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(): Response
     {
         
         $user = $this->getUser();
@@ -48,6 +48,12 @@ class UsersEntreprisesController extends AbstractController
         $entreprise = $user->getIdEntreprise();
 
         $users = $entreprise->getUsers();
+
+        // exclude current user from the list
+
+        $users = array_filter($users->toArray(), function ($u) use ($user) {
+            return $u->getId() !== $user->getId();
+        });
 
         return $this->render('usersEntreprises/index.html.twig', [
             'users' => $users
