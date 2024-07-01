@@ -18,8 +18,22 @@ class UsersController extends AbstractController
     #[Route('/users', name: 'app_admin_users_index', methods: ['GET'])]
     public function index(UserRepository $usersRepository): Response
     {
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_register');
+        }
+
+        $users = $usersRepository->findAll();
+
+        // exclude current user from the list
+
+        $users = array_filter($users, function ($u) use ($user) {
+            return $u->getId() !== $user->getId();
+        });
+
         return $this->render('users/index.html.twig', [
-            'users' => $usersRepository->findAll(),
+            'users' => $users,
         ]);
     }
 
@@ -60,7 +74,15 @@ class UsersController extends AbstractController
     #[Route('/users/{id}/edit', name: 'app_admin_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        // Check if the user has the ROLE_ADMIN_ENTREPRISE role
+        $hideEntrepriseField = in_array('ROLE_ADMIN_ENTREPRISE', $user->getRoles());
+
+        // Pass this option to the form
+        $form = $this->createForm(UserType::class, $user, [
+            'hideEntrepriseField' => $hideEntrepriseField,
+            'id_entreprises' => $entityManager->getRepository(Entreprises::class)->findAll(),
+        ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -72,7 +94,7 @@ class UsersController extends AbstractController
 
         return $this->render('users/edit.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
