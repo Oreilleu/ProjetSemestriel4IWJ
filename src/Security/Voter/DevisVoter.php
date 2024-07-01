@@ -33,6 +33,10 @@ class DevisVoter extends Voter
         }
 
         $devis = $subject;
+
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            return true;
+        }
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::CREATE:
