@@ -110,8 +110,14 @@ class FacturesController extends AbstractController
     {
         $this->denyAccessUnlessGranted(FactureVoter::VIEW, $facture);
 
+        $totalTtcFacture = $facture->getTotalTtc();
+        $paiements = $facture->getPaiements();
+        $totalPaid = array_reduce($paiements->toArray(), fn($carry, $paiement) => $carry + $paiement->getMontant(), 0);
+        $maxAmount = $totalTtcFacture - $totalPaid;
+
         return $this->render('factures/show.html.twig', [
             'facture' => $facture,
+            'restFacture' => $maxAmount
         ]);
     }
 
@@ -147,6 +153,7 @@ class FacturesController extends AbstractController
         return $this->render('factures/edit.html.twig', [
             'facture' => $facture,
             'form' => $form,
+            'restFacture' => $maxAmount
         ]);
     }
 

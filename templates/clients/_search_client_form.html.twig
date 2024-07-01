@@ -1,7 +1,21 @@
+
 <div>
-    <h2>{{ search_Nom }}</h2>
-    <form method="GET">
-        <input type="text" name="searchkey" value="{{ searchkey }}"/>
-        <button>Rechercher</button>
+<h2>{{ search_Nom }}</h2>
+    <form class="w-full max-w-md mb-6" method="GET" >
+        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <i class="fa fa-search w-4 h-4 text-gray-500"></i>
+            </div>
+            <input type="text"
+                   name="searchkey"
+                   class="block w-full outline-none p-4 ps-10 text-sm text-gray-900 rounded-lg bg-gray-50 border-2 border-transparent focus:ring-4 focus:ring-[#C79364]/60 focus:border-white"
+                   value="{{ searchkey }}"
+                   placeholder="Rechercher du nom des clients" required/>
+            <button type="submit"
+                    class="text-white absolute end-2.5 bottom-2.5 bg-[#C79364] hover:bg-[#af8057] focus:ring-4 focus:outline-none focus:ring-[#C79364]/60 font-medium rounded-lg text-sm px-4 py-2">
+                Rechercher
+            </button>
+        </div>
     </form>
 </div>

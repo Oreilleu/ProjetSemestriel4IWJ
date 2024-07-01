@@ -40,6 +40,8 @@
   {{ include('components/_flash_messages.html.twig')}}
   {{ include('components/_title.html.twig', { content: 'Liste des Clients'}) }}
 
+{% include 'clients/_search_client_form.html.twig' with {'search_Nom': '' } %}
+
   {% if clients is empty %}
       {{ include('components/_empty_message.html.twig', { content: 'Aucun client n\'a été trouvé.' }) }}
     {% else %}

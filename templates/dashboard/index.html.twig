@@ -6,22 +6,6 @@
     {{ include('components/_title.html.twig', { content: 'Dashboard'}) }}
 
     <!-- main content -->
-    <div class="flex justify-between items-center mb-6 ">
-        <h1 class="text-2xl font-semibold">Tableau de Bord</h1>
-    </div>
-
-    <form class="w-full max-w-md mb-6">
-        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-        <div class="relative">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <i class="fa fa-search w-4 h-4 text-gray-500"></i>
-            </div>
-            <input type="search" class="block w-full outline-none p-4 ps-10 text-sm text-gray-900 dark:text-text-dark-mode-200 rounded-lg bg-gray-50 border-2 border-transparent focus:ring-4 focus:ring-primary-500 dark:focus:ring-element-dark-mode-400 focus:border-white dark:focus:border-element-dark-mode-400 dark:bg-element-dark-mode-900" placeholder="Rechercher des produits, factures..." required/>
-            <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-primary-500 dark:bg-element-dark-mode-700 hover:bg-primary-500 dark:hover:bg-element-dark-mode-400 focus:ring-4 focus:outline-none focus:ring-primary-800 dark:focus:ring-element-dark-mode-700 font-medium rounded-lg text-sm px-4 py-2">
-                Rechercher
-            </button>
-        </div>
-    </form>
 
     <!-- Wrapper to contain all three blocks -->
     <div class="flex flex-wrap -mx-2 text-gray-800 dark:text-text-dark-mode-200">
@@ -40,9 +24,9 @@
                             {% endif %}
                         </h2>
                     </div>
-                    <div class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
-                        <i class="fas fa-copy text-2xl"></i>
-                    </div>
+                    <svg class="h-10 w-10 text-blue-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+                    </svg>
                 </div>
             </div>
         </div>
@@ -59,10 +43,10 @@
                             {% endif %}
                         </h2>
                     </div>
-                    <div
-                            class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
-                        <i class="fas fa-copy text-2xl"></i>
-                    </div>
+                    <svg class="h-10 w-10 text-blue-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+                    </svg>
+                    
                 </div>
             </div>
         </div>
@@ -79,9 +63,10 @@
                             {% endif %}
                         </h2>
                     </div>
-                    <div class="flex items-center h-12 w-12 justify-center bg-green-100 text-green-600 p-2 rounded-full">
-                        <i class="fa fa-file-invoice-dollar text-2xl"></i>
-                    </div>
+                    <svg class="h-12 w-12 text-green-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+
                 </div>
             </div>
         </div>
@@ -95,10 +80,10 @@
                     <h2 class="text-2xl font-semibold">Factures</h2>
                     <p class="text-2xl font-bold">{{ numberFactures }} Factures</p>
                 </div>
-                <div
-                        class="flex items-center h-12 w-12 justify-center bg-green-100 text-green-600 p-2 rounded-full">
-                    <i class="fa fa-file-invoice-dollar text-2xl"></i>
-                </div>
+                 <svg class="h-12 w-12 text-green-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+
             </div>
             <canvas id="facturesChart" width="400" height="200"></canvas>
             <a href="{{ path('app_factures_index') }}"
@@ -115,10 +100,9 @@
                     <h2 class="text-2xl font-semibold">Devis</h2>
                     <p class="text-2xl font-bold"> {{ numberDevis }} Devis</p>
                 </div>
-                <div
-                        class="flex items-center h-12 w-12 justify-center bg-blue-100 text-blue-600 p-2 rounded-full">
-                    <i class="fas fa-copy text-2xl"></i>
-                </div>
+                 <svg class="h-10 w-10 text-blue-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+                    </svg>
             </div>
             <canvas id="devisChart" width="400" height="200"></canvas>
             <a href="{{ path('app_devis_index') }}"
@@ -140,10 +124,7 @@
                 <h2 class="text-2xl font-semibold text-gray-800 dark:text-text-dark-mode-200">Les produits récents</h2>
 
                 </div>
-                <div
-                        class="flex items-center h-12 w-12 justify-center bg-yellow-100 text-yellow-600 p-2 rounded-full">
-                    <i class="fab fa-product-hunt text-2xl"></i>
-                </div>
+                <svg class="h-10 w-10 text-yellow-500"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="19" r="2" />  <circle cx="17" cy="19" r="2" />  <path d="M3 3h2l2 12a3 3 0 0 0 3 2h7a3 3 0 0 0 3 -2l1 -7h-15.2" /></svg>
             </div>
             <div class="overflow-x-scroll w-full">
                 <table class="min-w-full bg-white text-left whitespace-nowrap dark:bg-element-dark-mode-700">
@@ -189,9 +170,8 @@
                     {% endif %}
                     <p class="text-2xl font-bold text-gray-800 dark:text-text-dark-mode-200">Les clients récents</p>
                 </div>
-                <div class="flex items-center h-12 w-12 justify-center bg-red-100 text-red-600 p-2 rounded-full">
-                    <i class="fa fa-users text-2xl"></i>
-                </div>
+                <svg class="h-10 w-10 text-red-500"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /> 
+                 <path d="M16 11l2 2l4 -4" /></svg>
             </div>
             <div class="overflow-x-scroll w-full">
                 <table class="min-w-full bg-white text-left whitespace-nowrap">
