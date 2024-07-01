@@ -114,6 +114,7 @@ module.exports = {
       },
         success: '#28A745',
         danger: '#DC3545',
+        dangerDark: '#C82333',
         warning: '#FFC107',
         customColor: '#312319',
       },
