@@ -13,7 +13,12 @@
     {{ include('components/_form_group.html.twig', {
         field: form.id_categorie_produits,
         label: 'Catégorie :'
-    }) }}    
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.filePath,
+        label: 'Image :'
+    }) }} 
     
     {{ include('components/_submit_button.html.twig', {
       content: button_label|default('')
