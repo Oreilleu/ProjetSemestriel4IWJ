@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class CategorieVoter extends Voter
 {
     public const CREATE = 'CREATE';
+
     public const EDIT = 'EDIT';
     public const VIEW = 'VIEW';
     public const DELETE = 'DELETE';

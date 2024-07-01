@@ -11,8 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class DevisVoter extends Voter
 {
     public const CREATE = 'CREATE';
-    public const EDIT = 'EDIT';
 
+    public const EDIT = 'EDIT';
     public const VIEW = 'VIEW';
     public const DELETE = 'DELETE';
 

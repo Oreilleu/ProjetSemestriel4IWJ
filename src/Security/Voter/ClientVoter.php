@@ -11,8 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ClientVoter extends Voter
 {
     public const CREATE = 'CREATE';
-    public const EDIT = 'EDIT';
 
+    public const EDIT = 'EDIT';
     public const VIEW = 'VIEW';
     public const DELETE = 'DELETE';
 
@@ -37,6 +37,7 @@ class ClientVoter extends Voter
         switch ($attribute) {
             case self::CREATE:
             case self::EDIT:
+                return $this->canEdit($client, $user);
             case self::VIEW:
                 return $this->canView($client, $user);
             case self::DELETE:
@@ -50,6 +51,10 @@ class ClientVoter extends Voter
         return $this->belongsToCompany($client, $user);
     }
 
+    private function canEdit(Clients $client, User $user): bool
+    {
+        return $this->belongsToCompany($client, $user);
+    }
     private function belongsToCompany(Clients $client, User $user): bool
     {
         return $client->getIdEntreprise() === $user->getIdEntreprise();
