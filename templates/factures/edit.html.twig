@@ -15,7 +15,8 @@
                 { label: 'Taxe :', value: facture.taxe ~ '%' },
                 { label: 'Total HT :', value: facture.totalHt ~ ' €' },
                 { label: 'Total TTC :', value: facture.totalHt * (1 + facture.taxe / 100) ~ ' €' },
-                { label: 'Client :', value: facture.getClient().nom }
+                { label: 'Client :', value: facture.getClient().nom },
+                { label: 'Reste à payer :', value: restFacture ~ ' €'}
             ]
         },
         listProducts : facture.getLignesDevis()|map(ligneDevis => [
