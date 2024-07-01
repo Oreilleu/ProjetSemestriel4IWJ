@@ -48,8 +48,8 @@ class Produits
     #[ORM\OneToMany(mappedBy: 'id_produit', targetEntity: LignesDevis::class)]
     private Collection $lignesDevis;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $filePath = null;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private $filePath = null;
 
     #[ORM\ManyToOne(targetEntity: Entreprises::class, inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
@@ -100,9 +100,6 @@ class Produits
         return $this;
     }
 
-    /**
-     * @return Collection<int, LignesDevis>
-     */
     public function getLignesDevis(): Collection
     {
         return $this->lignesDevis;

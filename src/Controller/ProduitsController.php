@@ -69,11 +69,18 @@ class ProduitsController extends AbstractController
 
         $form->handleRequest($request);
 
-        if(!$user instanceof User) {
-            return $this->redirectToRoute('app_register');
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['filePath']->getData();
+            
+            if ($file) {
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $fileName
+                );
+                $produit->setFilePath('/uploads/'.$fileName);
+            }
+
             $entreprise = $user->getIdEntreprise();
             $produit->setIdEntreprise($entreprise);
 
@@ -143,6 +150,17 @@ class ProduitsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['filePath']->getData();
+
+            if ($file) {
+                $fileName = uniqid().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $fileName
+                );
+                $product->setFilePath('/uploads/'.$fileName);
+            }
+
             $entityManager->flush();
             $this->addFlash('success', 'Produit modifié avec succès !');
 
