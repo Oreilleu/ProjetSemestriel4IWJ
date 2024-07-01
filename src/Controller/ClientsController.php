@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\ClientsType;
 use App\Repository\ClientsRepository;
 use App\Repository\LotsRepository;
+use App\Security\Voter\ClientVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -148,6 +149,9 @@ class ClientsController extends AbstractController
     #[Route('/{id}', name: 'app_clients_show', methods: ['GET'])]
     public function show(Clients $client): Response
     {
+
+        $this->denyAccessUnlessGranted(ClientVoter::VIEW, $client);
+
         return $this->render('clients/show.html.twig', [
             'client' => $client,
         ]);

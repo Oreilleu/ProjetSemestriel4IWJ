@@ -2,6 +2,8 @@
 
 namespace App\Security\Voter;
 
+use App\Entity\Devis;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -10,6 +12,7 @@ class DevisVoter extends Voter
 {
     public const CREATE = 'CREATE';
     public const EDIT = 'EDIT';
+
     public const VIEW = 'VIEW';
     public const DELETE = 'DELETE';
 
@@ -29,14 +32,28 @@ class DevisVoter extends Voter
             return false;
         }
 
+        $devis = $subject;
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::CREATE:
             case self::EDIT:
             case self::VIEW:
+                return $this->canView($devis, $user);
             case self::DELETE:
         }
 
         return false;
     }
+
+    private function canView(Devis $devis, User $user): bool
+    {
+        return $this->belongsToCompany($devis, $user);
+    }
+
+    private function belongsToCompany(Devis $devis, UserInterface $user): bool
+    {
+        return $devis->getIdEntreprise() === $user->getIdEntreprise();
+    }
+
+
 }

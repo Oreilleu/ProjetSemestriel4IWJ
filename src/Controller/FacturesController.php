@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\FacturesType;
 use App\Form\PaiementsType;
 use App\Repository\FacturesRepository;
+use App\Security\Voter\FactureVoter;
 use App\Service\EmailService;
 use App\Service\InterractionService;
 use App\Service\PdfService;
@@ -107,6 +108,8 @@ class FacturesController extends AbstractController
     #[Route('/{id}', name: 'app_factures_show', methods: ['GET'])]
     public function show(Factures $facture): Response
     {
+        $this->denyAccessUnlessGranted(FactureVoter::VIEW, $facture);
+
         return $this->render('factures/show.html.twig', [
             'facture' => $facture,
         ]);
