@@ -3,7 +3,7 @@
 {% block title %}Modifier une catégorie{% endblock %}
 
 {% block body %}
-    {{ include('components/_title.html.twig', {content: 'Modifier la catégorie' ~ categorie.nom }) }}
+    {{ include('components/_title.html.twig', {content: 'Modifier la catégorie ' ~ categorie.nom }) }}
 
     {{ include('categories/_form.html.twig', {'button_label': 'Modifier'}) }}
 

@@ -124,7 +124,7 @@
             <a href="{{ path('app_devis_index') }}"
                class=" block w-fit mt-4 text-blue-600 hover:text-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-700/30 font-medium rounded-lg text-sm px-4 py-3">
                 <i class="fa fa-eye mr-1"></i>
-                Voir toutes les devis
+                Voir tous les devis
             </a>
         </div>
 
@@ -137,7 +137,7 @@
                     {% else %}
                         <h2 class="text-2xl font-semibold text-gray-800 dark:text-text-dark-mode-200">{{ numberProduits }} Produits au total</h2>
                     {% endif %}
-                <h2 class="text-2xl font-semibold text-gray-800 dark:text-text-dark-mode-200">Les produits Récents</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-text-dark-mode-200">Les produits récents</h2>
 
                 </div>
                 <div
@@ -174,7 +174,7 @@
             <a href="{{ path('app_produits_index') }}"
                class="block w-fit mt-4 text-yellow-600 hover:text-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-700/30 font-medium rounded-lg text-sm pr-4 py-3">
                 <i class="fa fa-eye mr-1"></i>
-                Voir tout les produits
+                Voir tous les produits
             </a>
         </div>
 
@@ -187,7 +187,7 @@
                     {% else %}
                         <h2 class="text-2xl font-semibold text-gray-800 dark:text-text-dark-mode-200">{{ numberClients }} Clients au total</h2>
                     {% endif %}
-                    <p class="text-2xl font-bold text-gray-800 dark:text-text-dark-mode-200">Les clients Récents</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-text-dark-mode-200">Les clients récents</p>
                 </div>
                 <div class="flex items-center h-12 w-12 justify-center bg-red-100 text-red-600 p-2 rounded-full">
                     <i class="fa fa-users text-2xl"></i>
@@ -224,7 +224,7 @@
             <a href="{{ path('app_clients_index') }}"
                class="block w-fit mt-4 text-red-600 hover:text-red-700 focus:ring-4 focus:outline-none focus:ring-red-700/30 font-medium rounded-lg text-sm pr-4 py-3">
                 <i class="fa fa-eye mr-1"></i>
-                Voir tout les clients
+                Voir tous les clients
             </a>
         </div>
     </div>
@@ -242,7 +242,7 @@
             data: {
                 labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
                 datasets: [{
-                    label: 'Nombres de Factures',
+                    label: 'Nombre de Factures',
                     data: facturesData,
                     borderColor: '#55FFAA', // Couleur de la ligne
                     backgroundColor: '#55FFAA20', // Couleur de fond sous la ligne (avec transparence)

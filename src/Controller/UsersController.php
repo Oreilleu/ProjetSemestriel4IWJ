@@ -89,7 +89,7 @@ class UsersController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Utilisateur modifié avec succès !');
 
-            return $this->redirectToRoute('app_users_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_users_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('users/edit.html.twig', [

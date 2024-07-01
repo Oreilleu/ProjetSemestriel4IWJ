@@ -26,6 +26,7 @@ class CategoriesProduitsType extends AbstractType
                             'image/jpeg',
                             'image/png',
                             'image/gif',
+                            'image/webp'
                         ],
                         'mimeTypesMessage' => 'Veuillez télécharger une image valide',
                     ]),
