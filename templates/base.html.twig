@@ -3,39 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <!-- Your custom CSS (optional) -->
-    <style>
-        .swiper-container {
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-        }
-
-        .swiper-slide {
-            width: 18rem;
-            /* Equivalent to 72px */
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <title>
       {% block title %}
         Welcome!
       {% endblock %}
     </title>
-    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-    {% block stylesheets %}
-      {{ encore_entry_link_tags('app') }}
-    {% endblock %}
 
-    {% block javascripts %}
-      {{ encore_entry_script_tags('app') }}
-    {% endblock %}
+  {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+  {% block stylesheets %}
+    <link href="{{ asset('build/app.css') }}" rel="stylesheet">
+    
+    {{ encore_entry_link_tags('app') }}
+  {% endblock %}
 
   </head>
+
   <body class="bg-color4-100 dark:bg-background-dark-mode-950 dark:text-text-dark-mode-200">
       {%if app.user %}
       {% include 'components/_nav.html.twig' %}
