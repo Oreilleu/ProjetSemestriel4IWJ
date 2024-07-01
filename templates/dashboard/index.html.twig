@@ -6,22 +6,6 @@
     {{ include('components/_title.html.twig', { content: 'Dashboard'}) }}
 
     <!-- main content -->
-    <div class="flex justify-between items-center mb-6 ">
-        <h1 class="text-2xl font-semibold">Tableau de Bord</h1>
-    </div>
-
-    <form class="w-full max-w-md mb-6">
-        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-        <div class="relative">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <i class="fa fa-search w-4 h-4 text-gray-500"></i>
-            </div>
-            <input type="search" class="block w-full outline-none p-4 ps-10 text-sm text-gray-900 dark:text-text-dark-mode-200 rounded-lg bg-gray-50 border-2 border-transparent focus:ring-4 focus:ring-primary-500 dark:focus:ring-element-dark-mode-400 focus:border-white dark:focus:border-element-dark-mode-400 dark:bg-element-dark-mode-900" placeholder="Rechercher des produits, factures..." required/>
-            <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-primary-500 dark:bg-element-dark-mode-700 hover:bg-primary-500 dark:hover:bg-element-dark-mode-400 focus:ring-4 focus:outline-none focus:ring-primary-800 dark:focus:ring-element-dark-mode-700 font-medium rounded-lg text-sm px-4 py-2">
-                Rechercher
-            </button>
-        </div>
-    </form>
 
     <!-- Wrapper to contain all three blocks -->
     <div class="flex flex-wrap -mx-2 text-gray-800 dark:text-text-dark-mode-200">
