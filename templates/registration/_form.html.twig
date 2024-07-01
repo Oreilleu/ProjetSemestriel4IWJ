@@ -2,33 +2,47 @@
 
     {{ include('components/_form_group.html.twig', {
         field: form.email,
-        label: 'Email :'
+        label: 'Email *:'
     }) }} 
     
     {{ include('components/_form_group.html.twig', {
         field: form.nom,
-        label: 'Nom :'
+        label: 'Nom *:'
     }) }}
     
     {{ include('components/_form_group.html.twig', {
         field: form.adresse,
-        label: 'Adresse :'
+        label: 'Adresse *:'
+    }) }}
+
+        {{ include('components/_form_group.html.twig', {
+        field: form.cp,
+        label: 'Code postal :'
+    }) }}
+
+    {{ include('components/_form_group.html.twig', {
+        field: form.ville,
+        label: 'Ville * :'
+    }) }}
+    
+    {{ include('components/_form_group.html.twig', {
+        field: form.pays,
+        label: 'Pays *:'
     }) }}
 
     {{ include('components/_form_group.html.twig', {
         field: form.tel,
-        label: 'Téléphone :'
+        label: 'Téléphone *:'
     }) }}
 
     {{ include('components/_form_group.html.twig', {
-        field: form.numero_siret,
-        label: 'Numéro SIRET :'
+        field: form.tel,
+        label: 'Numéro SIRET *:'
     }) }}
 
+</div>
+<div class="mt-8">
     {{ include('components/_submit_button.html.twig', {
         content: 'Enregistrer son entreprise'
     }) }}
-
-{{ form_end(form) }}
-
-
+</div>
