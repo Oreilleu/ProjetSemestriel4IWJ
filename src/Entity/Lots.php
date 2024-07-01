@@ -42,6 +42,10 @@ class Lots
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z0-9]*$/",
+        message: "Le code postal ne doit contenir que des lettres et des chiffres."
+    )]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $cp = null;
     
