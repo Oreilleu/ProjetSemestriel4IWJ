@@ -3,9 +3,13 @@
 {% block title %}Ajouter une entreprise{% endblock %}
 
 {% block body %}
-    <h1>Ajouter une entreprise</h1>
+    {{ include('components/_title.html.twig', { content: 'Ajouter une entreprise'}) }}
 
     {{ include('entreprises/_form.html.twig') }}
 
-    <a href="{{ path('app_entreprises_index') }}">back to list</a>
+
+    {{ include('components/_link.html.twig', {
+        path: 'app_entreprises_index',
+        content: 'Retour à la liste des entreprises'
+    }) }}
 {% endblock %}

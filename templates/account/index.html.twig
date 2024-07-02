@@ -24,14 +24,17 @@
             form: formEntreprise
         }) }}
 
-        {{ include('components/_delete_form.html.twig', {
-            item_id: user.id,
-            path: 'account',
-            labelButton: 'Supprimer mon compte',
-            title: 'Suppression de mon compte', 
-            content: 'Attention cette action est irréversible et supprimera toute vos données de l\'application (entreprise, produit, devis, facture ...). Voulez vous vraiment supprimer votre compte ?',
-            classButton: 'block font-medium text-blue-600 dark:text-blue-500 hover:underline'
-        }) }}
+        {% if not is_granted('ROLE_ADMIN') %}
+
+            {{ include('components/_delete_form.html.twig', {
+                item_id: user.id,
+                path: 'account',
+                labelButton: 'Supprimer mon compte',
+                title: 'Suppression de mon compte', 
+                content: 'Attention cette action est irréversible et supprimera toute vos données de l\'application (entreprise, produit, devis, facture ...). Voulez vous vraiment supprimer votre compte ?',
+                classButton: 'block font-medium text-blue-600 dark:text-blue-500 hover:underline'
+            }) }}
+        {% endif %}
 
         {% if is_granted('ROLE_ADMIN') %}
             {{ include('components/_link.html.twig', {

@@ -87,10 +87,25 @@
 
             {% if is_granted('ROLE_ADMIN') %}
                 <li>
-                    <a href="{{ path('app_admin_users_index') }}" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-element-dark-mode-900 rounded-lg group group">
+                    <button type="button" class="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900" aria-controls="dropdown-admin" data-collapse-toggle="dropdown-admin">
                         {{ include('components/SVG/_admin_SVG.html.twig') }}
-                        <span class="ms-3" >Utilisateurs</span>
-                    </a>
+                        <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">
+                            Administrateur
+                        </span>
+                        {{ include('components/SVG/_chevron_down_SVG.html.twig') }}
+                    </button>
+                    <ul id="dropdown-admin" class="hidden py-2 space-y-2">
+                        <li>
+                            <a href="{{ path('app_admin_users_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Liste des Utilisateurs
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_entreprises_index') }}" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-element-dark-mode-900">
+                                Liste des Entreprises
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             {% endif %}
 
