@@ -15,14 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/entreprises')]
 class EntreprisesController extends AbstractController
 {
-    #[IsGranted('ROLE_COMPTABLE')]
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/', name: 'app_entreprises_index', methods: ['GET'])]
     public function index(EntreprisesRepository $entreprisesRepository): Response
     {
         $entreprises = $entreprisesRepository->findAll();
 
+        $entrepriseFiltered = array_filter($entreprises, function($entreprise) {
+            // Assurez-vous que getUsers() retourne au moins un utilisateur avant de tenter d'accéder au premier élément
+            if (!empty($entreprise->getUsers()) && count($entreprise->getUsers()) > 0){
+                // Vérifiez si 'ROLE_ADMIN' est dans le tableau des rôles du premier utilisateur
+                return !in_array('ROLE_ADMIN', $entreprise->getUsers()[0]->getRoles());
+            }
+            return true; // Inclure l'entreprise si aucun utilisateur n'est associé
+        });
+
+
         return $this->render('entreprises/index.html.twig', [
-            'entreprises' => $entreprises,
+            'entreprises' => $entrepriseFiltered,
         ]);
     }
 
@@ -78,6 +88,26 @@ class EntreprisesController extends AbstractController
     public function delete(Request $request, Entreprises $entreprise, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$entreprise->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($entreprise);
+            $entityManager->flush();
+            $this->addFlash('success', 'Entreprise supprimée avec succès !');
+        }
+
+        return $this->redirectToRoute('app_entreprises_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/admin-delete-entreprise/{id}', name: 'app_admin_entreprises_delete', methods: ['POST'])]
+    public function adminDelete(Request $request, Entreprises $entreprise, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$entreprise->getId(), $request->request->get('_token'))) {
+            $users = $entreprise->getUsers();
+
+            foreach ($users as $u) {
+                $entityManager->remove($u);
+                $entityManager->flush();
+            }
+            
             $entityManager->remove($entreprise);
             $entityManager->flush();
             $this->addFlash('success', 'Entreprise supprimée avec succès !');

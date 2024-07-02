@@ -33,29 +33,29 @@ class ClientsController extends AbstractController
 
         $clients = $entreprise->getClients();
 
-        if ($request->getMethod() === 'GET' && $request->query->get('searchkey')) {
-            $clients = $clientsRepository->findByCritere($request->query->get('searchkey'));
-        }
+        // if ($request->getMethod() === 'GET' && $request->query->get('searchkey')) {
+        //     $clients = $clientsRepository->findByCritere($request->query->get('searchkey'));
+        // }
 
         return $this->render('clients/index.html.twig', [
             "clients" => $clients,
-            "searchkey" => $request->query->get('searchkey') ? $request->query->get('searchkey') : null
+            // "searchkey" => $request->query->get('searchkey') ? $request->query->get('searchkey') : null
         ]);
     }
 
-    #[Route('/search', name: 'app_clients_search', methods: ['GET', 'POST'])]
-    public function search(Request $request, ClientsRepository $clientsRepository): JsonResponse
-    {
-        $LesCriteres = [
-            'id' => $request->query->get('id'),
-            'nom' => $request->query->get('nom'),
-            'prenom' => $request->query->get('prenom'),
-        ];
+    // #[Route('/search', name: 'app_clients_search', methods: ['GET', 'POST'])]
+    // public function search(Request $request, ClientsRepository $clientsRepository): JsonResponse
+    // {
+    //     $LesCriteres = [
+    //         'id' => $request->query->get('id'),
+    //         'nom' => $request->query->get('nom'),
+    //         'prenom' => $request->query->get('prenom'),
+    //     ];
 
-        $clients = $clientsRepository->search($LesCriteres);
+    //     $clients = $clientsRepository->search($LesCriteres);
 
-        return new JsonResponse($clients);
-    }
+    //     return new JsonResponse($clients);
+    // }
 
     #[Route('/by-lot', name: 'app_client_lot', methods: ['GET'])]
     public function getLotsByClient(Request $request, LotsRepository $lotsRepository): JsonResponse
