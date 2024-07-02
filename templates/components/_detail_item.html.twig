@@ -7,11 +7,15 @@
         </h2>
         <ul class="space-y-1">
             {% for value in data.mainContent.content %}
-                <li class="flex">
-                    <span class="font-semibold dark:text-text-dark-mode-200 w-32">{{ value.label }}</span> 
-                    <span>{{ value.value }}</span>
-                </li>
+                {% if value.value is not empty %}
+                    <li class="flex">
+                        <span class="font-semibold dark:text-text-dark-mode-200 w-32">{{ value.label }}</span> 
+                        <span>{{ value.value }}</span>
+                    </li>
+                {% endif %}
             {% endfor %}
+            <ul class="space-y-1">
+        </ul>
         </ul>
     </div>
 

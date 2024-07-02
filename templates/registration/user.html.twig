@@ -23,10 +23,13 @@
 						}) }}
 					</div>
 					<div class="mt-4">
-						{{ include('components/_form_group.html.twig', {
-							field: form.password.first,
-							label: 'Mot de passe * :',
-						}) }}
+						{{ form_label(form.password.first, 'Mot de passe * :', {'label_attr': {'class': 'block text-sm font-bold mb-2 text-color4-900 dark:text-text-dark-mode-200 bleu:text-black'}}) }}
+    					<p>Le mot de passe doit contenir au moins 12 caractères, une lettre majuscule, une lettre minuscule un caractère spécial et un chiffre.</p>	
+							<div class="text-red-500 text-sm font-bold mb-3">
+        						{{ form_errors(form.password.first) }}
+    						</div>
+						{{ form_widget(form.password.first, {'attr': {'class': 'text-color4-900 dark:text-text-dark-mode-200 dark:bg-element-dark-mode-600 dark:border-element-dark-mode-400 w-2xl shadow appearance-none border rounded w-full py-2 px-3 leading-tight outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-element-dark-mode-400 bleu:text-black bleu:focus:ring-bleu-theme-500 mb-3'}}) }}
+
 
 						{{ include('components/_form_group.html.twig', {
 							field: form.password.second,
